@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Government Polytechnic, Chhatrapati Sambhajinagar</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h2>Government Polytechnic, Chhatrapati Sambhajinagar</h2>
+    </header>
+    
+    <nav>
+        Home | About | Departments | Admission | Contact
+    </nav>
+    
+    <main>
+        <!-- MAIN SLIDER -->
+        <section class="main-slider">
+            <div class="slider-wrapper">
+                
+                <!-- SLIDE 1: College Info + Image -->
+                <div class="slide slide-active">
+                    <img src="images/college1.jpg" alt="College Campus" class="slide-bg">
+                    <div class="info-overlay">
+                        <div class="info-box">
+                            <h1>Pursuit For Excellence</h1>
+                            <div class="info-content">
+                                <p>Government Polytechnic Aurangabad is one of the premier technical institutes in the state of Maharashtra, established in the year 1955. The Government of Maharashtra has granted academic autonomy to this institute in 1994.</p>
+                                <p>The institute is a recipient of <strong>Best Polytechnic Award in 1996-97</strong>. The institute has developed strong links with various industries, academic & research institutes. The institution is an enthusiastic aspirant for total autonomous status, with the intention of catering to the needs of industries & society in a better way.</p>
+                                <p>Outcome based curriculum (OBE) is introduced to provide more skills in diploma technicians since academic year 2017-18.</p>
+                                <p>The institute is equipped with an excellent infrastructure that includes a huge green campus, laboratories, workshop, computer centers, library, sports facilities, play ground, conference and gymkhana hall, staff development cell, examination cell and training & placement cell.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- SLIDE 2: College Image -->
+                <div class="slide">
+                    <img src="images/college2.jpg" alt="College Building" class="slide-bg">
+                </div>
+                
+                <!-- SLIDE 3: College Image -->
+                <div class="slide">
+                    <img src="images/college3.jpg" alt="College Facilities" class="slide-bg">
+                </div>
+                
+                <!-- SLIDE 4: College Image -->
+                <div class="slide">
+                    <img src="images/college4.jpg" alt="College Activities" class="slide-bg">
+                </div>
+                
+                <!-- SLIDE 5: ALL DIRECTORS -->
+                <div class="slide slide-directors">
+                    <div class="directors-container">
+                        <h2 class="directors-title">Leadership & Administration</h2>
+                        <p class="directors-subtitle">Guiding Excellence Through Visionary Leadership</p>
+                        
+                        <div class="directors-row">
+                            <!-- Director 1 -->
+                            <div class="director-box">
+                                <div class="director-photo">
+                                    <img src="images/director1.jpg" alt="Director 1">
+                                    <span class="director-num">1</span>
+                                </div>
+                                <h3>Shri B Venugopal Reddy, IAS</h3>
+                                <p class="position">Hon. Addl. Chief Secretary</p>
+                                <p class="dept">Higher & Technical Education</p>
+                            </div>
+                            
+                            <!-- Director 2 -->
+                            <div class="director-box">
+                                <div class="director-photo">
+                                    <img src="images/director2.jpg" alt="Director 2">
+                                    <span class="director-num">2</span>
+                                </div>
+                                <h3>Dr. Vinod Mohitkar</h3>
+                                <p class="position">Hon. Director</p>
+                                <p class="dept">Technical Education</p>
+                            </div>
+                            
+                            <!-- Director 3 -->
+                            <div class="director-box">
+                                <div class="director-photo">
+                                    <img src="images/director3.jpg" alt="Director 3">
+                                    <span class="director-num">3</span>
+                                </div>
+                                <h3>Dr. K.B. Ladhane</h3>
+                                <p class="position">I/c Joint Director</p>
+                                <p class="dept">Regional Office, Chha. SambhajiNagar</p>
+                            </div>
+                            
+                            <!-- Director 4 -->
+                            <div class="director-box">
+                                <div class="director-photo">
+                                    <img src="images/director4.jpg" alt="Director 4">
+                                    <span class="director-num">4</span>
+                                </div>
+                                <h3>Dr. A.M.Jinturkar</h3>
+                                <p class="position">Principal</p>
+                                <p class="dept">Government Polytechnic, Chha. SambhajiNagar</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Controls -->
+            <button class="nav-btn prev-btn" onclick="changeSlide(-1)">❮</button>
+            <button class="nav-btn next-btn" onclick="changeSlide(1)">❯</button>
+            
+            <!-- Dots -->
+            <div class="dots-container">
+                <span class="dot dot-active" onclick="goToSlide(0)"></span>
+                <span class="dot" onclick="goToSlide(1)"></span>
+                <span class="dot" onclick="goToSlide(2)"></span>
+                <span class="dot" onclick="goToSlide(3)"></span>
+                <span class="dot" onclick="goToSlide(4)"></span>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        © 2026 Government Polytechnic – Excellence in Technical Education
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
