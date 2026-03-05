@@ -1,0 +1,325 @@
+/* ===== UTILITY BAR ===== */
+.utility-bar{
+  background:linear-gradient(135deg,#0b3c5d,#f4f6f9);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:14px 24px;
+  box-shadow:0 12px 30px rgba(0,0,0,.35);
+}
+.util-left,.util-right{
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+
+/* ===== DROPDOWN ===== */
+.util-dropdown{position:relative;}
+.util-dropdown button{
+  background:rgba(255,255,255,.35);
+  border:none;
+  padding:8px 16px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:600;
+}
+.dropdown-panel{
+  position:absolute;
+  top:50px;
+  left:0;
+  min-width:260px;
+  padding:18px;
+  border-radius:18px;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(10px);
+  box-shadow:0 20px 40px rgba(0,0,0,.3);
+  display:none;
+}
+.dropdown-panel p,
+.dropdown-panel a{
+  display:block;            /* REQUIRED */
+  padding:10px 14px;        /* makes hover visible */
+  border-radius:8px;
+  transition:0.3s;
+}
+.dropdown-panel p:hover,
+.dropdown-panel a:hover{
+  background:#888;   /* grey hover */
+  color:#000;
+  cursor:pointer;
+}
+.dropdown-panel p:active,
+.dropdown-panel a:active{
+  background:#c1121f;
+  color:#fff;
+}
+.dropdown-panel a:active,
+.dropdown-panel p:active{
+  background:#c1121f;
+  color:#fff;
+}
+/* ===== ACCESSIBILITY ===== */
+.accessibility span{
+  font-weight:700;
+  cursor:pointer;
+  padding:6px 9px;
+  border-radius:6px;
+}
+.accessibility span:hover{background:#fff}
+
+/* ===== ICON BUTTON ===== */
+.icon-btn{
+  background:rgba(255,255,255,.35);
+  border:none;
+  padding:10px;
+  border-radius:50%;
+  cursor:pointer;
+}
+
+/* ===== SEARCH ===== */
+.search-box{
+  display:flex;
+  align-items:center;
+  background:#fff;
+  padding:8px 14px;
+  border-radius:30px;
+}
+.search-box input{
+  border:none;
+  outline:none;
+  margin-left:6px;
+}
+
+/* ===== LOGIN ===== */
+.login-btn{
+  background:#c1121f;
+  color:#fff;
+  border:none;
+  padding:10px 18px;
+  border-radius:24px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+/* ===== DARK MODE ===== */
+body.dark{
+  background:#121212;
+  color:#f1f1f1;
+}
+body.dark header,
+body.dark footer{background:#000}
+body.dark nav{background:#222}
+body.dark nav a{color:#fff}
+body.dark .dropdown-panel{background:#1e1e1e}
+body.dark .dropdown-panel a,
+body.dark .dropdown-panel p{color:#fff}
+body.dark .search-box,
+body.dark .search-box input{background:#333;color:#fff}
+.news-bar {
+  width: 100%;
+  height: 55px;
+  background-color: #0f4c5c;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* LEFT RED BOX */
+.announcement-box {
+  background-color: #d40000;
+  width: 120px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+/* BLUE EMOJI */
+.announcement-emoji {
+  font-size: 18px;
+  color: #002366;
+  line-height: 1;
+}
+
+.announcement-box small {
+  font-size: 11px;
+  color: #ffffff;
+}
+
+/* MARQUEE AREA */
+.marquee-wrapper {
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+  height: 100%;
+}
+
+/* TRACK */
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 12s linear infinite;
+}
+
+/* NEWS ITEM */
+.marquee-track span {
+  color: #ffffff;
+  font-size: 17px;
+  line-height: 55px;
+  padding: 0 40px;
+  white-space: nowrap;
+  position: relative;
+}
+
+/* SEPARATOR LINE */
+.marquee-track span::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 15px;
+  height: 25px;
+  width: 2px;
+  background-color: #ffffff;
+}
+
+/* PAUSE ON HOVER */
+.news-bar:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* CONTINUOUS LOOP */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+
+</style>
+ 
+
+</head>
+
+
+<body>
+<!-- ===== UTILITY BAR ===== -->
+<div class="utility-bar">
+
+<div class="util-left">
+
+  <!-- Institute Codes -->
+  <div class="util-dropdown">
+    <button onclick="toggleDrop('codes')">
+      Institute Codes <i class="fa fa-chevron-down"></i>
+    </button>
+    <div class="dropdown-panel" id="codes">
+      <p><b>DTE Code:</b> 2010</p>
+      <p><b>MSBTE:</b> 0019 (1st Shift)</p>
+      <p><b>MSBTE:</b> 9019 (2nd Shift)</p>
+      <p><b>AICTE ID:</b> 1-493166031</p>
+      <p><b>AISHE:</b> S-1785</p>
+    </div>
+  </div>
+<!-- Social Media -->
+  <div class="util-dropdown">
+    <button onclick="toggleDrop('social')">
+      Social Media <i class="fa fa-chevron-down"></i>
+    </button>
+    <div class="dropdown-panel" id="social">
+      <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
+      <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+      <a href="#"><i class="fab fa-youtube"></i> YouTube</a>
+      <a href="#"><i class="fab fa-x-twitter"></i> X (Twitter)</a>
+      <a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a>
+    </div>
+  </div>
+
+  <!-- Accessibility -->
+  <div class="accessibility">
+    <span onclick="setFont('14px')">A-</span>
+    <span onclick="setFont('16px')">A</span>
+    <span onclick="setFont('18px')">A+</span>
+  </div>
+
+  <!-- Dark Mode -->
+  <button class="icon-btn" onclick="toggleTheme()">
+    <i class="fa fa-circle-half-stroke"></i>
+  </button>
+
+  <!-- Quick Links -->
+  <div class="util-dropdown">
+    <button onclick="toggleDrop('links')">
+      Quick Links <i class="fa fa-chevron-down"></i>
+    </button>
+    <div class="dropdown-panel" id="links">
+      <a href="https://msbte.ac.in/" target="_blank">MSBTE</a>
+      <a href="https://www.aicte-india.org/" target="_blank">AICTE</a>
+      <a href="https://gpabadmis.in/gpabad_mis/" target="_blank">MIS Portal</a>
+      <a href="https://dte.maharashtra.gov.in/" target="_blank">DTE Maharashtra</a>
+      <a href="https://nptel.ac.in/" target="_blank">NPTEL</a>
+      <a href="https://betacloud.ncs.gov.in/" target="_blank">National Career Service</a>
+    </div>
+  </div>
+
+</div>
+
+<div class="util-right">
+
+  <div class="search-box">
+    <i class="fa fa-search"></i>
+    <input type="text" data-key="search" placeholder="Search...">
+  </div>
+
+  <!-- Language Tab (ONLY ADDITION) -->
+  <div class="util-dropdown">
+    <button onclick="toggleDrop('lang')" data-key="languageBtn">
+      Language <i class="fa fa-chevron-down"></i>
+    </button>
+    <div class="dropdown-panel" id="lang">
+      <a href="#" onclick="setLanguage('en')">English</a>
+      <a href="#" onclick="setLanguage('mr')">मराठी</a>
+    </div>
+  </div>
+
+  <button class="login-btn" data-key="login">
+    <i class="fa fa-right-to-bracket"></i> Login
+  </button>
+
+</div>
+</div>
+<header class="top-header">
+
+  <div class="header-logo">
+    <img src="images/logo.jpeg" alt="College Logo">
+  </div>
+
+  <div class="header-title">
+    <h1>Government Polytechnic, Chhatrapati Sambhajinagar</h1>
+    <h2>शासकीय तंत्रनिकेतन, छत्रपती संभाजीनगर</h2>
+    <p>(An Autonomous Institute of Govt. of Maharashtra – Estd. 1955)</p>
+    <p>AICTE Approved – NBA Accredited</p>
+  </div>
+
+  <div class="header-info">
+    <p class="header-email">
+  📧 
+  <a href="mailto:principal.gpaurangabad@dtemaharashtra.gov.in">
+    principal.gpaurangabad@dtemaharashtra.gov.in
+  </a>
+</p>
+
+    <p>📞 +91-240-2353644 (Principal)</p>
+    <p><a href="#">Online GPA</a></p>
+    <p><a href="#">Admission – 2025-26</a></p>
+  </div>
+
+</header>
+<div class="gold-strip"></div>
+
