@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Student Welfare</title>
+
+<style>
+body{
+    margin:0;
+    font-family: Arial, Helvetica, sans-serif;
+    background:#f2f4f5;
+}
+
+/* HEADER */
+.header{
+    background:#0e5a61;
+    color:white;
+    padding:18px;
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+}
+
+/* TOP MENU */
+.topnav{
+    background:#155e63;
+    display:flex;
+}
+.topnav a{
+    color:white;
+    padding:14px 18px;
+    text-decoration:none;
+    font-weight:bold;
+}
+.topnav a:hover{
+    background:#0f4c50;
+}
+.topnav .active{
+    background:#0b3f44;
+}
+
+/* BREADCRUMB */
+.breadcrumb{
+    padding:10px 20px;
+    background:#e6f0f1;
+    font-size:14px;
+}
+
+/* LAYOUT */
+.container{
+    display:flex;
+    padding:20px;
+}
+.sidebar{
+    width:280px;
+}
+
+/* MAIN BUTTON */
+.main-btn{
+    background:#1f5f67;
+    color:white;
+    padding:14px 18px;
+    font-size:18px;
+    font-weight:bold;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    cursor:pointer;
+    margin-bottom:10px;
+}
+.main-btn.active{
+    background:#174b51;
+}
+
+/* CONTENT */
+.content{
+    flex:1;
+    background:white;
+    padding:25px;
+    margin-left:30px;
+    border-radius:6px;
+    box-shadow:0px 0px 8px rgba(0,0,0,0.1);
+}
+.section{
+    display:none;
+}
+.section.active{
+    display:block;
+}
+.content h2{
+    color:#0e5a61;
+}
+
+/* TABLE STYLE (MATCHING THEME COLOR) */
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+th{
+    background:#155e63;   /* THEME COLOR */
+    color:white;
+    padding:10px;
+}
+td{
+    padding:10px;
+    border-bottom:1px solid #ddd;
+}
+tr:hover{
+    background:#e6f0f1;
+}
+
+.link{
+    color:#0e5a61;
+    font-weight:bold;
+}
+.clean-table{
+    width:70%;
+    margin:30px auto;
+    border-collapse:collapse;
+    text-align:center;
+    table-layout:fixed;
+}
+
+.clean-table th,
+.clean-table td{
+    padding:14px;
+    border:1px solid #ddd;
+}
+
+.clean-table th{
+    background:#155e63;
+    color:white;
+}
+
+.clean-table tr:hover{
+    background:#e6f0f1;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+Government Polytechnic, Chhatrapati Sambhajinagar
+</div>
+
+<div class="topnav">
+<a href="#">Home</a>
+<a href="#">About Institute</a>
+<a href="#">Departments</a>
+<a href="#">Admission</a>
+<a href="#" class="active">Student Welfare</a>
+<a href="#">Contact</a>
+</div>
+
+<div class="breadcrumb">
+Home > Student Welfare
+</div>
+
+<div class="container">
+
+<div class="sidebar">
+
+<div class="main-btn active" onclick="showSection('welfare', this)">
+Student Welfare
+<span>▼</span>
+</div>
+
+<div class="main-btn" onclick="showSection('emagazine', this)">
+E-Magazine
+<span>▶</span>
+</div>
+
+<div class="main-btn" onclick="showSection('scholarship', this)">
+Scholarship
+<span>▶</span>
+</div>
+
+</div>
+
+<div class="content">
+
+<!-- STUDENT WELFARE -->
+<div id="welfare" class="section active">
+<h2>🌱 Student Welfare</h2>
+
+<p>
+The Student Welfare Cell at Government Polytechnic Chhatrapati Sambhajinagar
+is dedicated to the overall development, well-being, and support of students.
+</p>
+
+<p>
+Through various initiatives, the cell ensures that students receive proper
+guidance, opportunities, and support services beyond academics.
+</p>
+</div>
+
+<!-- E-MAGAZINE -->
+<div id="emagazine" class="section">
+<h2>🔴 E-Magazine</h2>
+
+<table class="clean-table">
+<tr>
+<th>Sr No</th>
+<th>E-Magazine Name</th>
+<th>Academic Year</th>
+<th>View</th>
+</tr>
+
+<tr>
+<td>1</td>
+<td>E-Magazine 2023</td>
+<td>2023-24</td>
+<td>
+<a href="emagazine2024.pdf" target="_blank" class="link">
+Download
+</a>
+</td>
+</tr>
+</table>
+</div>
+
+<!-- SCHOLARSHIP -->
+<div id="scholarship" class="section">
+<h2>🔴 Scholarships</h2>
+
+<table>
+<tr>
+<th>Sr No</th>
+<th>Publish Date</th>
+<th>Description</th>
+<th>Download</th>
+</tr>
+<tr>
+<td>1</td>
+<td>21/06/2023</td>
+<td>Government Scholarship Notice</td>
+<td>📄</td>
+</tr>
+<tr>
+<td>2</td>
+<td>20/05/2023</td>
+<td>Scholarship Notice</td>
+<td>📄</td>
+</tr>
+<tr>
+<td>3</td>
+<td>17/05/2023</td>
+<td>Student Section Notice</td>
+<td>📄</td>
+</tr>
+</table>
+
+<br><br>
+
+<h2>🔴 Govt. Scholarships</h2>
+<p><b>1.</b> 
+<a href="https://mahadbt.maharashtra.gov.in" target="_blank" class="link">
+MahaDBT - https://mahadbt.maharashtra.gov.in
+</a>
+</p>
+<p><b>2.</b> 
+<a href="https://scholarships.gov.in" target="_blank" class="link">
+NSP - https://scholarships.gov.in
+</a>
+</p>
+<p><b>3.</b> 
+<a href="https://sarthi-maharashtragov.in" target="_blank" class="link">
+Sarthi Scholarship - https://sarthi-maharashtragov.in
+</a>
+</p>
+</div>
+
+</div>
+</div>
+
+<script>
+function showSection(id, element){
+
+    let sections = document.querySelectorAll(".section");
+    let buttons = document.querySelectorAll(".main-btn");
+
+    sections.forEach(sec => sec.classList.remove("active"));
+    buttons.forEach(btn => {
+        btn.classList.remove("active");
+        btn.querySelector("span").innerHTML="▶";
+    });
+
+    document.getElementById(id).classList.add("active");
+    element.classList.add("active");
+    element.querySelector("span").innerHTML="▼";
+}
+</script>
+
+</body>
+</html>

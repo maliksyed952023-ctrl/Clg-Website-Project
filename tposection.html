@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>TPO - Government Polytechnic</title>
+
+<style>
+body{
+    margin:0;
+    font-family: Arial, Helvetica, sans-serif;
+    background:#f2f4f5;
+}
+
+/* HEADER */
+.header{
+    background:#0e5a61;
+    color:white;
+    padding:18px;
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+}
+
+/* TOP NAVIGATION */
+.topnav{
+    background:#155e63;
+    display:flex;
+}
+.topnav a{
+    color:white;
+    padding:14px 18px;
+    text-decoration:none;
+    font-weight:bold;
+}
+.topnav a:hover{
+    background:#0f4c50;
+}
+.topnav .active{
+    background:#0b3f44;
+}
+
+/* BREADCRUMB */
+.breadcrumb{
+    padding:10px 20px;
+    background:#e6f0f1;
+    font-size:14px;
+}
+.breadcrumb span{
+    color:#0e5a61;
+    font-weight:bold;
+}
+
+/* LAYOUT */
+.container{
+    display:flex;
+    padding:20px;
+}
+
+.sidebar{
+    width:300px;
+}
+
+/* SIDEBAR BUTTON */
+.main-btn{
+    background:#1f5f67;
+    color:white;
+    padding:14px 18px;
+    font-size:18px;
+    font-weight:bold;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    cursor:pointer;
+    margin-top:10px;
+}
+.main-btn.active{
+    background:#174b51;
+}
+.arrow{
+    font-size:16px;
+}
+
+/* CONTENT AREA */
+.content{
+    flex:1;
+    background:white;
+    padding:25px;
+    margin-left:30px;
+    border-radius:6px;
+    box-shadow:0px 0px 8px rgba(0,0,0,0.1);
+}
+
+.section{
+    display:none;
+}
+.section.active{
+    display:block;
+}
+
+.content h2{
+    color:#0e5a61;
+    font-size:26px;
+}
+
+/* TABLE STYLE */
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+th{
+    background:#155e63;;
+    color:white;
+    padding:10px;
+    text-align:left;
+}
+td{
+    padding:10px;
+    border-bottom:1px solid #ddd;
+}
+tr:hover{
+    background:#f1f1f1;
+}
+
+/* LOGO GRID */
+.logo-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:15px;
+    margin-top:20px;
+}
+.logo-box{
+    border:1px solid #ddd;
+    height:150px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#fafafa;
+    font-weight:bold;
+    color:#555;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+Government Polytechnic, Chhatrapati Sambhajinagar
+</div>
+
+<!-- TPO ADDED IN NAVIGATION -->
+<div class="topnav">
+<a href="#">Home</a>
+<a href="#">About Institute</a>
+<a href="#">Departments</a>
+<a href="#">Admission</a>
+<a href="#" class="active">TPO</a>
+<a href="#">Contact</a>
+</div>
+
+<div class="breadcrumb">
+Home > <span>TPO</span>
+</div>
+
+<div class="container">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+
+<div class="main-btn active" onclick="showSection('tpo', this)">
+TPO <span class="arrow">▼</span>
+</div>
+
+<div class="main-btn" onclick="showSection('profile', this)">
+Profile <span class="arrow">▶</span>
+</div>
+
+<div class="main-btn" onclick="showSection('recruiters', this)">
+Our Recruiters <span class="arrow">▶</span>
+</div>
+
+<div class="main-btn" onclick="showSection('placement', this)">
+Placement Records <span class="arrow">▶</span>
+</div>
+
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+<!-- TPO -->
+<div id="tpo" class="section active">
+<h2>TPO</h2>
+<p>
+The Training and Placement Cell organizes campus interviews, industrial training,
+skill enhancement programs and placement drives for students.
+</p>
+</div>
+
+<!-- PROFILE -->
+<div id="profile" class="section">
+<h2>Training and Placement Profile</h2>
+
+<table>
+<tr>
+<th>Sr No</th>
+<th>Name & Designation</th>
+<th>Role</th>
+<th>Contact</th>
+<th>Email</th>
+</tr>
+<tr>
+<td>1</td>
+<td>-- Add Name --</td>
+<td>Training & Placement Officer</td>
+<td>-- Add Contact --</td>
+<td>-- Add Email --</td>
+</tr>
+</table>
+
+<h3 style="margin-top:30px;">Training & Placement Activities</h3>
+
+<table>
+<tr>
+<th>Sr No</th>
+<th>Activity</th>
+<th>Date</th>
+<th>View</th>
+</tr>
+<tr>
+<td>1</td>
+<td>-- Add Activity --</td>
+<td>-- Add Date --</td>
+<td>View / Download</td>
+</tr>
+</table>
+<div style="margin-top:20px;">
+    <img src="" alt="Profile Image" style="width:100%; height:250px; background:#ddd; border-radius:6px;">
+</div>
+
+</div>
+
+<!-- RECRUITERS -->
+<div id="recruiters" class="section">
+<h2>Our Recruiters</h2>
+
+<div class="logo-grid">
+<div class="logo-box">Logo 1</div>
+<div class="logo-box">Logo 2</div>
+<div class="logo-box">Logo 3</div>
+<div class="logo-box">Logo 4</div>
+<div class="logo-box">Logo 5</div>
+<div class="logo-box">Logo 6</div>
+<div class="logo-box">Logo 7</div>
+<div class="logo-box">Logo 8</div>
+</div>
+
+</div>
+
+<!-- PLACEMENT -->
+<div id="placement" class="section">
+<h2>Placement Records</h2>
+
+<table>
+<tr>
+<th>Sr No</th>
+<th>Academic Year</th>
+<th>View</th>
+</tr>
+<tr>
+<td>1</td>
+<td>2023-24</td>
+<td>View / Download</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2022-23</td>
+<td>View / Download</td>
+</tr>
+<tr>
+<td>3</td>
+<td>2021-22</td>
+<td>View / Download</td>
+</tr>
+</table>
+
+</div>
+
+</div>
+</div>
+
+<script>
+function showSection(id, element){
+
+    let sections = document.querySelectorAll(".section");
+    let buttons = document.querySelectorAll(".main-btn");
+
+    sections.forEach(sec => sec.classList.remove("active"));
+
+    buttons.forEach(btn => {
+        btn.classList.remove("active");
+        btn.querySelector(".arrow").innerHTML = "▶";
+    });
+
+    document.getElementById(id).classList.add("active");
+
+    element.classList.add("active");
+    element.querySelector(".arrow").innerHTML = "▼";
+}
+</script>
+
+</body>
+</html>
