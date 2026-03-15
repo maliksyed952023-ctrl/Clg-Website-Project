@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Downloads</title>
+
+<style>
+
+body{
+margin:0;
+font-family: Arial, Helvetica, sans-serif;
+background:#f2f4f5;
+}
+
+/* HEADER */
+
+.header{
+background:#0e5a61;
+color:white;
+padding:18px;
+text-align:center;
+font-size:22px;
+font-weight:bold;
+}
+
+/* TOP MENU */
+
+.topnav{
+background:#155e63;
+display:flex;
+}
+
+.topnav a{
+color:white;
+padding:14px 18px;
+text-decoration:none;
+font-weight:bold;
+}
+
+.topnav a:hover{
+background:#0f4c50;
+}
+
+.topnav .active{
+background:#0b3f44;
+}
+
+/* BREADCRUMB */
+
+.breadcrumb{
+padding:10px 20px;
+background:#e6f0f1;
+font-size:14px;
+}
+
+/* LAYOUT */
+
+.container{
+display:flex;
+padding:20px;
+}
+
+.sidebar{
+width:300px;
+}
+
+/* MAIN BUTTON */
+
+.main-btn{
+background:#1f5f67;
+color:white;
+padding:14px 18px;
+font-size:18px;
+font-weight:bold;
+display:flex;
+justify-content:space-between;
+align-items:center;
+cursor:pointer;
+margin-top:10px;
+}
+
+.arrow{
+font-size:15px;
+}
+
+/* CONTENT */
+
+.content{
+flex:1;
+background:white;
+padding:25px;
+margin-left:30px;
+border-radius:6px;
+box-shadow:0px 0px 8px rgba(0,0,0,0.1);
+}
+
+.section{
+display:none;
+}
+
+.section.active{
+display:block;
+}
+
+.content h2{
+color:#0e5a61;
+}
+
+/* TABLE DESIGN */
+
+.download-table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+font-size:15px;
+background:white;
+}
+
+.download-table th{
+background:#0e5a61;
+color:white;
+padding:14px;
+text-align:center;
+border:1px solid #dcdcdc;
+}
+
+.download-table td{
+padding:12px;
+border:1px solid #e2e2e2;
+text-align:center;
+}
+
+.download-table tr:nth-child(even){
+background:#f7f7f7;
+}
+
+.download-table tr:hover{
+background:#ececec;
+}
+
+/* DOWNLOAD BUTTON */
+
+.download-btn{
+background:#0e5a61;
+color:white;
+padding:6px 14px;
+border-radius:5px;
+text-decoration:none;
+font-size:14px;
+font-weight:bold;
+}
+
+.download-btn:hover{
+background:#084348;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+Government Polytechnic, Chhatrapati Sambhajinagar
+</div>
+
+<div class="topnav">
+<a href="#">Home</a>
+<a class="active">Downloads</a>
+<a href="#">Departments</a>
+<a href="#">Admission</a>
+<a href="#">Contact</a>
+</div>
+
+<div class="breadcrumb">
+Home > Downloads
+</div>
+
+<div class="container">
+
+<div class="sidebar">
+
+<div class="main-btn" onclick="showSection('serviceRules')">
+Service Rules / GR <span class="arrow">▶</span>
+</div>
+
+<div class="main-btn" onclick="showSection('aicte')">
+AICTE / Extension of Approval <span class="arrow">▶</span>
+</div>
+
+<div class="main-btn" onclick="showSection('academicCalendar')">
+Academic Calendar <span class="arrow">▶</span>
+</div>
+
+<div class="main-btn" onclick="showSection('scholarship')">
+Scholarship / Student Section <span class="arrow">▶</span>
+</div>
+
+<div class="main-btn" onclick="showSection('examTimeTable')">
+Examination Time Table <span class="arrow">▶</span>
+</div>
+
+<div class="main-btn" onclick="showSection('examNotice')">
+Exam Section Notice <span class="arrow">▶</span>
+</div>
+
+<div class="main-btn" onclick="showSection('curriculum5')">
+Curriculum 5th Revision <span class="arrow">▶</span>
+</div>
+
+<div class="main-btn" onclick="showSection('curriculum6')">
+Curriculum 6th Revision <span class="arrow">▶</span>
+</div>
+
+<div class="main-btn" onclick="showSection('curriculum7')">
+Curriculum 7th Revision <span class="arrow">▶</span>
+</div>
+
+</div>
+
+<div class="content">
+
+<!-- SERVICE RULES -->
+
+<div id="serviceRules" class="section active">
+
+<h2>Service Rules / GR</h2>
+
+<table class="download-table">
+
+<tr>
+<th>Sr No</th>
+<th>Date</th>
+<th>Document Name</th>
+<th>Download</th>
+</tr>
+
+<tr>
+<td>1</td>
+<td>21/07/2022</td>
+<td>CAS Format Diploma</td>
+<td><a href="#" class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>28/01/2021</td>
+<td>Maharashtra Civil Services Leave Rules 1981</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>28/01/2021</td>
+<td>Financial Power Rule Book 17 April 2015</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>4</td>
+<td>28/01/2021</td>
+<td>MCSR Discipline and Appeal 1979</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>5</td>
+<td>28/01/2021</td>
+<td>MCSR General Conditions of Service 1981</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>6</td>
+<td>28/01/2021</td>
+<td>Pension Rules Seventh PAy GR 1 March 2019</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>7</td>
+<td>28/01/2021</td>
+<td>Autonomy GR 30-31 May 1994.</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>8</td>
+<td>28/01/2021</td>
+<td>MCSR Pension Rules 1982</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>9</td>
+<td>28/01/2021</td>
+<td>TA Rules March 2010</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>10</td>
+<td>28/01/2021</td>
+<td>MCSR PAY Rules</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>11</td>
+<td>28/01/2021</td>
+<td>MCSR LEAVE Rules</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>12</td>
+<td>28/01/2021</td>
+<td>MCSR Joining Period</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>13</td>
+<td>28/01/2021</td>
+<td>MCSR General conditions of Service</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>14</td>
+<td>27/01/2021</td>
+<td>MCSR Discipline 1979</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+
+
+</table>
+
+</div>
+
+<!-- AICTE -->
+
+<div id="aicte" class="section">
+
+<h2>AICTE / Extension of Approval</h2>
+
+<table class="download-table">
+
+<tr>
+<th>Sr No</th>
+<th>Published Date</th>
+<th>Document Name</th>
+<th>Download</th>
+</tr>
+
+<tr>
+<td>1</td>
+<td>19/07/2024</td>
+<td>Extension Of Approval-(EOA)-2024</td>
+<td><a href="#" class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>26/05/2023</td>
+<td>Extension Of Approval-(EOA)-2023</td>
+<td><a href="#" class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>03/05/2023</td>
+<td>Extension Of Approval-(EOA)-2022</td>
+<td><a href="#" class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>4</td>
+<td>05/03/2022</td>
+<td>Extension Of Approval-(EOA)-2021</td>
+<td><a href="#" class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>5</td>
+<td>28/01/2021</td>
+<td>Extension Of Approval-(EOA)-2020</td>
+<td><a href="#" class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>6</td>
+<td>28/01/2021</td>
+<td>Extension Of Approval-(EOA)-2019</td>
+<td><a href="#" class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>7</td>
+<td>28/01/2021</td>
+<td>Extension Of Approval-(EOA)-2018</td>
+<td><a href="#" class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>8</td>
+<td>28/01/2021</td>
+<td>Extension Of Approval-(EOA)-2017</td>
+<td><a href="#" class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>9</td>
+<td>28/01/2021</td>
+<td>Extension Of Approval-(EOA)-2016</td>
+<td><a href="#" class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>10</td>
+<td>28/01/2021</td>
+<td>Extension Of Approval-(EOA)-2015</td>
+<td><a href="#" class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>11</td>
+<td>28/01/2021</td>
+<td>Extension Of Approval-(EOA)-2014</td>
+<td><a href="#" class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>12</td>
+<td>28/01/2021</td>
+<td>Extension Of Approval-(EOA)-2013</td>
+<td><a href="#" class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>13</td>
+<td>28/01/2021</td>
+<td>Extension Of Approval-(EOA)-2012</td>
+<td><a href="#" class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>14</td>
+<td>28/01/2021</td>
+<td>Extension Of Approval-(EOA)-2011</td>
+<td><a href="#" class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>15</td>
+<td>27/01/2021</td>
+<td>Extension Of Approval-(EOA)-1994-2010</td>
+<td><a href="#" class="download-btn">Download</a></td>
+</tr>
+
+</table>
+
+</div>
+
+<!-- ACADEMIC CALENDAR -->
+
+<div id="academicCalendar" class="section">
+
+<h2>Academic Calendar</h2>
+
+<table class="download-table">
+
+<tr>
+<th>Sr No</th>
+<th>Date</th>
+<th>Document Name</th>
+<th>Download</th>
+</tr>
+
+<tr>
+<td>1</td>
+<td>6/02/2026</td>
+<td>Academic Calendar 2025</td>
+<td><a href="NOTICE_161.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+</table>
+
+</div>
+
+<!-- SCHOLARSHIP -->
+
+<div id="scholarship" class="section">
+
+<h2>Scholarship / Student Section</h2>
+
+<table class="download-table">
+
+<tr>
+<th>Sr No</th>
+<th>Published Date</th>
+<th>Document Name</th>
+<th>Download</th>
+</tr>
+
+<tr>
+<td>1</td>
+<td>21/06/2023</td>
+<td>महाराष्ट्र शासन इतर मागास बहुजन कल्याण विभाग शासन निर्णय</td>
+<td><a href="Adobe-Scan-21-Jun-2023-1.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>20/05/2023</td>
+<td>SCHOLARSHIP NOTICE</td>
+<td><a href="Mahadbt-Notice_merged_compressed.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>17/05/2023</td>
+<td>Student Section – Notice/Circulars</td>
+<td><a href="scholarship-circular.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+</table>
+
+</div>
+
+<!-- EXAM TIME TABLE -->
+
+<div id="examTimeTable" class="section">
+
+<h2>Examination Time Table</h2>
+
+<table class="download-table">
+
+<tr>
+<th>Sr No</th>
+<th>Document Name</th>
+<th>Download</th>
+</tr>
+
+<tr>
+<td>1</td>
+<td>Summer Exam Time Table</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>Summer Exam Time Table</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>Summer Exam Time Table</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>Summer Exam Time Table</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>Summer Exam Time Table</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>Summer Exam Time Table</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+
+</table>
+
+</div>
+
+<!-- EXAM NOTICE -->
+
+<div id="examNotice" class="section">
+
+<h2>Exam Section Notice</h2>
+
+<table class="download-table">
+
+<tr>
+<th>Sr No</th>
+<th>Published Date</th>
+<th>Document Name</th>
+<th>Download</th>
+</tr>
+
+<tr>
+<td>1</td>
+<td>13/06/2025</td>
+<td>Result Notification of Summer 2025 Examination</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>30/04/2025</td>
+<td>दि.०३/०५/२०२५ रोजीची दोन्‍ही सत्राची परीक्षा दि.१९/०५/२०२५ रोजी होणे बाबत.</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>11/05/2023</td>
+<td>Discontinuation of 6th curriculum courses Notice Dt 25-02-2025</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>4</td>
+<td>11/05/2023</td>
+<td>Rescheduling of 6th December Th Paper. Dt 05/12/2024</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>5</td>
+<td>11/05/2023</td>
+<td>Winter 2024 Final Exam Time Table. Publish Date:13-11-2024</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>6</td>
+<td>11/05/2023</td>
+<td>Notice for Exam fees of Backlog Subjects. Dt 09-09-2024</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>7</td>
+<td>11/05/2023</td>
+<td>Notice Regarding Odd Sem Registration 2024-25 1-8-24</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>8</td>
+<td>11/05/2023</td>
+<td>Notice About Discontinuation of Question Papers of 6th Curriculum 30-7-24</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>9</td>
+<td>11/05/2023</td>
+<td>Re-registration Notice 15-7-2024</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>10</td>
+<td>11/05/2023</td>
+<td>GPCS OTO Notice 15-7-2024</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>11</td>
+<td>11/05/2023</td>
+<td>Course Registration Process Details</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>12</td>
+<td>11/05/2023</td>
+<td>Course Registration Notice</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+
+</table>
+
+</div>
+
+<!-- CURRICULUM 5 -->
+
+<div id="curriculum5" class="section">
+
+<h2>Curriculum 5th Revision</h2>
+
+<table class="download-table">
+
+<tr>
+<th>Sr No</th>
+<th>Published Date</th>
+<th>Document Name</th>
+<th>Download</th>
+</tr>
+
+<tr>
+<td>1</td>
+<td>11/05/2023</td>
+<td>Diploma in Information Technology (2012)-5th-Revision</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>11/05/2023</td>
+<td>Diploma in Computer Engineering (2012)-5th-Revision</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>11/05/2023</td>
+<td>Diploma in Electronics and Telecommunication Engineering (2012)-5th-Revision</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>4</td>
+<td>11/05/2023</td>
+<td>Diploma in Automobile Engineering Engineering (2012)-5th-Revision</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>5</td>
+<td>11/05/2023</td>
+<td>Diploma in Dress Designing and Garment Manufacturing (2012)-5th-Revision</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>6</td>
+<td>11/05/2023</td>
+<td>Diploma in Civil Engineering (2012)-5th-Revision</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>7</td>
+<td>11/05/2023</td>
+<td>Diploma in Electrical Engineering (2012)-5th-Revision</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>8</td>
+<td>11/05/2023</td>
+<td>Diploma in Mechanical Engineering (2012)-5th-Revision</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+</table>
+
+</div>
+
+<!-- CURRICULUM 6 -->
+
+<div id="curriculum6" class="section">
+
+<h2>Curriculum 6th Revision</h2>
+
+<table class="download-table">
+
+<tr>
+<th>Sr No</th>
+<th>Published Date</th>
+<th>Document Name</th>
+<th>Download</th>
+</tr>
+
+<tr>
+<td>1</td>
+<td>11/05/2023</td>
+<td>Diploma in Artificial Intelligence (AI) and Machine Learning (2021)-6th-Revision</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>11/05/2023</td>
+<td>Non- Exam Curriculum-(2017)-6th-Revision</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>11/05/2023</td>
+<td>Diploma in Civil Engineering (2017)-6th-Revision</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>4</td>
+<td>11/05/2023</td>
+<td>Diploma in Mechanical Engineering (2017)-6th-Revision</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>5</td>
+<td>11/05/2023</td>
+<td>Diploma in Electrical Engineering (2017)-6th-Revision</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>6</td>
+<td>11/05/2023</td>
+<td>Diploma in Electronics and Telecommunication Engineering (2017)-6th-Revision</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>7</td>
+<td>11/05/2023</td>
+<td>Diploma in Dress Designing and Garment Manufacturing (2017)-6th-Revision</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>8</td>
+<td>11/05/2023</td>
+<td>Diploma in Automobile Engineering (2017)-6th-Revision</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>9</td>
+<td>11/05/2023</td>
+<td>Diploma in Computer Engineering (2017)-6th-Revision</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>10</td>
+<td>11/05/2023</td>
+<td>Diploma in Information Technology (2017)-6th-Revision</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+</table>
+
+</div>
+
+<!-- CURRICULUM 7 -->
+
+<div id="curriculum7" class="section">
+
+<h2>Curriculum 7th Revision</h2>
+
+<table class="download-table">
+
+<tr>
+<th>Sr No</th>
+<th>Document Name</th>
+<th>Download</th>
+</tr>
+
+<tr>
+<td>1</td>
+<td>Curriculum 7th Revision</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>Curriculum 7th Revision</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>Curriculum 7th Revision</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>Curriculum 7th Revision</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>Curriculum 7th Revision</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>Curriculum 7th Revision</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>Curriculum 7th Revision</td>
+<td><a href="Semester 5.pdf" download class="download-btn">Download</a></td>
+</tr>
+
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function showSection(id){
+
+let sections=document.querySelectorAll(".section");
+
+sections.forEach(sec=>sec.classList.remove("active"));
+
+document.getElementById(id).classList.add("active");
+
+}
+
+</script>
+
+</body>
+</html>

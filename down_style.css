@@ -1,0 +1,87 @@
+/* MAIN BUTTON STYLE */
+
+.main-btn{
+background:#0e5a61;
+color:white;
+padding:14px 18px;
+font-size:18px;
+font-weight:bold;
+display:flex;
+justify-content:space-between;
+align-items:center;
+cursor:pointer;
+margin-top:10px;
+position:relative;
+}
+
+/* ARROW FOR ACTIVE BUTTON */
+
+.main-btn.active::after{
+content:"";
+position:absolute;
+right:-20px;
+top:0;
+width:0;
+height:0;
+border-top:26px solid transparent;
+border-bottom:26px solid transparent;
+border-left:20px solid #0e5a61;
+}
+
+
+/* PROFESSIONAL GOVERNMENT STYLE TABLE */
+
+.download-table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+font-size:15px;
+background:white;
+}
+
+.download-table th{
+background:#0e5a61;
+color:white;
+padding:14px;
+text-align:center;
+border:1px solid #dcdcdc;
+}
+
+.download-table td{
+padding:12px;
+border:1px solid #e2e2e2;
+text-align:center;
+}
+
+.download-table tr:nth-child(even){
+background:#f7f7f7;
+}
+
+.download-table tr:hover{
+background:#ececec;
+}
+
+
+/* VIEW LINK */
+
+.view-link{
+color:#444;
+text-decoration:underline;
+font-weight:500;
+cursor:pointer;
+}
+
+/* DOWNLOAD BUTTON */
+.download-btn{
+background:#0e5a61;
+color:white;
+padding:6px 14px;
+border-radius:5px;
+text-decoration:none;
+font-size:14px;
+font-weight:bold;
+}
+
+.download-btn:hover{
+background:#084348;
+}
