@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- HEADER & NAVBAR REQUIRED CSS - MUST BE FIRST -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <meta charset="UTF-8">
+  <title>Institute Website</title>
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='favicon/apple-touch-icon.png') }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon/favicon-32x32.png') }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon/favicon-16x16.png') }}">
+  <link rel="manifest" href="{{ url_for('static', filename='favicon/site.webmanifest') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/favicon.ico') }}">
+
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/ADDMISSION_style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/notices.css') }}">
+
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Source Sans 3', 'Segoe UI', Arial, sans-serif;
+      background: #f2f4f5;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    .submenu div {
+      padding: 12px;
+      border-bottom: 1px solid #ccc;
+      cursor: pointer;
+    }
+
+    .submenu div:hover {
+      background: #d0d5d7;
+    }
+
+    /* CONTENT */
+
+
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    /* SECTION TITLE */
+
+    .title {
+      background: #b8d0d4;
+      padding: 12px 30px;
+      border-radius: 30px;
+      display: inline-block;
+      font-size: 26px;
+      color: #184b52;
+      margin-bottom: 20px;
+    }
+
+    /* TABLE */
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th,
+    td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background: #1f5f67;
+      color: white;
+    }
+
+    /* DOWNLOAD BUTTON */
+
+    .download-btn {
+      background: #1f5f67;
+      color: white;
+      padding: 6px 12px;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .download-btn:hover {
+      background: #16464c;
+    }
+
+    /* NOTICE BOARD */
+
+    .notice-box {
+      background: #cfd4d6;
+      height: 300px;
+      padding: 20px;
+    }
+
+    .detail {
+      display: none;
+    }
+
+    .detail.active {
+      display: block;
+    }
+  </style>
+
+  <style>
+    /* ===== GOOGLE TRANSLATE CSS TO HIDE DEFAULT BAR ===== */
+    body {
+      top: 0px !important;
+    }
+
+    .goog-te-banner-frame {
+      display: none !important;
+    }
+
+    .skiptranslate {
+      display: none !important;
+    }
+
+    .goog-tooltip {
+      display: none !important;
+    }
+
+    .goog-tooltip:hover {
+      display: none !important;
+    }
+
+    .goog-text-highlight {
+      background-color: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+  </style>
+
+  <!-- FOOTER & POLICY CSS -->
+  <link href="{{ url_for('static', filename='css/footer.css') }}" rel="stylesheet" />
+  <style>
+    /* Home Page Footer Specific Styles */
+    .home-footer {
+      background-color: #0b3c5d !important;
+      color: #ffffff !important;
+      padding: 40px 0 20px 0 !important;
+      border-top: 5px solid #f5c842; /* Gold strip matching screenshot */
+    }
+    
+    .home-footer .footer-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      padding: 0 50px;
+    }
+
+    .home-footer .footer-left {
+      flex: 0 0 200px;
+    }
+
+    .home-footer .footer-left img {
+      max-width: 160px;
+      height: auto;
+    }
+
+    .home-footer .footer-middle {
+      flex: 1;
+      padding: 0 40px;
+      display: flex;
+      justify-content: center; /* Shift towards center but keep content left-aligned */
+    }
+
+    .home-footer .footer-info-block {
+      max-width: 500px;
+      text-align: left;
+    }
+
+    .home-footer .footer-address {
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    .home-footer .footer-icon {
+      color: #ff3e81; /* Pink icon matching screenshot */
+      margin-right: 12px;
+      font-size: 18px;
+    }
+
+    .home-footer .footer-contact,
+    .home-footer .footer-email {
+      margin-bottom: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+    }
+
+    .home-footer .footer-links {
+      margin-top: 25px;
+    }
+
+    .home-footer .footer-links a {
+      color: #f5c842 !important; /* Yellow links */
+      text-decoration: underline;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 2;
+      transition: opacity 0.3s;
+    }
+
+    .home-footer .footer-links a:hover {
+      opacity: 0.8;
+    }
+
+    .home-footer .footer-map {
+      flex: 0 0 400px;
+      height: 240px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 10px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+    .home-footer .footer-map iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 8px;
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 768px) {
+      .home-footer .footer-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 0 20px;
+      }
+      .home-footer .footer-middle {
+        padding: 30px 0;
+      }
+      .home-footer .footer-info-block {
+        text-align: center;
+      }
+      .home-footer .footer-contact,
+      .home-footer .footer-email {
+        justify-content: center;
+      }
+      .home-footer .footer-map {
+        flex: 0 0 auto;
+        width: 100%;
+        max-width: 400px;
+      }
+    }
+  </style>
+  <style>
+    /* ===== GOOGLE TRANSLATE CSS TO HIDE DEFAULT BAR ===== */
+    body {
+      top: 0px !important;
+    }
+
+    .goog-te-banner-frame {
+      display: none !important;
+    }
+
+    .skiptranslate {
+      display: none !important;
+    }
+
+    .goog-tooltip {
+      display: none !important;
+    }
+
+    .goog-tooltip:hover {
+      display: none !important;
+    }
+
+    .goog-text-highlight {
+      background-color: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+
+    /* ===== GLOBAL ===== */
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      font-family: 'Source Sans 3', 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      background: #ffffff;
+      color: #000;
+      transition: .3s;
+    }
+
+    /* ===== HEADER / FOOTER ===== */
+    /* Removed legacy header/footer override */
+    main {
+      padding: 30px;
+      min-height: 300px;
+    }
+
+    /* ===== UTILITY BAR ===== */
+    .utility-bar {
+      background: linear-gradient(135deg, #0b3c5d, #f4f6f9);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 24px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, .35);
+    }
+
+    .util-left,
+    .util-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* ===== DROPDOWN ===== */
+    .util-dropdown {
+      position: relative;
+    }
+
+    .util-dropdown button {
+      background: rgba(255, 255, 255, .35);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .dropdown-panel {
+      position: absolute;
+      top: 50px;
+      left: 0;
+      min-width: 260px;
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, .92);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, .3);
+      display: none;
+    }
+
+    .dropdown-panel p,
+    .dropdown-panel a {
+      display: block;
+      padding: 10px 14px;
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+
+    .dropdown-panel p:hover,
+    .dropdown-panel a:hover {
+      background: #888;
+      color: #000;
+      cursor: pointer;
+    }
+
+    .dropdown-panel p:active,
+    .dropdown-panel a:active {
+      background: #c1121f;
+      color: #fff;
+    }
+
+    .dropdown-panel a:active,
+    .dropdown-panel p:active {
+      background: #c1121f;
+      color: #fff;
+    }
+
+    /* ===== ACCESSIBILITY ===== */
+    .accessibility span {
+      font-weight: 700;
+      cursor: pointer;
+      padding: 6px 9px;
+      border-radius: 6px;
+    }
+
+    .accessibility span:hover {
+      background: #fff
+    }
+
+    /* ===== ICON BUTTON ===== */
+    .icon-btn {
+      background: rgba(255, 255, 255, .35);
+      border: none;
+      padding: 10px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    /* ===== SEARCH ===== */
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      padding: 8px 14px;
+      border-radius: 30px;
+    }
+
+    .search-box input {
+      border: none;
+      outline: none;
+      margin-left: 6px;
+    }
+
+    /* ===== LOGIN ===== */
+    .login-btn {
+      background: #c1121f;
+      color: #fff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 24px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* ===== ANNOUNCEMENT BAR (Refined) ===== */
+    .news-bar {
+      display: flex;
+      align-items: center;
+      height: 55px;
+      background: #fff;
+      border: 1px solid #c1121f;
+      margin: 20px auto;
+      max-width: 1400px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    /* LEFT RED BOX */
+    .announcement-box {
+      background-color: #c1121f;
+      height: 100%;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ffffff;
+      font-weight: 700;
+      text-transform: capitalize;
+      flex-shrink: 0;
+      z-index: 2;
+    }
+
+    .announcement-box i {
+      font-size: 18px;
+    }
+
+    .announcement-box span {
+      font-size: 16px;
+      letter-spacing: 0.5px;
+    }
+
+    /* MARQUEE AREA */
+    .marquee-wrapper {
+      position: relative;
+      overflow: hidden;
+      flex: 1;
+      height: 100%;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      padding-right: 50px;
+      /* Space for pause button */
+    }
+
+    /* TRACK */
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marquee 25s linear infinite;
+      align-items: center;
+    }
+
+    /* NEWS ITEM */
+    .marquee-track a,
+    .marquee-track span {
+      color: #333;
+      font-size: 15px;
+      text-decoration: none;
+      padding: 0 50px;
+      white-space: nowrap;
+      position: relative;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .marquee-track a:hover,
+    .marquee-track span:hover {
+      color: #c1121f;
+    }
+
+    /* SEPARATOR LINE */
+    .marquee-track a::after,
+    .marquee-track span::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 20px;
+      width: 1.5px;
+      background-color: #ddd;
+    }
+
+    /* PAUSE BUTTON */
+    .pause-btn {
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+      width: 50px;
+      background: #fff;
+      border: none;
+      border-left: 1px solid #eee;
+      color: #c1121f;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
+      transition: background 0.2s;
+    }
+
+    .pause-btn:hover {
+      background: #fdf2f2;
+    }
+
+    .news-bar.paused .marquee-track {
+      animation-play-state: paused;
+    }
+
+    /* CONTINUOUS LOOP */
+    @keyframes marquee {
+      from {
+        transform: translateX(0);
+      }
+
+      to {
+        transform: translateX(-50%);
+      }
+    }
+  </style>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+
+
+  <!-- ================= COMPREHENSIVE DARK MODE ================= -->
+  <style id="global-dark-mode">
+    /* Base Backgrounds and Text */
+    body.dark {
+      background: #121212 !important;
+      color: #e0e0e0 !important;
+    }
+
+    /* Navbar, Header, Footer overrides */
+    body.dark .top-header,
+    body.dark .navbar,
+    body.dark .college-footer,
+    body.dark header,
+    body.dark footer,
+    body.dark .news-bar {
+      background: #2a2a2a !important;
+      border-color: #444 !important;
+    }
+
+    body.dark .announcement-box {
+      background: #8b0c15 !important;
+    }
+
+    body.dark .marquee-wrapper,
+    body.dark .pause-btn {
+      background: #2a2a2a !important;
+      border-left-color: #444 !important;
+    }
+
+    body.dark .marquee-track a,
+    body.dark .marquee-track span {
+      color: #e0e0e0 !important;
+    }
+
+    body.dark .marquee-track a::after,
+    body.dark .marquee-track span::after {
+      background-color: #444 !important;
+    }
+
+    /* Utility Bar */
+    body.dark .utility-bar {
+      background: #1f1f1f !important;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8) !important;
+    }
+
+    body.dark .util-dropdown button,
+    body.dark .icon-btn {
+      background: #333 !important;
+      color: #fff !important;
+    }
+
+    body.dark .dropdown-panel {
+      background: #252525 !important;
+      border: 1px solid #444 !important;
+      color: #e0e0e0 !important;
+    }
+
+    body.dark .dropdown-panel a:hover,
+    body.dark .dropdown-panel p:hover {
+      background: #333 !important;
+      color: #fff !important;
+    }
+
+    /* Search Box */
+    body.dark .search-box {
+      background: #333 !important;
+    }
+
+    body.dark .search-box input {
+      background: #333 !important;
+      color: #fff !important;
+    }
+
+    /* Main Navigation Dropdowns (Bootstrap) */
+    body.dark .dropdown-menu {
+      background-color: #2a2a2a !important;
+      border: 1px solid #444 !important;
+    }
+
+    body.dark .dropdown-item {
+      color: #e0e0e0 !important;
+    }
+
+    body.dark .dropdown-item:hover {
+      background-color: #3b3b3b !important;
+      color: #fff !important;
+    }
+
+    /* Main content areas, cards, sidebars */
+    body.dark .content,
+    body.dark .sidebar,
+    body.dark .section,
+    body.dark .card-inner,
+    body.dark .faculty-card .card-inner,
+    body.dark .submenu {
+      background: #1e1e1e !important;
+      color: #e0e0e0 !important;
+      border-color: #333 !important;
+      box-shadow: none !important;
+    }
+
+    body.dark .main-btn {
+      background: #2a2a2a !important;
+      color: #e0e0e0 !important;
+      border-color: #444 !important;
+    }
+
+    body.dark .main-btn:hover,
+    body.dark .main-btn.active {
+      background: #3b3b3b !important;
+    }
+
+    body.dark .sub-btn {
+      background: #1e1e1e !important;
+      color: #e0e0e0 !important;
+      border-left-color: #555 !important;
+      border-bottom-color: #333 !important;
+    }
+
+    body.dark .sub-btn.active,
+    body.dark .sub-btn.active-item {
+      background: #2a2a2a !important;
+      color: #fff !important;
+      border-left-color: #f4c430 !important;
+    }
+
+    body.dark .sub-btn:hover {
+      background: #2a2a2a !important;
+    }
+
+    /* Tables */
+    body.dark table,
+    body.dark th,
+    body.dark td {
+      border-color: #444 !important;
+    }
+
+    body.dark th {
+      background: #2a2a2a !important;
+      color: #e0e0e0 !important;
+    }
+
+    body.dark tr:nth-child(even) td {
+      background: #222 !important;
+    }
+
+    body.dark tr:hover td {
+      background: #333 !important;
+    }
+
+    /* Titles / Breadcrumbs */
+    body.dark .title,
+    body.dark .dept-title,
+    body.dark .breadcrumb {
+      background: transparent !important;
+      color: #f5c842 !important;
+      border-color: #333 !important;
+    }
+
+    body.dark h1,
+    body.dark h2,
+    body.dark h3,
+    body.dark h4,
+    body.dark p,
+    body.dark span,
+    body.dark a {
+      color: unset;
+      /* Let it inherit unless specifically overridden */
+    }
+
+    /* Cards specific */
+    body.dark .card {
+      background: #2a2a2a !important;
+      border: 1px solid #444 !important;
+    }
+  </style>
+  <!-- ======================================================= -->
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Sans+3:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+  <!-- ===== UTILITY BAR ===== -->
+  <div class="utility-bar">
+    <div class="util-left">
+      <!-- Institute Codes -->
+      <div class="util-dropdown">
+        <button onclick="toggleDrop('codes')">
+          Institute Codes <i class="fa fa-chevron-down"></i>
+        </button>
+        <div class="dropdown-panel" id="codes">
+          <p><b>DTE Code:</b> 2010</p>
+          <p><b>MSBTE:</b> 0019 (1st Shift)</p>
+          <p><b>MSBTE:</b> 9019 (2nd Shift)</p>
+          <p><b>AICTE ID:</b> 1-493166031</p>
+          <p><b>AISHE:</b> S-1785</p>
+        </div>
+      </div>
+      <!-- Social Media -->
+      <div class="util-dropdown">
+        <button onclick="toggleDrop('social')">
+          Social Media <i class="fa fa-chevron-down"></i>
+        </button>
+        <div class="dropdown-panel" id="social">
+          <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
+          <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+          <a href="#"><i class="fab fa-youtube"></i> YouTube</a>
+          <a href="#"><i class="fab fa-x-twitter"></i> X (Twitter)</a>
+          <a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a>
+        </div>
+      </div>
+      <!-- Accessibility -->
+      <div class="accessibility">
+        <span onclick="setFont('decrease')">A-</span>
+        <span onclick="setFont('reset')">A</span>
+        <span onclick="setFont('increase')">A+</span>
+      </div>
+      <!-- Dark Mode -->
+      <button class="icon-btn" onclick="toggleTheme()">
+        <i class="fa fa-circle-half-stroke"></i>
+      </button>
+      <!-- Quick Links -->
+      <div class="util-dropdown">
+        <button onclick="toggleDrop('links')">
+          Quick Links <i class="fa fa-chevron-down"></i>
+        </button>
+        <div class="dropdown-panel" id="links">
+          <a href="https://msbte.ac.in/" target="_blank">MSBTE</a>
+          <a href="https://www.aicte-india.org/" target="_blank">AICTE</a>
+          <a href="https://gpabadmis.in/gpabad_mis/" target="_blank">MIS Portal</a>
+          <a href="https://dte.maharashtra.gov.in/" target="_blank">DTE Maharashtra</a>
+          <a href="https://nptel.ac.in/" target="_blank">NPTEL</a>
+          <a href="https://betacloud.ncs.gov.in/" target="_blank">National Career Service</a>
+        </div>
+      </div>
+    </div>
+    <div class="util-right">
+      <div class="search-box">
+        <i class="fa fa-search"></i>
+        <input data-key="search" placeholder="Search..." type="text" />
+      </div>
+      <!-- Language Tab (ONLY ADDITION) -->
+      <div class="util-dropdown">
+        <button data-key="languageBtn" onclick="toggleDrop('lang')">
+          Language <i class="fa fa-chevron-down"></i>
+        </button>
+        <div class="dropdown-panel" id="lang">
+          <a href="#" onclick="setLanguage('en')">English</a>
+          <a href="#" onclick="setLanguage('mr')">मराठी</a>
+        </div>
+      </div>
+      <button class="login-btn" data-key="login" onclick="window.location.href='/login'">
+        <i class="fa fa-right-to-bracket"></i> Login
+      </button>
+    </div>
+  </div>
+  <header class="top-header">
+    <div class="header-logo">
+      <img alt="College Logo" src="{{ url_for('static', filename='images/logo.jpeg') }}" />
+    </div>
+    <div class="header-title">
+      <h1>Government Polytechnic, Chhatrapati Sambhajinagar</h1>
+      <h2>शासकीय तंत्रनिकेतन, छत्रपती संभाजीनगर</h2>
+      <p>(An Autonomous Institute of Govt. of Maharashtra – Estd. 1955)</p>
+      <p>AICTE Approved – NBA Accredited</p>
+    </div>
+    <div class="header-info">
+      <p class="header-email">
+        📧
+        <a
+          href="/cdn-cgi/l/email-protection#87f7f5eee9e4eef7e6eba9e0f7e6f2f5e6e9e0e6e5e6e3c7e3f3e2eae6efe6f5e6f4eff3f5e6a9e0e8f1a9eee9">
+          <span class="__cf_email__"
+            data-cfemail="ddadafb4b3beb4adbcb1f3baadbca8afbcb3babcbfbcb99db9a9b8b0bcb5bcafbcaeb5a9afbcf3bab2abf3b4b3">[email&#160;protected]</span>
+        </a>
+      </p>
+      <p>📞 +91-240-2353644 (Principal)</p>
+      <p><a href="#">Online GPA</a></p>
+      <p><a href="#">Admission – 2025-26</a></p>
+    </div>
+  </header>
+  <div class="gold-strip"></div>
+  <!-- NAVBAR STARTS HERE -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{{ url_for('home') }}">Home</a>
+      <button class="navbar-toggler" data-bs-target="#navbarSupportedContent" data-bs-toggle="collapse" type="button">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <!-- About Institute -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="{{ url_for('about') }}">About Institute</a>
+            <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item" href="{{ url_for('about') }}"
+                  onclick="sessionStorage.setItem('section','visionmission')">
+                  Vision &amp; Mission
+                </a>
+              </li>
+
+              <li>
+                <a class="dropdown-item" href="{{ url_for('about') }}"
+                  onclick="sessionStorage.setItem('section','milestone')">
+                  Milestones &amp; Honours
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('about') }}"
+                  onclick="sessionStorage.setItem('section','disclosure')">
+                  Rights &amp; Acts
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('about') }}"
+                  onclick="sessionStorage.setItem('section','governance')">
+                  Governance / Committee
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('about') }}"
+                  onclick="sessionStorage.setItem('section','orgchart')">
+                  Organizational Chart
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('about') }}"
+                  onclick="sessionStorage.setItem('section','office')">
+                  Office Administration
+                </a>
+              </li>
+            </ul>
+          </li>
+          <!-- Examination Cell / CDC -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="{{ url_for('exam_cell') }}">Examination Cell / CDC</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="../Exam-Cell/curriculum-development.html">Curriculum Development
+                  Cell</a>
+              </li>
+              <li><a class="dropdown-item" href="{{ url_for('exam_cell') }}">Examination Cell</a></li>
+            </ul>
+          </li>
+                    <!-- Admission -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="#">Admission</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ url_for('first_year_admission') }}">First Year Admission</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('direct_second_year_admission') }}">Direct Second Year Admission</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('higher_classes_admission') }}">Higher Classes Admission</a></li>
+            </ul>
+          </li>
+          <!-- Departments -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="{{ url_for('departments') }}">Departments</a>
+            <ul class="dropdown-menu">
+              <li class="dropend">
+                <a class="dropdown-item dropdown-toggle" href="../404.html">Diploma
+                  Programmes</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='aiml') }}">Artificial Intelligence
+                      &amp;
+                      Machine Learning</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='auto') }}">Automobile
+                      Engineering</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='civil') }}">Civil Engineering</a>
+                  </li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='computer') }}">Computer
+                      Engineering</a>
+                  </li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='ddgm') }}">Dress Designing &amp;
+                      Garment
+                      Management</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='electrical') }}">Electrical
+                      Engineering</a></li>
+                  <li><a class="dropdown-item" href="../404.html">Electronics &amp; Telecommunication
+                      Engineering</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='it') }}">Information Technology
+                      Engineering</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='mechanical') }}">Mechanical
+                      Engineering</a></li>
+                </ul>
+              </li>
+              <li class="dropend">
+                <a class="dropdown-item dropdown-toggle" href="../404.html">Allied
+                  Departments</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='science-humanities') }}">Science and
+                      Humanities</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='applied-mechanics') }}">Applied
+                      Mechanics</a></li>
+                  <li><a class="dropdown-item" href="../404.html">Workshop</a></li>
+                </ul>
+              </li>
+              <li class="dropend">
+                <a class="dropdown-item dropdown-toggle" href="../404.html">Advanced Diploma Programmes</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='mercedes-benz') }}">Mercedes
+                      Benz</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <!-- Student Section -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="{{ url_for('student_section') }}">Student Section</a>
+            <ul class="dropdown-menu">
+
+              <li><a class="dropdown-item"
+                  href="{{ url_for('student_section', section='scholarship') }}">Scholarships</a></li>
+            </ul>
+          </li>
+          <!-- TPO -->
+          <!-- CHANGED: href updated to use ?section= query params instead of #hash -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="{{ url_for('tposection') }}">TPO</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ url_for('tposection', section='profile') }}">Profile</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('tposection', section='recruiters') }}">Our Recruiters</a>
+              </li>
+              <li><a class="dropdown-item" href="{{ url_for('tposection', section='placement') }}">Placement Records</a>
+              </li>
+            </ul>
+          </li>
+          <!-- Facilities -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="{{ url_for('facility') }}">Facilities</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ url_for('facility', section='gymkhana') }}">Gymkhana</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('facility', section='library') }}">Library</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('facility', section='other-facilities') }}">Other
+                  Facilities</a>
+              </li>
+            </ul>
+          </li>
+          <!-- Downloads -->
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('downloads') }}">Downloads</a>
+          </li>
+          <!-- Contact -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="{{ url_for('contact') }}">Contact Us</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- NAVBAR ENDS HERE -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="container">
+
+    <div class="sidebar">
+
+      <div class="main-btn" onclick="showSection('notice')">
+        Admission Notice
+        <span class="arrow">▶</span>
+      </div>
+
+      <div class="main-btn" id="programmebtn" onclick="showSection('programme')">
+        Programme Offered
+        <span class="arrow">▶</span>
+      </div>
+
+      <div class="main-btn" id="admissiondetailsbtn" onclick="openAdmission()">
+        Admission Details
+        <span class="arrow">▼</span>
+      </div>
+
+      <div id="admissionSub" class="submenu">
+        <div class="sub-btn" onclick="showAdmission('details')">Admission Details</div>
+        <div class="sub-btn" onclick="showAdmission('fees')">Fees Structure</div>
+      </div>
+
+      <!-- HOSTEL DROPDOWN ADDED -->
+
+      <div class="main-btn" onclick="openHostel()">
+        Hostel Admission
+        <span class="arrow">▼</span>
+      </div>
+
+      <div id="hostelSub" class="submenu">
+        <div class="sub-btn" onclick="showSection('girls')">Girls Hostel</div>
+        <div class="sub-btn" onclick="showSection('boys')">Boys Hostel</div>
+      </div>
+
+    </div>
+
+    <div class="content">
+
+      <!-- NOTICE -->
+      <div id="notice" class="section active">
+        <div class="title">Admission Notice Board</div>
+        <div class="notice-section" style="padding: 0; background: transparent; box-shadow: none;">
+          <div class="table-wrapper" style="max-height: none; overflow-y: visible;">
+            <table class="notice-table">
+              <thead>
+                <tr>
+                  <th style="width: 15%;">Date</th>
+                  <th style="width: 70%;">Description</th>
+                  <th style="width: 15%;">Download</th>
+                </tr>
+              </thead>
+              <tbody id="admissionNoticeBody">
+                <tr>
+                  <td colspan="3" style="text-align:center;">Loading notices...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROGRAMME OFFERED -->
+
+      <div id="programme" class="section">
+
+        <div class="title">Programme Offered</div>
+
+        <table>
+
+          <tr>
+            <th>Sr.no</th>
+            <th>Programme Name</th>
+            <th>DTE Programme Code</th>
+            <th>Year of Commencement</th>
+            <th>Intake Capacity</th>
+            <th>Participate in CAP</th>
+          </tr>
+
+          <tr>
+            <td>1</td>
+            <td>Civil Engineering</td>
+            <td>-</td>
+            <td>1956</td>
+            <td>120</td>
+            <td>Yes</td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td>Computer Engineering</td>
+            <td>-</td>
+            <td>2008</td>
+            <td>30</td>
+            <td>Yes</td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td>Information Technology</td>
+            <td>-</td>
+            <td>2001</td>
+            <td>60</td>
+            <td>Yes</td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td>Electrical Engineering</td>
+            <td>-</td>
+            <td>1956</td>
+            <td>120</td>
+            <td>Yes</td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td>Electronics & Telecommunication Engineering</td>
+            <td>-</td>
+            <td>2001</td>
+            <td>120</td>
+            <td>Yes</td>
+          </tr>
+
+          <tr>
+            <td>6</td>
+            <td>Automobile Engineering</td>
+            <td>-</td>
+            <td>2008</td>
+            <td>30</td>
+            <td>Yes</td>
+          </tr>
+
+          <tr>
+            <td>7</td>
+            <td>Mechanical Engineering</td>
+            <td>-</td>
+            <td>1956</td>
+            <td>150</td>
+            <td>Yes</td>
+          </tr>
+
+          <tr>
+            <td>8</td>
+            <td>Dress Designing & Garment Manufacturing</td>
+            <td>-</td>
+            <td>1992</td>
+            <td>30</td>
+            <td>Yes</td>
+          </tr>
+
+          <tr>
+            <td>9</td>
+            <td>Artificial Intelligence & Machine Learning</td>
+            <td>-</td>
+            <td>1992</td>
+            <td>30</td>
+            <td>Yes</td>
+          </tr>
+
+          <tr>
+            <td>10</td>
+            <td>Artificial Intelligence & Machine Learning</td>
+            <td>-</td>
+            <td>2021</td>
+            <td>30</td>
+            <td>Yes</td>
+          </tr>
+
+        </table>
+
+      </div>
+
+      <!-- ADMISSION DETAILS -->
+
+      <div id="admissiondetails" class="section">
+
+        <div class="title">Admission Details</div>
+
+        <div id="details" class="detail active">
+
+          <table>
+
+            <tr>
+              <th>Sr No</th>
+              <th>Document Name</th>
+              <th>View</th>
+              <th>Download</th>
+            </tr>
+
+            <tr>
+              <td>1</td>
+              <td>First Year Admitted Students Last Three Years List</td>
+              <td><a href="#">View</a></td>
+              <td><a href="#" class="download-btn">Download</a></td>
+            </tr>
+
+            <tr>
+              <td>2</td>
+              <td>Merit List</td>
+              <td><a href="#">View</a></td>
+              <td><a href="#" class="download-btn">Download</a></td>
+            </tr>
+
+            <tr>
+              <td>3</td>
+              <td>Cut Off List</td>
+              <td><a href="#">View</a></td>
+              <td><a href="#" class="download-btn">Download</a></td>
+            </tr>
+
+            <tr>
+              <td>4</td>
+              <td>Documents Required for Admission</td>
+              <td><a href="#">View</a></td>
+              <td><a href="#" class="download-btn">Download</a></td>
+            </tr>
+
+          </table>
+
+        </div>
+
+        <div id="fees" class="detail">
+
+          <h2>Fees Structure</h2>
+
+          <table>
+
+            <tr>
+              <th>Sr.no</th>
+              <th>Category</th>
+              <th>Govt Fees</th>
+              <th>Non Govt Fees</th>
+              <th>Total Amount</th>
+            </tr>
+
+            <tr>
+              <td>01</td>
+              <td>OPEN/EWS/SEBC</td>
+              <td>3000/-</td>
+              <td>1750/-</td>
+              <td>4750/-</td>
+            </tr>
+
+            <tr>
+              <td>02</td>
+              <td>Minority</td>
+              <td>6000/-</td>
+              <td>1750/-</td>
+              <td>7750/-</td>
+            </tr>
+
+            <tr>
+              <td>03</td>
+              <td>SC/ST/OBC</td>
+              <td>-</td>
+              <td>1750/-</td>
+              <td>1750/-</td>
+            </tr>
+
+          </table>
+
+        </div>
+
+      </div>
+
+      <!-- GIRLS HOSTEL -->
+
+      <div id="girls" class="section">
+        <div class="title">Girls Hostel</div>
+        <p>Girls hostel admission information will appear here.</p>
+
+        <table>
+
+          <tr>
+            <th>Sr No</th>
+            <th>Document Name</th>
+            <th>View</th>
+            <th>Download</th>
+          </tr>
+
+          <tr>
+            <td>1</td>
+            <td>Merit List</td>
+            <td><a href="#">View</a></td>
+            <td><a href="#" class="download-btn">Download</a></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td>Allotment List 1</td>
+            <td><a href="Semester 5.pdf">View</a></td>
+            <td><a href="Semester 5.pdf" class="download-btn">Download</a></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td>Allotment List 2</td>
+            <td>
+              <a href="allotment list 2.zip">View</a>
+            </td>
+
+            <td>
+              <a href="allotment list 2.zip" class="download-btn">Download</a>
+            </td>
+          </tr>
+
+
+          <tr>
+            <td>4</td>
+            <td>Documents Required for Hostel Admission</td>
+            <td><a href="Required details.zip">View</a></td>
+            <td><a href="Required details.zip" class="download-btn">Download</a></td>
+          </tr>
+
+        </table>
+
+      </div>
+
+      <!-- BOYS HOSTEL -->
+
+      <div id="boys" class="section">
+        <div class="title">Boys Hostel</div>
+        <p>Boys hostel admission information will appear here.</p>
+
+        <table>
+
+          <tr>
+            <th>Sr No</th>
+            <th>Document Name</th>
+            <th>View</th>
+            <th>Download</th>
+          </tr>
+
+          <tr>
+            <td>1</td>
+            <td>Merit List</td>
+            <td><a href="#">View</a></td>
+            <td><a href="#" class="download-btn">Download</a></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td>Allotment List 1</td>
+            <td><a href="#">View</a></td>
+            <td><a href="#" class="download-btn">Download</a></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td>Allotment List 2</td>
+            <td><a href="#">View</a></td>
+            <td><a href="#" class="download-btn">Download</a></td>
+          </tr>
+
+
+          <tr>
+            <td>4</td>
+            <td>Documents Required for Hostel Admission</td>
+            <td><a href="#">View</a></td>
+            <td><a href="#" class="download-btn">Download</a></td>
+          </tr>
+
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+  <script>
+
+    function showSection(id) {
+      let sections = document.querySelectorAll(".section");
+      sections.forEach(sec => sec.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+
+      // Remove active highlight from all sidebar buttons
+      document.querySelectorAll(".main-btn").forEach(btn => btn.classList.remove("sidebar-active"));
+
+      // Highlight the matching sidebar button
+      if (id === "notice") {
+        document.querySelectorAll(".main-btn")[0].classList.add("sidebar-active");
+        fetchAdmissionNotices();
+      } else if (id === "programme") {
+        document.getElementById("programmebtn").classList.add("sidebar-active");
+      } else if (id === "admissiondetails") {
+        document.getElementById("admissiondetailsbtn").classList.add("sidebar-active");
+      }
+    }
+
+    function openAdmission() {
+      showSection("admissiondetails");
+      let menu = document.getElementById("admissionSub");
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
+    }
+
+    function showAdmission(id) {
+      let sections = document.querySelectorAll(".detail");
+      sections.forEach(sec => sec.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+    }
+
+    function openHostel() {
+      let menu = document.getElementById("hostelSub");
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
+    }
+
+    // READ URL PARAM ON PAGE LOAD AND OPEN THE CORRECT SECTION
+    window.addEventListener("DOMContentLoaded", function () {
+      const params = new URLSearchParams(window.location.search);
+      const section = params.get("section");
+
+      if (section === "programme") {
+        showSection("programme");
+      } else if (section === "admissiondetails") {
+        showSection("admissiondetails");
+        document.getElementById("admissionSub").style.display = "block";
+      } else if (section === "notices") {
+        showSection("notice");
+      } else {
+        showSection("notice");
+      }
+    });
+
+    async function fetchAdmissionNotices() {
+      const noticeBody = document.getElementById("admissionNoticeBody");
+      if (!noticeBody) return;
+
+      try {
+        const response = await fetch('/api/announcements?category=notice_admission');
+        const result = await response.json();
+        const notices = result.data || [];
+
+        noticeBody.innerHTML = "";
+        if (notices.length === 0) {
+          noticeBody.innerHTML = "<tr><td colspan='3' style='text-align:center;'>No notices found.</td></tr>";
+          return;
+        }
+
+        notices.forEach(notice => {
+          const dateStr = notice.published_at || notice.date;
+          const publishDate = new Date(dateStr);
+          const row = document.createElement("tr");
+
+          const dateTd = document.createElement("td");
+          dateTd.textContent = publishDate.toLocaleDateString("en-GB");
+
+          const descTd = document.createElement("td");
+          descTd.className = "description";
+          descTd.textContent = notice.title || notice.description;
+
+          const downloadTd = document.createElement("td");
+          const pdfUrl = notice.file_url || notice.pdf;
+          if (pdfUrl) {
+            downloadTd.innerHTML = `<a href="${pdfUrl}" download class="download-btn"><i class="fa-solid fa-file-pdf"></i> PDF</a>`;
+          } else {
+            downloadTd.innerHTML = "-";
+          }
+
+          row.appendChild(dateTd);
+          row.appendChild(descTd);
+          row.appendChild(downloadTd);
+          noticeBody.appendChild(row);
+        });
+      } catch (error) {
+        console.error("Error fetching notices:", error);
+        noticeBody.innerHTML = "<tr><td colspan='3' style='text-align:center; color:red;'>Failed to load notices.</td></tr>";
+      }
+    }
+
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div id="google_translate_element" style="display:none;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'en,mr', autoDisplay: false }, 'google_translate_element');
+    }
+  </script>
+  <script type="text/javascript"
+    src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+
+  <!-- HEADER & NAVBAR REQUIRED JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- ================= PERSISTENT DARK MODE LOGIC ================= -->
+  <script id="global-dark-mode-js">
+    // Function called by the theme toggle button
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+      // Save preference to localStorage
+      const isDark = document.body.classList.contains('dark');
+      localStorage.setItem('site_theme', isDark ? 'dark' : 'light');
+    }
+
+    // Apply immediately on load to prevent white flash
+    (function () {
+      const savedTheme = localStorage.getItem('site_theme');
+      // If explicitly set to dark, add class
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark');
+      }
+    })();
+  </script>
+
+  <!-- FOOTER -->
+  <footer class="college-footer home-footer">
+    <div class="footer-container">
+      <!-- LEFT -->
+      <div class="footer-left">
+        <a href="{{ url_for('home') }}">
+          <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="College Logo">
+        </a>
+      </div>
+
+      <!-- MIDDLE -->
+      <div class="footer-middle">
+        <div class="footer-info-block">
+          <p class="footer-address">
+            Government Polytechnic, Osmanpura,<br>
+            Chh. Sambhajinagar – 431005,<br>
+            Maharashtra State, India
+          </p>
+
+          <p class="footer-contact">
+            <i class="fa-solid fa-phone footer-icon"></i> +91-240-2353644 (Principal)<br>
+            <i class="fa-solid fa-phone footer-icon"></i> +91-240-2334724
+          </p>
+
+          <p class="footer-email">
+            <i class="fa-solid fa-envelope footer-icon"></i> principal.gpaurangabad@dtemaharashtra.gov.in
+          </p>
+
+          <p class="footer-links">
+            <a href="{{ url_for('privacy') }}">Website Privacy Policy</a><br>
+            <a href="{{ url_for('contact') }}">Contact Us</a>
+          </p>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="footer-map">
+        <iframe src="https://www.google.com/maps?q=Government+Polytechnic+Aurangabad&output=embed" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <p style="text-align:center; font-size:14px; margin-top:20px; color:rgba(255,255,255,0.8);">
+      &copy; 2024 Government Polytechnic, Chhatrapati Sambhajinagar. All Rights Reserved.
+    </p>
+  </footer>
+</body>
+
+</html>

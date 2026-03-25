@@ -1,0 +1,83 @@
+.systems-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin-top: 20px;
+}
+
+/* Common Card Style */
+.system-card {
+  height: 260px;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease;
+}
+
+.system-card:hover {
+  transform: translateY(-6px);
+}
+
+/* Dark overlay for readability */
+.system-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+/* Card Content */
+.card-content {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  color: white;
+  z-index: 2;
+}
+
+.card-content h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.card-subtitle {
+  font-size: 14px;
+  margin: 6px 0 12px;
+  opacity: 0.9;
+}
+
+/* Action Link */
+.card-action {
+  display: inline-block;
+  font-size: 14px;
+  color: #ffd166;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.card-action:hover {
+  text-decoration: underline;
+}
+
+/* ===========================
+   Background Images
+=========================== */
+
+.grievance-system {
+  background-image: url("../images/Online Grevience System.png");
+
+}
+
+.industry-activities {
+  background-image: url("../images/Industry related activites.png");
+
+}
+
+.alumni-system {
+  background-image: url("../images/Alumini information.png");
+
+}

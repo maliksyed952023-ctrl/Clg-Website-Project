@@ -1,0 +1,483 @@
+/* ==========================================
+   RESET & VARIABLES
+   ========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #0f4c5c;
+    --primary-dark: #0a3442;
+    --gold: #d4af37;
+    --white: #ffffff;
+    --black: #1a1a1a;
+    --gray: #555555;
+    --light-bg: #f5f5f5;
+}
+
+body {
+    font-family: 'Source Sans Pro', sans-serif;
+    margin: 0;
+    color: var(--black);
+    background: var(--light-bg);
+}
+
+/* ==========================================
+   HEADER & NAV
+   ========================================== */
+header {
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    color: var(--white);
+    padding: 20px;
+    text-align: center;
+}
+
+header h2 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+nav {
+    background: var(--white);
+    padding: 15px;
+    text-align: center;
+    border-bottom: 3px solid var(--gold);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+main {
+    padding: 0;
+}
+
+/* ==========================================
+   MAIN SLIDER
+   ========================================== */
+.main-slider {
+    position: relative;
+    width: 100%;
+    height: 85vh;
+    min-height: 600px;
+    background: var(--black);
+    overflow: hidden;
+}
+
+.slider-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* ==========================================
+   SLIDES
+   ========================================== */
+.slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slide-active {
+    opacity: 1;
+    z-index: 2;
+}
+
+.slide-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+
+/* ==========================================
+   SLIDE 1: INFO OVERLAY
+   ========================================== */
+.info-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 52, 66, 0.88);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    z-index: 1;
+}
+
+.info-box {
+    max-width: 1000px;
+    width: 100%;
+}
+
+.info-box h1 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 3.5rem;
+    color: var(--gold);
+    margin-bottom: 30px;
+    font-weight: 700;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.info-content {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 35px;
+    border-radius: 8px;
+    border-left: 5px solid var(--gold);
+}
+
+.info-content p {
+    color: var(--white);
+    font-size: 1.15rem;
+    line-height: 1.8;
+    margin-bottom: 16px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.info-content p:last-child {
+    margin-bottom: 0;
+}
+
+.info-content strong {
+    color: var(--gold);
+    font-weight: 700;
+}
+
+/* ==========================================
+   SLIDE 5: DIRECTORS
+   ========================================== */
+.slide-directors {
+    background: linear-gradient(135deg, #0a3442 0%, #0f4c5c 50%, #1a5f73 100%);
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+.directors-container {
+    width: 100%;
+    max-width: 1400px;
+    min-width: 320px;
+    padding: 40px 30px;
+    text-align: center;
+}
+
+.directors-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 3rem;
+    color: var(--gold);
+    margin-bottom: 10px;
+    font-weight: 700;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.directors-subtitle {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 50px;
+    font-weight: 300;
+    font-style: italic;
+}
+
+/* DIRECTORS ROW - CSS GRID (GUARANTEED ALL 4 VISIBLE) */
+.directors-row {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(250px, 1fr));
+    gap: 20px;
+    max-width: 1280px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 0 20px;
+}
+
+.director-box {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 25px 15px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    border-top: 4px solid var(--gold);
+    display: block;
+    width: 100%;
+}
+
+.director-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 35px rgba(212, 175, 55, 0.4);
+}
+
+.director-photo {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 20px;
+}
+
+.director-photo img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid var(--gold);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(135deg, #e8e8e8, #d0d0d0);
+}
+
+.director-num {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 40px;
+    height: 40px;
+    background: var(--gold);
+    color: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border: 3px solid var(--white);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.director-box h3 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.25rem;
+    color: var(--primary);
+    margin-bottom: 10px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.director-box .position {
+    font-size: 1.05rem;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.director-box .dept {
+    font-size: 0.95rem;
+    color: var(--gray);
+    line-height: 1.4;
+}
+
+/* ==========================================
+   NAVIGATION BUTTONS
+   ========================================== */
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(212, 175, 55, 0.9);
+    color: var(--white);
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.nav-btn:hover {
+    background: var(--gold);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.prev-btn {
+    left: 30px;
+}
+
+.next-btn {
+    right: 30px;
+}
+
+/* ==========================================
+   DOTS NAVIGATION
+   ========================================== */
+.dots-container {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 10;
+}
+
+.dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    border: 2px solid var(--white);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dot:hover {
+    background: rgba(255, 255, 255, 0.8);
+    transform: scale(1.2);
+}
+
+.dot-active {
+    background: var(--gold);
+    border-color: var(--gold);
+    box-shadow: 0 0 10px var(--gold);
+}
+
+/* ==========================================
+   FOOTER
+   ========================================== */
+footer {
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    color: var(--white);
+    padding: 20px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+   ========================================== */
+
+/* Large Screens */
+@media (min-width: 1400px) {
+    .directors-row {
+        gap: 25px;
+        max-width: 1350px;
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Medium-Large Screens */
+@media (max-width: 1350px) and (min-width: 1100px) {
+    .directors-row {
+        gap: 18px;
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Medium Screens - 2x2 Grid */
+@media (max-width: 1099px) and (min-width: 768px) {
+    .directors-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        max-width: 700px;
+    }
+}
+
+/* Tablets */
+@media (max-width: 900px) {
+    .main-slider {
+        height: 75vh;
+        min-height: 550px;
+    }
+    
+    .info-box h1 {
+        font-size: 2.5rem;
+    }
+    
+    .info-content {
+        padding: 25px;
+    }
+    
+    .info-content p {
+        font-size: 1.05rem;
+    }
+    
+    .directors-title {
+        font-size: 2.3rem;
+    }
+    
+    .directors-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .directors-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        max-width: 600px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    header h2 {
+        font-size: 1.3rem;
+    }
+    
+    nav {
+        font-size: 0.9rem;
+        padding: 12px;
+    }
+    
+    .main-slider {
+        height: 70vh;
+        min-height: 500px;
+    }
+    
+    .info-overlay {
+        padding: 20px;
+    }
+    
+    .info-box h1 {
+        font-size: 2rem;
+    }
+    
+    .info-content {
+        padding: 20px;
+    }
+    
+    .info-content p {
+        font-size: 0.95rem;
+    }
+    
+    .directors-container {
+        padding: 30px 15px;
+    }
+    
+    .directors-title {
+        font-size: 1.8rem;
+    }
+    
+    .directors-subtitle {
+        font-size: 1rem;
+        margin-bottom: 35px;
+    }
+    
+    .directors-row {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        max-width: 350px;
+    }
+    
+    .nav-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+    
+    .prev-btn {
+        left: 15px;
+    }
+    
+    .next-btn {
+        right: 15px;
+    }
+}

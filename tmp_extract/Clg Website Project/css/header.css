@@ -1,0 +1,192 @@
+/* ===== HEADER (PRATHMESH & CHETAN) ===== */
+
+.top-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(to right, #0b3c5d, #1b5f8a);
+    color: white;
+
+    padding: 20px 30px;     /* height control */
+    gap: 20px;
+
+    flex-wrap: wrap;       /* 🔥 MOST IMPORTANT */
+}
+
+
+/* Logo */
+.header-logo {
+    flex-shrink: 0;
+}
+.header-logo img {
+    width: 155px;
+    height: auto;
+}
+
+/* Center Title */
+.header-title {
+    text-align: center;
+    flex: 1;
+    max-width: 60%;
+}
+
+.header-title h1 {
+    font-family: "Inter", sans-serif;
+    font-size: 2.6rem;          /* big but controlled */
+    font-weight: 600;           /* NOT mota */
+    line-height: 1.1;
+    white-space: nowrap;        /* 🔥 ONE LINE FIX */
+    text-align: center;
+    margin-bottom: 2px;
+    margin-left: -40px;
+}
+
+
+.header-title h2 {
+    font-family: "Noto Sans Devanagari", sans-serif;
+
+    font-size: 1.45rem;
+    font-weight: 500;
+    margin-top: 4px;
+}
+
+.header-title p {
+    font-family: "Inter", sans-serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #f5c842;     /* GOLD */
+    margin-top: 6px;
+    letter-spacing: 0.4px;
+}
+
+/* Right Info */
+.header-info {
+    text-align: right;
+    font-size: 0.9rem;
+    margin-top: 48px;
+
+    min-width: 280px;   /* 👈 CONTACT KE LIYE SPACE */
+    max-width: 320px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.header-info p {
+    margin-bottom: 6px;
+    line-height: 1.4;
+}
+
+/* EMAIL FIX – IMPORTANT */
+.header-info p {
+    margin-bottom: 6px;
+    line-height: 1.4;
+    width: 100%;
+    
+}
+
+/* ONLY EMAIL LINK CONTROL */
+.header-info a {
+    display: block;              /* 👈 forces new line */
+    width: 100%;                 /* 👈 full width le */
+    color: #cce6ff;
+    text-decoration: none;
+    
+
+    white-space: nowrap;            /* 👈 ONE LINE ONLY */
+    overflow: hidden;
+    text-overflow: ellipsis;   /* 👈 clean wrap */
+}
+
+.header-info a:hover {
+    text-decoration: underline;
+}
+
+.header-info a:hover {
+    text-decoration: underline;
+}
+
+/* Golden Line */
+.gold-strip {
+    height: 5px;
+    background-color: #d4af37;
+}
+/* Navbar base */
+.navbar {
+    background: #1f3c88;
+    padding: 0;
+}
+
+.menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.menu > li {
+    position: relative;
+}
+
+.menu > li > a {
+    display: block;
+    padding: 12px 18px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.menu > li > a:hover {
+    background: #0b5ed7;
+}
+
+/* Submenu */
+.submenu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #fff;
+    min-width: 220px;
+    display: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    z-index: 999;
+}
+
+.submenu li a {
+    display: block;
+    padding: 10px 15px;
+    color: #000;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.submenu li a:hover {
+    background: #f0f0f0;
+}
+
+/* Show dropdown */
+.dropdown:hover > .submenu {
+    display: block;
+}
+.navbar {
+  display: flex;
+  justify-content: center;
+}
+
+.menu {
+  max-width: 1200px;
+  width: 100%;
+}
+.header-info a,
+.header-info p {
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+

@@ -1,0 +1,220 @@
+/* =========================================================
+   GLOBAL SIDEBAR CSS - Uniform Design Based on Department Page
+   ========================================================= */
+
+/* ─── PAGE LAYOUT CONTAINER ─── */
+/* Ensure sidebar + content sit side by side without overlap */
+.container {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 24px;
+  padding: 20px;
+  max-width: 1300px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ─── SIDEBAR ─── */
+.sidebar {
+  width: 300px !important;
+  min-width: 260px;
+  max-width: 320px;
+  flex-shrink: 0;
+  /* NO overflow: hidden — it clips nested submenus */
+  background: transparent;
+  font-family: 'Source Sans 3', 'Segoe UI', Arial, sans-serif;
+  font-size: 14px;
+}
+
+/* ─── MAIN BUTTON ─── */
+.sidebar .main-btn,
+.main-btn {
+  background-color: #1A545D;
+  color: #ffffff !important;
+  padding: 13px 18px;
+  font-size: 15px;
+  font-weight: 600;
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  margin-top: 2px; /* small gap between each main-btn row */
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  transition: background 0.2s ease;
+  user-select: none;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  box-sizing: border-box;
+}
+
+.sidebar .main-btn:first-child,
+.sidebar > .main-btn:first-child {
+  margin-top: 0;
+  border-radius: 6px 6px 0 0;
+}
+
+.sidebar .main-btn.last-item,
+.sidebar > .main-btn:last-of-type {
+  border-bottom: none;
+  border-radius: 0 0 6px 6px;
+}
+
+.sidebar .main-btn:hover,
+.main-btn:hover {
+  background-color: #154248;
+}
+
+/* ─── SUBMENU CONTAINER ─── */
+.sidebar .submenu,
+.submenu {
+  display: none; /* Controlled by JS — do NOT use overflow:hidden on parent */
+  background-color: #ffffff;
+  border-left: 3px solid #1A545D;
+  border-right: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* ─── SUB BUTTON ─── */
+.sidebar .sub-btn,
+.sub-btn {
+  background-color: #ffffff;
+  color: #333333 !important;
+  padding: 10px 14px 10px 22px;
+  font-size: 14px;
+  font-weight: 500;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  user-select: none;
+  border-left: none;
+}
+
+.sidebar .sub-btn:last-child,
+.sub-btn:last-child {
+  border-bottom: none;
+}
+
+.sidebar .sub-btn:hover,
+.sub-btn:hover {
+  background-color: #f0f7f8;
+}
+
+/* ─── ACTIVE STATES ─── */
+.sidebar .sub-btn.active-item,
+.sub-btn.active-item {
+  background-color: #d8eef0 !important;
+  color: #1A545D !important;
+  font-weight: 600;
+  border-left: 3px solid #1A545D;
+  padding-left: 19px;
+}
+
+/* ─── ARROWS ─── */
+.sidebar .arrow,
+.arrow {
+  font-size: 11px;
+  margin-left: 8px;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+  color: rgba(255,255,255,0.85);
+}
+
+.sub-btn .arrow {
+  color: #666;
+}
+
+/* ─── CONTENT AREA ─── */
+.content {
+  flex: 1;
+  background: #ffffff;
+  padding: 28px 32px;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  border: 1px solid #f0f0f0;
+  min-width: 0; /* prevents overflow past container */
+  box-sizing: border-box;
+}
+
+.section {
+  display: none;
+}
+
+.section.active {
+  display: block;
+}
+
+/* ─── CONTENT HEADINGS (match departments page style) ─── */
+.content h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 22px;
+  color: #1A545D;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e8a530;
+  display: inline-block;
+  font-weight: 700;
+}
+
+.content h3 {
+  font-size: 17px;
+  color: #1A545D;
+  margin-top: 22px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.content p {
+  font-size: 15px;
+  color: #444;
+  line-height: 1.7;
+  margin-bottom: 10px;
+}
+
+.content ul, .content ol {
+  padding-left: 22px;
+  margin-bottom: 14px;
+}
+
+.content li {
+  font-size: 15px;
+  color: #444;
+  line-height: 1.8;
+  margin-bottom: 6px;
+}
+
+/* ─── BREADCRUMB ─── */
+.breadcrumb {
+  background: #ffffff;
+  padding: 10px 20px;
+  font-size: 14px;
+  color: #666;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.breadcrumb a {
+  color: #1A545D;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column !important;
+    padding: 12px;
+  }
+
+  .sidebar {
+    width: 100% !important;
+    max-width: 100%;
+  }
+
+  .content {
+    padding: 20px;
+  }
+}

@@ -1,0 +1,2005 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard — College Portal</title>
+    <link rel="apple-touch-icon" sizes="180x180"
+        href="{{ url_for('static', filename='favicon/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32"
+        href="{{ url_for('static', filename='favicon/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16"
+        href="{{ url_for('static', filename='favicon/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='favicon/site.webmanifest') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/favicon.ico') }}">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --navy: #0b1120;
+            --navy2: #131d30;
+            --navy3: #1a2640;
+            --navy4: #1f2e47;
+            --gold: #e8b84b;
+            --gold2: #f5d07a;
+            --white: #f0ece3;
+            --muted: #8a93a8;
+            --border: rgba(255, 255, 255, 0.07);
+            --success: #4caf88;
+            --danger: #e05c5c;
+            --info: #4b7fe8;
+            --radius: 12px;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--navy);
+            color: var(--white);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* ── SIDEBAR ── */
+        .sidebar {
+            width: 240px;
+            height: 100vh;
+            /* fixed height = viewport */
+            background: var(--navy2);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            overflow: hidden;
+            /* outer never scrolls */
+        }
+
+        /* logo — fixed at top, never scrolls */
+        .sidebar-logo {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 24px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-logo .icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--gold), var(--gold2));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-logo .name {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 1.2;
+        }
+
+        .sidebar-logo .role {
+            font-size: 10px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        /* scrollable middle zone */
+        .sidebar-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 0 8px;
+        }
+
+        .sidebar-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        /* footer — fixed at bottom, never scrolls */
+        .sidebar-footer {
+            flex-shrink: 0;
+            padding: 12px;
+            border-top: 1px solid var(--border);
+            background: var(--navy2);
+        }
+
+        .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .admin-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--gold), #c89030);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--navy);
+            flex-shrink: 0;
+        }
+
+        .admin-name {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .admin-email {
+            font-size: 11px;
+            color: var(--muted);
+            word-break: break-all;
+        }
+
+        /* View Website button */
+        .view-web-btn {
+            width: 100%;
+            background: rgba(75, 127, 232, 0.12);
+            border: 1px solid rgba(75, 127, 232, 0.3);
+            color: #7aaaf5;
+            border-radius: 8px;
+            padding: 9px;
+            font-size: 13px;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            transition: background 0.15s;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .view-web-btn:hover {
+            background: rgba(75, 127, 232, 0.22);
+        }
+
+        /* Sign out button */
+        .logout-btn {
+            width: 100%;
+            background: rgba(224, 92, 92, 0.1);
+            border: 1px solid rgba(224, 92, 92, 0.2);
+            color: #f08080;
+            border-radius: 8px;
+            padding: 9px;
+            font-size: 13px;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            transition: background 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .logout-btn:hover {
+            background: rgba(224, 92, 92, 0.2);
+        }
+
+        .nav-section {
+            padding: 0 12px;
+            margin-bottom: 8px;
+        }
+
+        .nav-label {
+            font-size: 10px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 0 8px;
+            margin-bottom: 6px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--muted);
+            transition: background 0.15s, color 0.15s;
+            user-select: none;
+        }
+
+        .nav-item:hover {
+            background: var(--navy3);
+            color: var(--white);
+        }
+
+        .nav-item.active {
+            background: rgba(232, 184, 75, 0.12);
+            color: var(--gold);
+        }
+
+        .nav-item .nav-icon {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: var(--gold);
+            color: var(--navy);
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 7px;
+        }
+
+        /* ── MAIN ── */
+        .main {
+            margin-left: 240px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            background: var(--navy2);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .page-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .page-sub {
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 1px;
+        }
+
+        .add-btn {
+            background: linear-gradient(135deg, var(--gold), #d4a438);
+            color: var(--navy);
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-family: 'Syne', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .add-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(232, 184, 75, 0.3);
+        }
+
+        .content {
+            padding: 32px;
+            flex: 1;
+        }
+
+        /* ── STATS ── */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--navy2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .stat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .stat-icon.gold {
+            background: rgba(232, 184, 75, 0.12);
+        }
+
+        .stat-icon.blue {
+            background: rgba(75, 127, 232, 0.12);
+        }
+
+        .stat-icon.green {
+            background: rgba(76, 175, 136, 0.12);
+        }
+
+        .stat-num {
+            font-family: 'Syne', sans-serif;
+            font-size: 26px;
+            font-weight: 800;
+        }
+
+        .stat-lbl {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        /* ── FILTER TABS ── */
+        .filter-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 7px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            background: transparent;
+            transition: all 0.15s;
+        }
+
+        .filter-tab:hover {
+            color: var(--white);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .filter-tab.active {
+            background: rgba(232, 184, 75, 0.12);
+            color: var(--gold);
+            border-color: rgba(232, 184, 75, 0.3);
+        }
+
+        .search-input {
+            margin-left: auto;
+            background: var(--navy2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 7px 14px;
+            color: var(--white);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            outline: none;
+            width: 220px;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: rgba(232, 184, 75, 0.4);
+        }
+
+        .search-input::placeholder {
+            color: #4a5568;
+        }
+
+        /* ── TABLE ── */
+        .table-wrap {
+            background: var(--navy2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: var(--navy3);
+        }
+
+        th {
+            padding: 13px 20px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 14px 20px;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .td-title {
+            font-weight: 500;
+            max-width: 260px;
+        }
+
+        .td-title small {
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 2px;
+            font-weight: 400;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 260px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: capitalize;
+            margin: 2px 2px 2px 0;
+        }
+
+        .badge-notice {
+            background: rgba(76, 175, 136, 0.12);
+            color: #4caf88;
+            border: 1px solid rgba(76, 175, 136, 0.25);
+        }
+
+        .badge-tender {
+            background: rgba(75, 127, 232, 0.12);
+            color: #7aaaf5;
+            border: 1px solid rgba(75, 127, 232, 0.25);
+        }
+
+        .badge-news_event {
+            background: rgba(232, 184, 75, 0.12);
+            color: var(--gold);
+            border: 1px solid rgba(232, 184, 75, 0.25);
+        }
+
+        .badge-notice_tpo,
+        .badge-notice_admission,
+        .badge-notice_examination,
+        .badge-notice_department,
+        .badge-notice_student {
+            background: rgba(180, 120, 232, 0.12);
+            color: #c084f5;
+            border: 1px solid rgba(180, 120, 232, 0.25);
+        }
+
+        .badge-notice_dept_aiml,
+        .badge-notice_dept_auto,
+        .badge-notice_dept_civil,
+        .badge-notice_dept_computer,
+        .badge-notice_dept_ddgm,
+        .badge-notice_dept_electrical,
+        .badge-notice_dept_entc,
+        .badge-notice_dept_it,
+        .badge-notice_dept_mechanical,
+        .badge-notice_dept_science_humanities,
+        .badge-notice_dept_applied_mechanics,
+        .badge-notice_dept_workshop,
+        .badge-notice_dept_mercedes_benz {
+            background: rgba(75, 175, 136, 0.1);
+            color: #5bcfaa;
+            border: 1px solid rgba(75, 175, 136, 0.25);
+        }
+
+        .status-dot {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+        }
+
+        .status-dot::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .status-dot.active::before {
+            background: var(--success);
+            box-shadow: 0 0 6px var(--success);
+        }
+
+        .status-dot.inactive::before {
+            background: var(--muted);
+        }
+
+        .actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .act-btn {
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.15s;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .act-edit {
+            background: rgba(75, 127, 232, 0.1);
+            color: #7aaaf5;
+            border-color: rgba(75, 127, 232, 0.25);
+        }
+
+        .act-edit:hover {
+            background: rgba(75, 127, 232, 0.2);
+        }
+
+        .act-del {
+            background: rgba(224, 92, 92, 0.1);
+            color: #f08080;
+            border-color: rgba(224, 92, 92, 0.2);
+        }
+
+        .act-del:hover {
+            background: rgba(224, 92, 92, 0.2);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--muted);
+        }
+
+        .empty-state .big {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+        }
+
+        /* ── MODAL ── */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .overlay.open {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--navy2);
+            border: 1px solid rgba(232, 184, 75, 0.15);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 520px;
+            padding: 36px;
+            animation: modalIn 0.25s ease both;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.96)
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1)
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 28px;
+        }
+
+        .modal-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            background: var(--navy3);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.15s;
+        }
+
+        .close-btn:hover {
+            color: var(--white);
+        }
+
+        .form-field {
+            margin-bottom: 18px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 7px;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            background: var(--navy3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius);
+            padding: 11px 14px;
+            color: var(--white);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            border-color: rgba(232, 184, 75, 0.4);
+        }
+
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: #4a5568;
+        }
+
+        .form-select {
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .form-select option {
+            background: var(--navy2);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--navy3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius);
+            padding: 11px 14px;
+        }
+
+        .toggle-label {
+            font-size: 14px;
+        }
+
+        .toggle {
+            position: relative;
+            width: 40px;
+            height: 22px;
+            cursor: pointer;
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            inset: 0;
+            background: var(--navy4);
+            border-radius: 11px;
+            transition: background 0.2s;
+        }
+
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            left: 3px;
+            top: 3px;
+            background: var(--muted);
+            border-radius: 50%;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .toggle input:checked+.toggle-slider {
+            background: rgba(76, 175, 136, 0.25);
+        }
+
+        .toggle input:checked+.toggle-slider::before {
+            transform: translateX(18px);
+            background: var(--success);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 24px;
+        }
+
+        .btn-cancel {
+            background: var(--navy3);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            transition: color 0.15s;
+        }
+
+        .btn-cancel:hover {
+            color: var(--white);
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, var(--gold), #d4a438);
+            color: var(--navy);
+            border: none;
+            border-radius: 10px;
+            padding: 10px 24px;
+            font-family: 'Syne', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(232, 184, 75, 0.3);
+        }
+
+        .btn-save:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ── TOAST ── */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--navy2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 999;
+            transform: translateY(80px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            max-width: 320px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-left: 3px solid var(--success);
+        }
+
+        .toast.error {
+            border-left: 3px solid var(--danger);
+        }
+
+        /* ── DELETE CONFIRM ── */
+        .confirm-modal {
+            background: var(--navy2);
+            border: 1px solid rgba(224, 92, 92, 0.2);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 380px;
+            padding: 32px;
+            text-align: center;
+            animation: modalIn 0.25s ease both;
+        }
+
+        .confirm-icon {
+            font-size: 40px;
+            margin-bottom: 16px;
+        }
+
+        .confirm-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .confirm-sub {
+            font-size: 14px;
+            color: var(--muted);
+            margin-bottom: 24px;
+        }
+
+        .confirm-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .btn-confirm-del {
+            background: rgba(224, 92, 92, 0.15);
+            border: 1px solid rgba(224, 92, 92, 0.3);
+            color: #f08080;
+            border-radius: 10px;
+            padding: 10px 24px;
+            font-size: 14px;
+            font-family: 'Syne', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .btn-confirm-del:hover {
+            background: rgba(224, 92, 92, 0.25);
+        }
+
+        .loading-row td {
+            text-align: center;
+            padding: 40px;
+            color: var(--muted);
+        }
+
+        /* ── CATEGORY CHECKBOXES ── */
+        .cat-check {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 6px 8px;
+            border-radius: 6px;
+            transition: background 0.15s;
+        }
+
+        .cat-check:hover {
+            background: var(--navy4);
+        }
+
+        .cat-check input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--gold);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .cat-group-label {
+            font-size: 10px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 2px;
+            padding: 0 8px;
+        }
+
+        /* "All Dept" master checkbox highlight */
+        .cat-check.master-dept {
+            background: rgba(75, 175, 136, 0.06);
+            border: 1px solid rgba(75, 175, 136, 0.15);
+            border-radius: 6px;
+        }
+
+        .cat-check.master-dept:hover {
+            background: rgba(75, 175, 136, 0.12);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ── SIDEBAR ── -->
+    <aside class="sidebar">
+
+        <!-- LOGO — never scrolls -->
+        <div class="sidebar-logo">
+            <div class="icon">🎓</div>
+            <div>
+                <div class="name">College Portal</div>
+                <div class="role">Admin Panel</div>
+            </div>
+        </div>
+
+        <!-- SCROLLABLE NAV -->
+        <div class="sidebar-scroll">
+
+            <div class="nav-section">
+                <div class="nav-label">General</div>
+                <div class="nav-item active" onclick="switchTab('all', this)">
+                    <span class="nav-icon">📋</span> All
+                </div>
+                <div class="nav-item" onclick="switchTab('news_event', this)">
+                    <span class="nav-icon">📰</span> News & Events
+                    <span class="nav-badge" id="badge-news">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('tender', this)">
+                    <span class="nav-icon">📄</span> Tenders
+                    <span class="nav-badge" id="badge-tender">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice', this)">
+                    <span class="nav-icon">📢</span> General Notice
+                    <span class="nav-badge" id="badge-notice">0</span>
+                </div>
+            </div>
+
+            <div class="nav-section" style="margin-top:8px">
+                <div class="nav-label">Notice Boards</div>
+                <div class="nav-item" onclick="switchTab('notice_tpo', this)">
+                    <span class="nav-icon">🏢</span> TPO
+                    <span class="nav-badge" id="badge-tpo">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_admission', this)">
+                    <span class="nav-icon">🎓</span> Admission
+                    <span class="nav-badge" id="badge-admission">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_examination', this)">
+                    <span class="nav-icon">📝</span> Examination Cell
+                    <span class="nav-badge" id="badge-examination">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_student', this)">
+                    <span class="nav-icon">👨‍🎓</span> Student Section
+                    <span class="nav-badge" id="badge-student">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_department', this)">
+                    <span class="nav-icon">🏫</span> All Departments
+                    <span class="nav-badge" id="badge-department">0</span>
+                </div>
+            </div>
+
+            <div class="nav-section" style="margin-top:8px">
+                <div class="nav-label">Dept. Notice Boards</div>
+                <div class="nav-item" onclick="switchTab('notice_dept_aiml', this)">
+                    <span class="nav-icon">🤖</span> AIML
+                    <span class="nav-badge" id="badge-dept-aiml">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_dept_auto', this)">
+                    <span class="nav-icon">🚗</span> Automobile
+                    <span class="nav-badge" id="badge-dept-auto">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_dept_civil', this)">
+                    <span class="nav-icon">🏗️</span> Civil
+                    <span class="nav-badge" id="badge-dept-civil">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_dept_computer', this)">
+                    <span class="nav-icon">💻</span> Computer
+                    <span class="nav-badge" id="badge-dept-computer">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_dept_ddgm', this)">
+                    <span class="nav-icon">👗</span> DDGM
+                    <span class="nav-badge" id="badge-dept-ddgm">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_dept_electrical', this)">
+                    <span class="nav-icon">⚡</span> Electrical
+                    <span class="nav-badge" id="badge-dept-electrical">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_dept_entc', this)">
+                    <span class="nav-icon">📡</span> ENTC
+                    <span class="nav-badge" id="badge-dept-entc">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_dept_it', this)">
+                    <span class="nav-icon">🖥️</span> IT
+                    <span class="nav-badge" id="badge-dept-it">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_dept_mechanical', this)">
+                    <span class="nav-icon">⚙️</span> Mechanical
+                    <span class="nav-badge" id="badge-dept-mechanical">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_dept_science_humanities', this)">
+                    <span class="nav-icon">🔬</span> Science & Humanities
+                    <span class="nav-badge" id="badge-dept-sci">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_dept_applied_mechanics', this)">
+                    <span class="nav-icon">📐</span> Applied Mechanics
+                    <span class="nav-badge" id="badge-dept-apm">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_dept_workshop', this)">
+                    <span class="nav-icon">🔧</span> Workshop
+                    <span class="nav-badge" id="badge-dept-workshop">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_dept_mercedes_benz', this)">
+                    <span class="nav-icon">🚘</span> Mercedes-Benz
+                    <span class="nav-badge" id="badge-dept-mb">0</span>
+                </div>
+            </div>
+
+            <div class="nav-section" style="margin-top:12px; border-top:1px solid var(--border); padding-top:16px;">
+                <div class="nav-label">Workflow</div>
+                <div class="nav-item" id="pendingNavItem" onclick="showPendingView(this)">
+                    <span class="nav-icon">⏳</span> Pending Tasks <span class="nav-badge" id="badge-pending"
+                        style="background:var(--danger); color:white;">0</span>
+                </div>
+            </div>
+
+        </div><!-- end sidebar-scroll -->
+
+        <!-- FOOTER — always visible at bottom -->
+        <div class="sidebar-footer">
+            <div class="admin-info">
+                <div class="admin-avatar" id="avatarInitial">A</div>
+                <div>
+                    <div class="admin-name">Administrator</div>
+                    <div class="admin-email" id="adminEmailDisplay"><a href="/cdn-cgi/l/email-protection"
+                            class="__cf_email__"
+                            data-cfemail="2b4a4f4642456b484447474e4c4e054e4f5e">[email&#160;protected]</a></div>
+                </div>
+            </div>
+            <!-- View Website button -->
+            <button class="view-web-btn" onclick="window.open('/', '_blank')">
+                🌐 &nbsp;View Website
+            </button>
+            <!-- Sign Out button -->
+            <button class="logout-btn" onclick="handleLogout()">
+                ⎋ &nbsp;Sign Out
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- ── MAIN ── -->
+    <main class="main">
+        <div class="topbar">
+            <div>
+                <div class="page-title" id="pageTitle">All Announcements</div>
+                <div class="page-sub" id="pageSub">Manage notices, tenders and news</div>
+            </div>
+            <button class="add-btn" onclick="openAddModal()">＋ &nbsp;Add New</button>
+        </div>
+
+        <div class="content" id="announcementsView">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon gold">📢</div>
+                    <div>
+                        <div class="stat-num" id="stat-notice">—</div>
+                        <div class="stat-lbl">Notices</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon blue">📄</div>
+                    <div>
+                        <div class="stat-num" id="stat-tender">—</div>
+                        <div class="stat-lbl">Tenders</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green">📰</div>
+                    <div>
+                        <div class="stat-num" id="stat-news">—</div>
+                        <div class="stat-lbl">News & Events</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter + Search -->
+            <div class="filter-row">
+                <button class="filter-tab active" onclick="filterData('all', this)">All</button>
+                <button class="filter-tab" onclick="filterData('notice', this)">Notices</button>
+                <button class="filter-tab" onclick="filterData('tender', this)">Tenders</button>
+                <button class="filter-tab" onclick="filterData('news_event', this)">News & Events</button>
+                <input class="search-input" type="text" placeholder="🔍  Search…" oninput="handleSearch(this.value)">
+            </div>
+
+            <!-- Table -->
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Categories</th>
+                            <th>Status</th>
+                            <th>Published</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr class="loading-row">
+                            <td colspan="5">Loading…</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ── PENDING VIEW ── -->
+        <div class="content" id="pendingView" style="display:none">
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Request Details</th>
+                            <th>Categories</th>
+                            <th>Submitted By</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pendingTableBody">
+                        <tr class="loading-row">
+                            <td colspan="5">Loading pending requests…</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- ── ADD / EDIT MODAL ── -->
+    <div class="overlay" id="formOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">Add Announcement</div>
+                <button class="close-btn" onclick="closeModal()">✕</button>
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Title *</label>
+                <input class="form-input" type="text" id="fTitle" placeholder="e.g. Exam Schedule 2025">
+            </div>
+
+            <!-- ── CATEGORIES CHECKBOXES ── -->
+            <div class="form-field">
+                <label class="form-label">Categories * (select one or more)</label>
+                <div id="fCategories"
+                    style="background:var(--navy3); border:1px solid rgba(255,255,255,0.08); border-radius:var(--radius); padding:14px 16px; display:flex; flex-direction:column; gap:6px;">
+
+                    <div class="cat-group-label">── General ──</div>
+                    <label class="cat-check"><input type="checkbox" value="news_event"> 📰 News &amp; Event</label>
+                    <label class="cat-check"><input type="checkbox" value="tender"> 📄 Tender / Quotation</label>
+                    <label class="cat-check"><input type="checkbox" value="notice"> 📢 General Notice</label>
+
+                    <div class="cat-group-label" style="margin-top:8px;">── Notice Boards ──</div>
+                    <label class="cat-check"><input type="checkbox" value="notice_tpo"> 🏢 Notice Board — TPO</label>
+                    <label class="cat-check"><input type="checkbox" value="notice_admission"> 🎓 Notice Board —
+                        Admission</label>
+                    <label class="cat-check"><input type="checkbox" value="notice_examination"> 📝 Notice Board —
+                        Examination Cell</label>
+                    <label class="cat-check"><input type="checkbox" value="notice_student"> 👨‍🎓 Notice Board — Student
+                        Section</label>
+
+                    <div class="cat-group-label" style="margin-top:8px;">── Department Notice Boards ──</div>
+
+                    <!-- MASTER "All Departments" checkbox -->
+                    <label class="cat-check master-dept" id="allDeptLabel">
+                        <input type="checkbox" value="notice_department" id="allDeptCheck"
+                            onchange="handleAllDeptToggle(this)">
+                        🏫 All Departments (shows on every dept. page)
+                    </label>
+
+                    <!-- Individual department checkboxes -->
+                    <label class="cat-check dept-item"><input type="checkbox" value="notice_dept_aiml" class="dept-cb">
+                        🤖 Dept — AI &amp; Machine Learning</label>
+                    <label class="cat-check dept-item"><input type="checkbox" value="notice_dept_auto" class="dept-cb">
+                        🚗 Dept — Automobile Engineering</label>
+                    <label class="cat-check dept-item"><input type="checkbox" value="notice_dept_civil" class="dept-cb">
+                        🏗️ Dept — Civil Engineering</label>
+                    <label class="cat-check dept-item"><input type="checkbox" value="notice_dept_computer"
+                            class="dept-cb"> 💻 Dept — Computer Engineering</label>
+                    <label class="cat-check dept-item"><input type="checkbox" value="notice_dept_ddgm" class="dept-cb">
+                        👗 Dept — Dress Designing (DDGM)</label>
+                    <label class="cat-check dept-item"><input type="checkbox" value="notice_dept_electrical"
+                            class="dept-cb"> ⚡ Dept — Electrical Engineering</label>
+                    <label class="cat-check dept-item"><input type="checkbox" value="notice_dept_entc" class="dept-cb">
+                        📡 Dept — Electronics &amp; Telecom</label>
+                    <label class="cat-check dept-item"><input type="checkbox" value="notice_dept_it" class="dept-cb">
+                        🖥️ Dept — Information Technology</label>
+                    <label class="cat-check dept-item"><input type="checkbox" value="notice_dept_mechanical"
+                            class="dept-cb"> ⚙️ Dept — Mechanical Engineering</label>
+                    <label class="cat-check dept-item"><input type="checkbox" value="notice_dept_science_humanities"
+                            class="dept-cb"> 🔬 Dept — Science &amp; Humanities</label>
+                    <label class="cat-check dept-item"><input type="checkbox" value="notice_dept_applied_mechanics"
+                            class="dept-cb"> 📐 Dept — Applied Mechanics</label>
+                    <label class="cat-check dept-item"><input type="checkbox" value="notice_dept_workshop"
+                            class="dept-cb"> 🔧 Dept — Workshop</label>
+                    <label class="cat-check dept-item"><input type="checkbox" value="notice_dept_mercedes_benz"
+                            class="dept-cb"> 🚘 Dept — Mercedes-Benz</label>
+                </div>
+            </div>
+            <!-- ── END CATEGORIES ── -->
+
+            <div class="form-field">
+                <label class="form-label">Description</label>
+                <textarea class="form-textarea" id="fDesc" placeholder="Brief description…"></textarea>
+            </div>
+
+            <!-- ── FILE UPLOAD ── -->
+            <div class="form-field">
+                <label class="form-label">File (PDF only)</label>
+                <input type="file" id="fFileInput" accept=".pdf" style="display:none" onchange="handleFileSelect(this)">
+                <input class="form-input" type="text" id="fFileUrl" placeholder="No file chosen" readonly
+                    style="border-radius:12px 12px 0 0; border-bottom:none; cursor:default; font-size:13px; color:var(--muted)">
+                <div style="display:flex; gap:0">
+                    <button type="button" id="filePickerBtn" onclick="document.getElementById('fFileInput').click()"
+                        style="flex:1; background:var(--navy4); border:1px solid rgba(255,255,255,0.08); border-top:none; border-radius:0 0 0 12px; padding:10px 14px; color:var(--white); font-family:'DM Sans',sans-serif; font-size:13px; cursor:pointer; text-align:left; transition:background 0.15s;"
+                        onmouseover="this.style.background='#243350'" onmouseout="this.style.background='var(--navy4)'">
+                        📁 &nbsp;Choose from device
+                    </button>
+                    <button type="button" onclick="clearFile()"
+                        style="background:rgba(224,92,92,0.1); border:1px solid rgba(224,92,92,0.15); border-top:none; border-left:none; border-radius:0 0 12px 0; padding:10px 14px; color:#f08080; font-size:13px; font-family:'DM Sans',sans-serif; cursor:pointer; transition:background 0.15s;"
+                        onmouseover="this.style.background='rgba(224,92,92,0.2)'"
+                        onmouseout="this.style.background='rgba(224,92,92,0.1)'">
+                        ✕ Clear
+                    </button>
+                </div>
+                <div id="uploadProgress" style="display:none; margin-top:8px;">
+                    <div style="background:var(--navy3); border-radius:4px; height:4px; overflow:hidden;">
+                        <div id="progressBar"
+                            style="height:100%; background:var(--gold); width:0%; transition:width 0.3s; border-radius:4px;">
+                        </div>
+                    </div>
+                    <div id="progressText" style="font-size:11px; color:var(--muted); margin-top:4px;">Uploading…</div>
+                </div>
+            </div>
+            <!-- ── END FILE UPLOAD ── -->
+
+            <div class="form-field">
+                <label class="form-label">Expires On</label>
+                <input class="form-input" type="date" id="fExpires">
+            </div>
+
+            <div class="form-field">
+                <div class="toggle-row">
+                    <span class="toggle-label">Published / Active</span>
+                    <label class="toggle">
+                        <input type="checkbox" id="fActive" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+                <button class="btn-save" id="saveBtn" onclick="saveRecord()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── DELETE CONFIRM MODAL ── -->
+    <div class="overlay" id="deleteOverlay">
+        <div class="confirm-modal">
+            <div class="confirm-icon">🗑️</div>
+            <div class="confirm-title">Delete this record?</div>
+            <div class="confirm-sub">This will mark the record as inactive. You can restore it later.</div>
+            <div class="confirm-actions">
+                <button class="btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+                <button class="btn-confirm-del" onclick="confirmDelete()">Yes, Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── TOAST ── -->
+    <div class="toast" id="toast"></div>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script>
+        const API = '/api';
+
+        let allData = [];
+        let filteredData = [];
+        let currentFilter = 'all';
+        let editingId = null;
+        let deletingId = null;
+        let uploadedFileUrl = null;
+
+        // All individual dept categories
+        const DEPT_CATEGORIES = [
+            'notice_dept_aiml', 'notice_dept_auto', 'notice_dept_civil',
+            'notice_dept_computer', 'notice_dept_ddgm', 'notice_dept_electrical',
+            'notice_dept_entc', 'notice_dept_it', 'notice_dept_mechanical',
+            'notice_dept_science_humanities', 'notice_dept_applied_mechanics',
+            'notice_dept_workshop', 'notice_dept_mercedes_benz'
+        ];
+
+        // ── AUTH GUARD ──
+        const token = localStorage.getItem('admin_token');
+        if (!token) window.location.href = '/login';
+
+        const adminEmail = localStorage.getItem('admin_email') || 'admin@college.edu';
+        document.getElementById('adminEmailDisplay').textContent = adminEmail;
+        document.getElementById('avatarInitial').textContent = adminEmail[0].toUpperCase();
+
+        // ── FETCH ALL ──
+        async function fetchAll() {
+            try {
+                const res = await fetch(`${API}/announcements`);
+                const json = await res.json();
+                allData = json.data || [];
+                updateStats();
+                fetchPendingCount(); // Fetch count for badge
+                applyFilter(currentFilter);
+            } catch (e) {
+                showToast('Failed to load data. Is Flask running?', 'error');
+                document.getElementById('tableBody').innerHTML =
+                    `<tr class="loading-row"><td colspan="5">⚠️ Could not connect to server</td></tr>`;
+            }
+        }
+
+        // ── STATS ──
+        function updateStats() {
+            const count = cat => allData.filter(r => {
+                const cats = r.categories || (r.category ? [r.category] : []);
+                return cats.includes(cat);
+            }).length;
+
+            document.getElementById('stat-notice').textContent = count('notice');
+            document.getElementById('stat-tender').textContent = count('tender');
+            document.getElementById('stat-news').textContent = count('news_event');
+
+            document.getElementById('badge-notice').textContent = count('notice');
+            document.getElementById('badge-tender').textContent = count('tender');
+            document.getElementById('badge-news').textContent = count('news_event');
+            document.getElementById('badge-tpo').textContent = count('notice_tpo');
+            document.getElementById('badge-admission').textContent = count('notice_admission');
+            document.getElementById('badge-examination').textContent = count('notice_examination');
+            document.getElementById('badge-department').textContent = count('notice_department');
+            document.getElementById('badge-student').textContent = count('notice_student');
+            document.getElementById('badge-dept-aiml').textContent = count('notice_dept_aiml');
+            document.getElementById('badge-dept-auto').textContent = count('notice_dept_auto');
+            document.getElementById('badge-dept-civil').textContent = count('notice_dept_civil');
+            document.getElementById('badge-dept-computer').textContent = count('notice_dept_computer');
+            document.getElementById('badge-dept-ddgm').textContent = count('notice_dept_ddgm');
+            document.getElementById('badge-dept-electrical').textContent = count('notice_dept_electrical');
+            document.getElementById('badge-dept-entc').textContent = count('notice_dept_entc');
+            document.getElementById('badge-dept-it').textContent = count('notice_dept_it');
+            document.getElementById('badge-dept-mechanical').textContent = count('notice_dept_mechanical');
+            document.getElementById('badge-dept-sci').textContent = count('notice_dept_science_humanities');
+            document.getElementById('badge-dept-apm').textContent = count('notice_dept_applied_mechanics');
+            document.getElementById('badge-dept-workshop').textContent = count('notice_dept_workshop');
+            document.getElementById('badge-dept-mb').textContent = count('notice_dept_mercedes_benz');
+        }
+
+        // ── PENDING REQUESTS LOGIC ──
+        async function fetchPendingCount() {
+            try {
+                const res = await fetch(`${API}/pending?status=pending`);
+                const json = await res.json();
+                document.getElementById('badge-pending').textContent = (json.data || []).length;
+            } catch (e) { }
+        }
+
+        async function showPendingView(el) {
+            // UI state
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('announcementsView').style.display = 'none';
+            document.getElementById('pendingView').style.display = 'block';
+            document.getElementById('pageTitle').textContent = 'Pending Approval Requests';
+            document.getElementById('pageSub').textContent = 'Review and approve/reject staff submissions';
+
+            // Fetch
+            const tbody = document.getElementById('pendingTableBody');
+            tbody.innerHTML = '<tr class="loading-row"><td colspan="5">Loading…</td></tr>';
+
+            try {
+                const res = await fetch(`${API}/pending?status=pending`);
+                const json = await res.json();
+                const data = json.data || [];
+                renderPendingTable(data);
+            } catch (e) {
+                tbody.innerHTML = '<tr><td colspan="5">Error loading requests</td></tr>';
+            }
+        }
+
+        function renderPendingTable(data) {
+            const tbody = document.getElementById('pendingTableBody');
+            if (!data.length) {
+                tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="big">✅</div><p>No pending requests.</p></div></td></tr>';
+                return;
+            }
+            tbody.innerHTML = data.map(r => `
+                <tr>
+                    <td class="td-title">
+                        ${escHtml(r.title)}
+                        <small>${escHtml(r.description || 'No description')}</small>
+                        ${r.file_url ? `<a href="${r.file_url}" target="_blank" style="color:var(--gold); font-size:12px; text-decoration:none; display:block; margin-top:4px;">📎 View attached PDF</a>` : ''}
+                    </td>
+                    <td>${renderBadges(r.categories || [r.category])}</td>
+                    <td><span style="font-size:12px; color:var(--muted)">${escHtml(r.submitted_by)}</span></td>
+                    <td>${formatDate(r.created_at)}</td>
+                    <td>
+                        <div class="actions">
+                            <button class="act-btn act-edit" style="background:rgba(76,175,136,0.1); color:#4caf88; border-color:rgba(76,175,136,0.2);" onclick="approveRequest('${r.id}')">Approve</button>
+                            <button class="act-btn act-del" onclick="rejectRequest('${r.id}')">Reject</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function approveRequest(id) {
+            if (!confirm('Approve and publish this record?')) return;
+            try {
+                const res = await fetch(`${API}/pending/${id}/approve`, { method: 'POST' });
+                if (res.ok) {
+                    showToast('Approved successfully!');
+                    showPendingView(document.getElementById('pendingNavItem'));
+                    fetchAll(); // Refresh admin stats
+                }
+            } catch (e) { showToast('Approval failed', 'error'); }
+        }
+
+        async function rejectRequest(id) {
+            const note = prompt('Reason for rejection (optional):');
+            if (note === null) return;
+            try {
+                const res = await fetch(`${API}/pending/${id}/reject`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ note })
+                });
+                if (res.ok) {
+                    showToast('Request rejected.');
+                    showPendingView(document.getElementById('pendingNavItem'));
+                }
+            } catch (e) { showToast('Rejection failed', 'error'); }
+        }
+
+        // ── PENDING REQUESTS LOGIC ──
+        async function fetchPendingCount() {
+            try {
+                const res = await fetch(`${API}/pending?status=pending`);
+                const json = await res.json();
+                document.getElementById('badge-pending').textContent = (json.data || []).length;
+            } catch (e) { }
+        }
+
+        async function showPendingView(el) {
+            // UI state
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('announcementsView').style.display = 'none';
+            document.getElementById('pendingView').style.display = 'block';
+            document.getElementById('pageTitle').textContent = 'Pending Approval Requests';
+            document.getElementById('pageSub').textContent = 'Review and approve/reject staff submissions';
+
+            // Fetch
+            const tbody = document.getElementById('pendingTableBody');
+            tbody.innerHTML = '<tr class="loading-row"><td colspan="5">Loading…</td></tr>';
+
+            try {
+                const res = await fetch(`${API}/pending?status=pending`);
+                const json = await res.json();
+                const data = json.data || [];
+                renderPendingTable(data);
+            } catch (e) {
+                tbody.innerHTML = '<tr><td colspan="5">Error loading requests</td></tr>';
+            }
+        }
+
+        function renderPendingTable(data) {
+            const tbody = document.getElementById('pendingTableBody');
+            if (!data.length) {
+                tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="big">✅</div><p>No pending requests.</p></div></td></tr>';
+                return;
+            }
+            tbody.innerHTML = data.map(r => `
+                <tr>
+                    <td class="td-title">
+                        ${escHtml(r.title)}
+                        <small>${escHtml(r.description || 'No description')}</small>
+                        ${r.file_url ? `<a href="${r.file_url}" target="_blank" style="color:var(--gold); font-size:12px; text-decoration:none; display:block; margin-top:4px;">📎 View attached PDF</a>` : ''}
+                    </td>
+                    <td>${renderBadges(r.categories || [r.category])}</td>
+                    <td><span style="font-size:12px; color:var(--muted)">${escHtml(r.submitted_by)}</span></td>
+                    <td>${formatDate(r.created_at)}</td>
+                    <td>
+                        <div class="actions">
+                            <button class="act-btn act-edit" style="background:rgba(76,175,136,0.1); color:#4caf88; border-color:rgba(76,175,136,0.2);" onclick="approveRequest('${r.id}')">Approve</button>
+                            <button class="act-btn act-del" onclick="rejectRequest('${r.id}')">Reject</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function approveRequest(id) {
+            if (!confirm('Approve and publish this record?')) return;
+            try {
+                const res = await fetch(`${API}/pending/${id}/approve`, { method: 'POST' });
+                if (res.ok) {
+                    showToast('Approved successfully!');
+                    showPendingView(document.getElementById('pendingNavItem'));
+                    fetchAll(); // Refresh admin stats
+                }
+            } catch (e) { showToast('Approval failed', 'error'); }
+        }
+
+        async function rejectRequest(id) {
+            const note = prompt('Reason for rejection (optional):');
+            if (note === null) return;
+            try {
+                const res = await fetch(`${API}/pending/${id}/reject`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ note })
+                });
+                if (res.ok) {
+                    showToast('Request rejected.');
+                    showPendingView(document.getElementById('pendingNavItem'));
+                }
+            } catch (e) { showToast('Rejection failed', 'error'); }
+        }
+
+        // ── FILTER ──
+        function applyFilter(cat) {
+            currentFilter = cat;
+            if (cat === 'all') {
+                filteredData = [...allData];
+            } else {
+                filteredData = allData.filter(r => {
+                    const cats = r.categories || (r.category ? [r.category] : []);
+                    return cats.includes(cat);
+                });
+            }
+            renderTable(filteredData);
+        }
+
+        function filterData(cat, el) {
+            document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            applyFilter(cat);
+        }
+
+        function handleSearch(q) {
+            const base = currentFilter === 'all' ? allData : allData.filter(r => {
+                const cats = r.categories || (r.category ? [r.category] : []);
+                return cats.includes(currentFilter);
+            });
+            const lower = q.toLowerCase();
+            filteredData = base.filter(r =>
+                r.title?.toLowerCase().includes(lower) ||
+                r.description?.toLowerCase().includes(lower)
+            );
+            renderTable(filteredData);
+        }
+
+        // ── SIDEBAR TABS ──
+        function switchTab(cat, el) {
+            document.getElementById('announcementsView').style.display = 'block';
+            document.getElementById('pendingView').style.display = 'none';
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+            const titles = {
+                all: 'All Announcements',
+                news_event: 'News & Events',
+                tender: 'Tenders & Quotations',
+                notice: 'General Notices',
+                notice_tpo: 'Notice Board — TPO',
+                notice_admission: 'Notice Board — Admission',
+                notice_examination: 'Notice Board — Examination Cell',
+                notice_department: 'Notice Board — All Departments',
+                notice_student: 'Notice Board — Student Section',
+                notice_dept_aiml: 'Notice Board — AI & ML Dept',
+                notice_dept_auto: 'Notice Board — Automobile Dept',
+                notice_dept_civil: 'Notice Board — Civil Dept',
+                notice_dept_computer: 'Notice Board — Computer Dept',
+                notice_dept_ddgm: 'Notice Board — DDGM Dept',
+                notice_dept_electrical: 'Notice Board — Electrical Dept',
+                notice_dept_entc: 'Notice Board — ENTC Dept',
+                notice_dept_it: 'Notice Board — IT Dept',
+                notice_dept_mechanical: 'Notice Board — Mechanical Dept',
+                notice_dept_science_humanities: 'Notice Board — Science & Humanities',
+                notice_dept_applied_mechanics: 'Notice Board — Applied Mechanics',
+                notice_dept_workshop: 'Notice Board — Workshop Dept',
+                notice_dept_mercedes_benz: 'Notice Board — Mercedes-Benz',
+            };
+            document.getElementById('pageTitle').textContent = titles[cat] || 'Announcements';
+            document.querySelectorAll('.filter-tab').forEach((t, i) => {
+                const cats = ['all', 'notice', 'tender', 'news_event'];
+                t.classList.toggle('active', cats[i] === cat);
+            });
+            applyFilter(cat);
+        }
+
+        // ── ALL DEPT MASTER TOGGLE ──────────────────────────────────────────────
+        // When admin checks "All Departments", it only saves notice_department.
+        // The Flask backend automatically serves this notice to all dept pages.
+        // Individual dept checkboxes are disabled while "All Departments" is checked.
+        function handleAllDeptToggle(masterCb) {
+            const deptCbs = document.querySelectorAll('.dept-cb');
+            if (masterCb.checked) {
+                // Uncheck and disable all individual dept checkboxes
+                deptCbs.forEach(cb => {
+                    cb.checked = false;
+                    cb.disabled = true;
+                    cb.closest('.cat-check').style.opacity = '0.4';
+                });
+            } else {
+                // Re-enable individual dept checkboxes
+                deptCbs.forEach(cb => {
+                    cb.disabled = false;
+                    cb.closest('.cat-check').style.opacity = '1';
+                });
+            }
+        }
+
+        // ── CATEGORY HELPERS ──
+        function getSelectedCategories() {
+            return [...document.querySelectorAll('#fCategories input[type="checkbox"]:checked')]
+                .map(cb => cb.value);
+        }
+
+        function setSelectedCategories(cats = []) {
+            // First clear all
+            clearCategories();
+
+            // Check boxes for each saved category
+            document.querySelectorAll('#fCategories input[type="checkbox"]').forEach(cb => {
+                if (cats.includes(cb.value)) cb.checked = true;
+            });
+
+            // If notice_department is among them, trigger the master toggle logic
+            const masterCb = document.getElementById('allDeptCheck');
+            if (cats.includes('notice_department')) {
+                masterCb.checked = true;
+                handleAllDeptToggle(masterCb);
+            }
+        }
+
+        function clearCategories() {
+            const masterCb = document.getElementById('allDeptCheck');
+            masterCb.checked = false;
+            // Re-enable individual checkboxes first
+            document.querySelectorAll('.dept-cb').forEach(cb => {
+                cb.disabled = false;
+                cb.checked = false;
+                cb.closest('.cat-check').style.opacity = '1';
+            });
+            // Clear everything else
+            document.querySelectorAll('#fCategories input[type="checkbox"]').forEach(cb => {
+                cb.checked = false;
+            });
+        }
+
+        // ── RENDER BADGES ──
+        function renderBadges(cats) {
+            if (!cats || cats.length === 0) return '<span style="color:var(--muted);font-size:12px;">—</span>';
+            const catLabel = {
+                notice: 'Notice',
+                tender: 'Tender',
+                news_event: 'News & Event',
+                notice_tpo: 'TPO',
+                notice_admission: 'Admission',
+                notice_examination: 'Exam Cell',
+                notice_department: 'All Depts',
+                notice_student: 'Student',
+                notice_dept_aiml: 'AIML',
+                notice_dept_auto: 'Auto',
+                notice_dept_civil: 'Civil',
+                notice_dept_computer: 'Computer',
+                notice_dept_ddgm: 'DDGM',
+                notice_dept_electrical: 'Electrical',
+                notice_dept_entc: 'ENTC',
+                notice_dept_it: 'IT',
+                notice_dept_mechanical: 'Mechanical',
+                notice_dept_science_humanities: 'Sci & Hum',
+                notice_dept_applied_mechanics: 'Appl. Mech',
+                notice_dept_workshop: 'Workshop',
+                notice_dept_mercedes_benz: 'Mercedes',
+            };
+            return cats.map(c =>
+                `<span class="badge badge-${c}">${catLabel[c] || c}</span>`
+            ).join('');
+        }
+
+        // ── RENDER TABLE ──
+        function renderTable(data) {
+            const tbody = document.getElementById('tableBody');
+            if (!data.length) {
+                tbody.innerHTML = `<tr><td colspan="5">
+                    <div class="empty-state">
+                        <div class="big">📭</div>
+                        <p>No records found. Click <strong>Add New</strong> to create one.</p>
+                    </div></td></tr>`;
+                return;
+            }
+            tbody.innerHTML = data.map(r => {
+                const cats = r.categories || (r.category ? [r.category] : []);
+                return `
+                <tr>
+                    <td class="td-title">
+                        ${escHtml(r.title)}
+                        <small>${escHtml(r.description || '—')}</small>
+                    </td>
+                    <td>${renderBadges(cats)}</td>
+                    <td><span class="status-dot ${r.is_active ? 'active' : 'inactive'}">${r.is_active ? 'Active' : 'Inactive'}</span></td>
+                    <td>${formatDate(r.published_at)}</td>
+                    <td>
+                        <div class="actions">
+                            <button class="act-btn act-edit" onclick="openEditModal('${r.id}')">Edit</button>
+                            <button class="act-btn act-del"  onclick="openDeleteModal('${r.id}')">Delete</button>
+                        </div>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        // ── ADD MODAL ──
+        function openAddModal() {
+            editingId = null;
+            document.getElementById('modalTitle').textContent = 'Add Announcement';
+            clearForm();
+            document.getElementById('formOverlay').classList.add('open');
+        }
+
+        // ── EDIT MODAL ──
+        function openEditModal(id) {
+            const rec = allData.find(r => r.id === id);
+            if (!rec) return;
+            editingId = id;
+            document.getElementById('modalTitle').textContent = 'Edit Announcement';
+            document.getElementById('fTitle').value = rec.title || '';
+            document.getElementById('fDesc').value = rec.description || '';
+            document.getElementById('fExpires').value = rec.expires_at ? rec.expires_at.split('T')[0] : '';
+            document.getElementById('fActive').checked = rec.is_active !== false;
+            uploadedFileUrl = rec.file_url || null;
+            document.getElementById('fFileUrl').value = rec.file_url || '';
+            document.getElementById('filePickerBtn').textContent = rec.file_url
+                ? `📎 ${rec.file_url.split('/').pop()}`
+                : '📁 \u00a0Choose from device';
+            const cats = rec.categories || (rec.category ? [rec.category] : []);
+            setSelectedCategories(cats);
+            document.getElementById('formOverlay').classList.add('open');
+        }
+
+        function closeModal() {
+            document.getElementById('formOverlay').classList.remove('open');
+            editingId = null;
+        }
+
+        function clearForm() {
+            ['fTitle', 'fDesc', 'fExpires'].forEach(id => document.getElementById(id).value = '');
+            clearCategories();
+            document.getElementById('fActive').checked = true;
+            clearFile();
+        }
+
+        // ── FILE UPLOAD ──
+        async function handleFileSelect(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            document.getElementById('fFileUrl').value = `📎 ${file.name}`;
+            document.getElementById('filePickerBtn').textContent = `📎 ${file.name}`;
+
+            const progressWrap = document.getElementById('uploadProgress');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            progressWrap.style.display = 'block';
+            progressBar.style.width = '30%';
+            progressText.textContent = 'Uploading…';
+            progressText.style.color = 'var(--muted)';
+
+            try {
+                const formData = new FormData();
+                formData.append('file', file);
+                const selectedCats = getSelectedCategories();
+                formData.append('category', selectedCats[0] || 'general');
+
+                progressBar.style.width = '60%';
+
+                const res = await fetch(`${API}/announcements/upload`, { method: 'POST', body: formData });
+                const data = await res.json();
+
+                if (!res.ok) throw new Error(data.error || 'Upload failed');
+
+                uploadedFileUrl = data.file_url;
+                document.getElementById('fFileUrl').value = uploadedFileUrl;
+
+                progressBar.style.width = '100%';
+                progressText.textContent = '✅ Uploaded successfully!';
+                progressText.style.color = 'var(--success)';
+
+                setTimeout(() => {
+                    progressWrap.style.display = 'none';
+                    progressBar.style.width = '0%';
+                    progressText.style.color = 'var(--muted)';
+                }, 2000);
+
+            } catch (err) {
+                progressText.textContent = '❌ Upload failed. Check Flask server.';
+                progressText.style.color = 'var(--danger)';
+                progressBar.style.width = '0%';
+                showToast('File upload failed: ' + err.message, 'error');
+            }
+        }
+
+        function clearFile() {
+            uploadedFileUrl = null;
+            document.getElementById('fFileUrl').value = '';
+            document.getElementById('fFileInput').value = '';
+            document.getElementById('filePickerBtn').textContent = '📁 \u00a0Choose from device';
+            document.getElementById('uploadProgress').style.display = 'none';
+        }
+
+        // ── SAVE (CREATE / UPDATE) ──
+        async function saveRecord() {
+            const title = document.getElementById('fTitle').value.trim();
+            const categories = getSelectedCategories();
+
+            if (!title) { showToast('Title is required.', 'error'); return; }
+            if (categories.length === 0) { showToast('Please select at least one category.', 'error'); return; }
+
+            const payload = {
+                title,
+                categories,
+                category: categories[0],
+                description: document.getElementById('fDesc').value.trim() || null,
+                file_url: uploadedFileUrl || document.getElementById('fFileUrl').value.trim() || null,
+                is_active: document.getElementById('fActive').checked,
+                expires_at: document.getElementById('fExpires').value || null,
+            };
+
+            const saveBtn = document.getElementById('saveBtn');
+            saveBtn.disabled = true;
+            saveBtn.textContent = 'Saving…';
+
+            try {
+                const url = editingId ? `${API}/announcements/${editingId}` : `${API}/announcements`;
+                const method = editingId ? 'PUT' : 'POST';
+                const res = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!res.ok) throw new Error('Server error');
+
+                closeModal();
+                await fetchAll();
+                showToast(editingId ? '✅ Record updated!' : '✅ Record created!', 'success');
+
+            } catch (e) {
+                showToast('Failed to save. Check Flask server.', 'error');
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.textContent = 'Save';
+            }
+        }
+
+        // ── DELETE ──
+        function openDeleteModal(id) { deletingId = id; document.getElementById('deleteOverlay').classList.add('open'); }
+        function closeDeleteModal() { document.getElementById('deleteOverlay').classList.remove('open'); deletingId = null; }
+
+        async function confirmDelete() {
+            if (!deletingId) return;
+            try {
+                await fetch(`${API}/announcements/${deletingId}`, { method: 'DELETE' });
+                closeDeleteModal();
+                await fetchAll();
+                showToast('🗑️ Record deleted.', 'success');
+            } catch (e) { showToast('Delete failed.', 'error'); }
+        }
+
+        // ── LOGOUT — clears session and redirects to login ──
+        async function handleLogout() {
+            try { await fetch(`${API}/auth/logout`, { method: 'POST' }); } catch (_) { }
+            localStorage.removeItem('admin_token');
+            localStorage.removeItem('admin_email');
+            window.location.href = '/';
+        }
+
+        // ── HELPERS ──
+        function escHtml(str) {
+            return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+        function formatDate(iso) {
+            if (!iso) return '—';
+            return new Date(iso).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+        }
+                function showToast(msg, type = 'success') {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.className = `toast ${type} show`;
+            setTimeout(() => t.classList.remove('show'), 4000);
+        }
+
+        document.getElementById('formOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+
+        // ── INITIAL FETCH ──
+        fetchAll();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,130 @@
+.college-footer {
+    background: linear-gradient(135deg, #0b3c5d, #1c5d99);
+    color: white;
+    padding: 30px 20px;
+    border-top: 4px solid #a67c00;
+    position: relative;
+    z-index: 0;
+}
+
+.footer-container {
+    max-width: 1300px; /* Increased for three columns */
+    margin: auto;
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+.footer-left {
+    text-align: center;
+}
+
+.footer-left img {
+    width: 140px;
+    margin-bottom: 10px;
+}
+
+.footer-college-link {
+    display: block;
+    margin-top: 8px;
+    text-align: center;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    text-decoration: none;
+}
+
+.footer-college-link:hover {
+    text-decoration: underline;
+}
+
+.footer-middle {
+    flex: 2;
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+.footer-middle p {
+    margin-bottom: 12px;
+}
+
+.footer-map {
+    flex: 1.5;
+    min-width: 300px;
+    height: 220px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: #eee;
+}
+
+.footer-map iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.footer-address {
+    max-width: 420px;
+}
+
+.footer-contact,
+.footer-email {
+    font-weight: 500;
+}
+
+.footer-links a {
+    color: #ffd166;
+    font-weight: 500;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 992px) {
+    .footer-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 30px;
+    }
+
+    .footer-middle {
+        text-align: center;
+    }
+
+    .footer-address {
+        margin: 0 auto;
+    }
+
+    .footer-map {
+        width: 100%;
+        max-width: 500px;
+        height: 250px;
+    }
+}
+/* ===== REMOVE UNWANTED BOXES IN FOOTER ===== */
+.college-footer a,
+.college-footer a:focus,
+.college-footer a:active,
+.college-footer a:visited {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+/* If any buttons exist */
+.college-footer button {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent;
+}
+
+/* Remove focus ring from images */
+.college-footer img {
+  outline: none !important;
+  border: none !important;
+}

@@ -1,0 +1,173 @@
+/* Box */
+.info-box {
+    border: 1px solid #ccc;
+    background-color: #ffffff;
+}
+
+/* Title */
+.info-title {
+    background-color: #0b3c5d;
+    color: #ffffff;
+    padding: 10px;
+    font-weight: bold;
+}
+
+/* Table */
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.info-table th,
+.info-table td {
+    border-bottom: 1px solid #ddd;
+    padding: 8px;
+}
+
+/* NEW tag */
+.new-tag {
+    background-color: #1faa9c;
+    color: #fff;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 12px;
+    margin-left: 8px;
+}
+
+/* PDF button */
+.pdf-btn {
+    border: 1px solid #0b3c5d;
+    padding: 4px 12px;
+    border-radius: 14px;
+    font-size: 0.8rem;
+    color: #0b3c5d;
+    text-decoration: none;
+}
+
+.pdf-btn:hover {
+    background-color: #0b3c5d;
+    color: #fff;
+}
+
+/* Center */
+.center {
+    text-align: center;
+    margin: 10px;
+}
+
+.more-btn {
+    padding: 6px 16px;
+    border: 1px solid #0b3c5d;
+    background: transparent;
+    cursor: pointer;
+}
+/* ===== YELLOW HEADER (LIKE FIRST CODE) ===== */
+.info-title {
+    background-color: #f4b400; /* yellow */
+    color: #000;
+    padding: 10px 14px;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+/* ===== TABLE STRUCTURE ===== */
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    font-size: 0.95rem;
+}
+
+/* Table Borders */
+.info-table th,
+.info-table td {
+    border: 1px solid #dcdcdc;
+    padding: 10px;
+    vertical-align: middle;
+}
+
+/* Header row */
+.info-table th {
+    background-color: #f9f9f9;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Date column */
+.info-table td:first-child {
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* Download column */
+.info-table td:last-child {
+    text-align: center;
+}
+
+/* ===== NEW BADGE (UNCHANGED FUNCTIONALLY) ===== */
+.new-tag {
+    background-color: #1faa9c;
+    color: #ffffff;
+    font-size: 0.7rem;
+    padding: 3px 7px;
+    border-radius: 12px;
+    margin-left: 8px;
+    font-weight: 600;
+}
+
+/* ===== PDF BUTTON ===== */
+.pdf-btn {
+    border: 1px solid #0b3c5d;
+    padding: 5px 14px;
+    border-radius: 14px;
+    font-size: 0.8rem;
+    color: #0b3c5d;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.pdf-btn:hover {
+    background-color: #0b3c5d;
+    color: #ffffff;
+}
+
+/* ===== VIEW MORE BUTTON ===== */
+.more-btn {
+    padding: 6px 18px;
+    border: 1px solid #0b3c5d;
+    background-color: #ffffff;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* Section box border */
+.info-box {
+    border: 1px solid #cfcfcf;
+    padding-bottom: 10px;
+}
+/* FORCE TENDERS TO FULL WIDTH LIKE OTHER SECTIONS */
+.info-box {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto 30px auto;
+}
+/* COLUMN WIDTHS SAME AS OTHER TABLES */
+.info-table th:nth-child(1),
+.info-table td:nth-child(1) {
+    width: 20%;
+}
+
+.info-table th:nth-child(2),
+.info-table td:nth-child(2) {
+    width: 60%;
+}
+
+.info-table th:nth-child(3),
+.info-table td:nth-child(3) {
+    width: 20%;
+}
+.info-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

@@ -1,0 +1,46 @@
+<footer class="college-footer">
+  <div class="footer-container">
+
+    <!-- LEFT -->
+    <div class="footer-left">
+      <a href="{{ url_for('home') }}">
+        <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="College Logo">
+      </a>
+    </div>
+
+    <!-- MIDDLE -->
+    <div class="footer-middle">
+
+      <p class="footer-address">
+        Government Polytechnic, Osmanpura,<br>
+        Chh. Sambhajinagar – 431005,<br>
+        Maharashtra State, India
+      </p>
+
+      <p class="footer-contact">
+        📞 +91-240-2353644 (Principal)<br>
+        📞 +91-240-2334724
+      </p>
+
+      <p class="footer-email">
+        ✉️ principal.gpaurangabad@dtemaharashtra.gov.in
+      </p>
+
+      <p class="footer-links">
+        <a href="{{ url_for('privacy') }}">Website Privacy Policy</a><br>
+        <a href="{{ url_for('contact') }}">Contact Us</a>
+      </p>
+
+    </div>
+
+    <!-- RIGHT -->
+    <div class="footer-map">
+      <iframe src="https://www.google.com/maps?q=Government+Polytechnic+Aurangabad&output=embed" allowfullscreen></iframe>
+    </div>
+
+  </div>
+
+  <p style="text-align:center; font-size:14px; margin-top:20px;">
+    &copy; 2024 Government Polytechnic, Chhatrapati Sambhajinagar. All Rights Reserved.
+  </p>
+</footer>

@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Montserrat:wght@500;700&family=Noto+Sans+Devanagari:wght@500;700&display=swap"
+    rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Source+Sans+Pro:wght@300;400;600;700&display=swap"
+    rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>404 - Page Not Found | Government Polytechnic, Chhatrapati Sambhajinagar</title>
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='favicon/apple-touch-icon.png') }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon/favicon-32x32.png') }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon/favicon-16x16.png') }}">
+  <link rel="manifest" href="{{ url_for('static', filename='favicon/site.webmanifest') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/favicon.ico') }}">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/college-slider.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/notices.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/news-events.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/Tenders.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/college-systems.css') }}">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+  <!-- Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Roboto:wght@300;400;700&display=swap"
+    rel="stylesheet">
+
+  <!-- FOOTER & POLICY CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+  <style>
+    /* ===== GOOGLE TRANSLATE CSS TO HIDE DEFAULT BAR ===== */
+    body { top: 0px !important; }
+    .goog-te-banner-frame { display: none !important; }
+    .skiptranslate { display: none !important; }
+    .goog-tooltip { display: none !important; }
+    .goog-tooltip:hover { display: none !important; }
+    .goog-text-highlight { background-color: transparent !important; border: none !important; box-shadow: none !important; }
+
+    /* ===== GLOBAL ===== */
+    * { box-sizing: border-box }
+    body {
+      font-family: 'Source Sans 3', 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      background: #ffffff;
+      color: #000;
+      transition: .3s;
+    }
+
+    /* ===== UTILITY BAR ===== */
+    .utility-bar {
+      background: linear-gradient(135deg, #0b3c5d, #f4f6f9);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 24px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, .35);
+    }
+    .util-left, .util-right { display: flex; align-items: center; gap: 16px; }
+    .util-dropdown { position: relative; }
+    .util-dropdown button {
+      background: rgba(255, 255, 255, .35);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .dropdown-panel {
+      position: absolute;
+      top: 50px;
+      left: 0;
+      min-width: 260px;
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, .92);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, .3);
+      display: none;
+      z-index: 1000;
+    }
+    .dropdown-panel p, .dropdown-panel a {
+      display: block;
+      padding: 10px 14px;
+      border-radius: 8px;
+      transition: 0.3s;
+      text-decoration: none;
+      color: #333;
+    }
+    .dropdown-panel p:hover, .dropdown-panel a:hover { background: #888; color: #000; cursor: pointer; }
+    .accessibility span { font-weight: 700; cursor: pointer; padding: 6px 9px; border-radius: 6px; }
+    .accessibility span:hover { background: #fff }
+    .icon-btn { background: rgba(255, 255, 255, .35); border: none; padding: 10px; border-radius: 50%; cursor: pointer; }
+    .search-box { display: flex; align-items: center; background: #fff; padding: 8px 14px; border-radius: 30px; }
+    .search-box input { border: none; outline: none; margin-left: 6px; }
+    .login-btn { background: #c1121f; color: #fff; border: none; padding: 10px 18px; border-radius: 24px; font-weight: 600; cursor: pointer; }
+
+    /* ===== ERROR WRAPPER ===== */
+    .error-wrapper {
+      padding: 80px 20px;
+      min-height: 50vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .error-container {
+      max-width: 600px;
+      padding: 40px;
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      border: 1px solid #eee;
+    }
+    .error-code { font-size: 100px; font-weight: 800; color: #c1121f; line-height: 1; margin-bottom: 20px; }
+    .error-title { font-size: 28px; font-weight: 700; color: #0b3c5d; margin-bottom: 20px; }
+    .error-message { font-size: 18px; color: #666; margin-bottom: 30px; line-height: 1.6; }
+    .home-btn {
+      display: inline-block;
+      background: #c1121f;
+      color: #fff !important;
+      padding: 12px 30px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+    .home-btn:hover { background: #9a0e18; transform: translateY(-2px); }
+
+    /* Dark Mode Theme Stability */
+    body.dark { background: #121212 !important; color: #e0e0e0 !important; }
+    body.dark .utility-bar { background: #1f1f1f !important; }
+    body.dark .error-container { background: #1e1e1e; border-color: #333; }
+    body.dark .error-title { color: #f5c842; }
+    body.dark .error-message { color: #aaa; }
+    body.dark .top-header, body.dark .navbar { background: #1a1a1a !important; border-color: #333 !important; }
+    body.dark .util-dropdown button, body.dark .icon-btn { background: #333 !important; color: #fff !important; }
+    body.dark .search-box { background: #333 !important; }
+    body.dark .search-box input { background: #333 !important; color: #fff !important; }
+  </style>
+</head>
+
+<body>
+<!-- ===== UTILITY BAR ===== -->
+  <div class="utility-bar">
+
+    <div class="util-left">
+
+      <!-- Institute Codes -->
+      <div class="util-dropdown">
+        <button onclick="toggleDrop('codes')">
+          Institute Codes <i class="fa fa-chevron-down"></i>
+        </button>
+        <div class="dropdown-panel" id="codes">
+          <p><b>DTE Code:</b> 2010</p>
+          <p><b>MSBTE:</b> 0019 (1st Shift)</p>
+          <p><b>MSBTE:</b> 9019 (2nd Shift)</p>
+          <p><b>AICTE ID:</b> 1-493166031</p>
+          <p><b>AISHE:</b> S-1785</p>
+        </div>
+      </div>
+      <!-- Social Media -->
+      <div class="util-dropdown">
+        <button onclick="toggleDrop('social')">
+          Social Media <i class="fa fa-chevron-down"></i>
+        </button>
+        <div class="dropdown-panel" id="social">
+          <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
+          <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+          <a href="#"><i class="fab fa-youtube"></i> YouTube</a>
+          <a href="#"><i class="fab fa-x-twitter"></i> X (Twitter)</a>
+          <a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a>
+        </div>
+      </div>
+
+      <!-- Accessibility -->
+      <div class="accessibility">
+        <span onclick="setFont('decrease')">A-</span>
+        <span onclick="setFont('reset')">A</span>
+        <span onclick="setFont('increase')">A+</span>
+      </div>
+
+      <!-- Dark Mode -->
+      <button class="icon-btn" onclick="toggleTheme()">
+        <i class="fa fa-circle-half-stroke"></i>
+      </button>
+
+      <!-- Quick Links -->
+      <div class="util-dropdown">
+        <button onclick="toggleDrop('links')">
+          Quick Links <i class="fa fa-chevron-down"></i>
+        </button>
+        <div class="dropdown-panel" id="links">
+          <a href="https://msbte.ac.in/" target="_blank">MSBTE</a>
+          <a href="https://www.aicte-india.org/" target="_blank">AICTE</a>
+          <a href="https://gpabadmis.in/gpabad_mis/" target="_blank">MIS Portal</a>
+          <a href="https://dte.maharashtra.gov.in/" target="_blank">DTE Maharashtra</a>
+          <a href="https://nptel.ac.in/" target="_blank">NPTEL</a>
+          <a href="https://betacloud.ncs.gov.in/" target="_blank">National Career Service</a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="util-right">
+
+      <div class="search-box">
+        <i class="fa fa-search"></i>
+        <input type="text" data-key="search" placeholder="Search...">
+      </div>
+
+      <!-- Language Tab (ONLY ADDITION) -->
+      <div class="util-dropdown">
+        <button onclick="toggleDrop('lang')" data-key="languageBtn">
+          Language <i class="fa fa-chevron-down"></i>
+        </button>
+        <div class="dropdown-panel" id="lang">
+          <a href="#" onclick="setLanguage('en')">English</a>
+          <a href="#" onclick="setLanguage('mr')">मराठी</a>
+        </div>
+      </div>
+
+      <button class="login-btn" data-key="login" onclick="window.location.href='/login'">
+        <i class="fa fa-right-to-bracket"></i> Login
+      </button>
+
+    </div>
+  </div>
+  <header class="top-header">
+
+    <div class="header-logo">
+      <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="College Logo">
+    </div>
+
+    <div class="header-title">
+      <h1>Government Polytechnic, Chhatrapati Sambhajinagar</h1>
+      <h2>शासकीय तंत्रनिकेतन, छत्रपती संभाजीनगर</h2>
+      <p>(An Autonomous Institute of Govt. of Maharashtra – Estd. 1955)</p>
+      <p>AICTE Approved – NBA Accredited</p>
+    </div>
+
+    <div class="header-info">
+      <p class="header-email">
+        📧
+        <a href="mailto:principal.gpaurangabad@dtemaharashtra.gov.in">
+          principal.gpaurangabad@dtemaharashtra.gov.in
+        </a>
+      </p>
+
+      <p>📞 +91-240-2353644 (Principal)</p>
+      <p><a href="#">Online GPA</a></p>
+      <p><a href="#">Admission – 2025-26</a></p>
+    </div>
+
+  </header>
+  <div class="gold-strip"></div>
+
+  <!-- NAVBAR STARTS HERE -->
+
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+
+      <a class="navbar-brand" href="{{ url_for('home') }}">Home</a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+          <!-- About Institute -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="{{ url_for('about') }}">About Institute</a>
+            <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item" href="{{ url_for('about') }}"
+                  onclick="sessionStorage.setItem('section','visionmission')">
+                  Vision &amp; Mission
+                </a>
+              </li>
+              
+              <li>
+                <a class="dropdown-item" href="{{ url_for('about') }}"
+                  onclick="sessionStorage.setItem('section','milestone')">
+                  Milestones &amp; Honours
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('about') }}"
+                  onclick="sessionStorage.setItem('section','disclosure')">
+                  Rights &amp; Acts
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('about') }}"
+                  onclick="sessionStorage.setItem('section','governance')">
+                  Governance / Committee
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('about') }}"
+                  onclick="sessionStorage.setItem('section','orgchart')">
+                  Organizational Chart
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('about') }}"
+                  onclick="sessionStorage.setItem('section','office')">
+                  Office Administration
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <!-- Examination Cell / CDC -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="{{ url_for('exam_cell') }}">Examination Cell / CDC</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Curriculum Development Cell</a>
+              </li>
+              <li><a class="dropdown-item" href="{{ url_for('exam_cell') }}">Examination Cell</a></li>
+            </ul>
+          </li>
+
+                    <!-- Admission -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="#">Admission</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ url_for('first_year_admission') }}">First Year Admission</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('direct_second_year_admission') }}">Direct Second Year Admission</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('higher_classes_admission') }}">Higher Classes Admission</a></li>
+            </ul>
+          </li>
+
+          <!-- Departments -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="{{ url_for('departments') }}">Departments</a>
+            <ul class="dropdown-menu">
+
+              <li class="dropend">
+                <a class="dropdown-item dropdown-toggle" href="404.html">Diploma
+                  Programmes</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='aiml') }}">Artificial Intelligence &amp;
+                      Machine Learning</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='auto') }}">Automobile Engineering</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='civil') }}">Civil Engineering</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='computer') }}">Computer Engineering</a>
+                  </li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='ddgm') }}">Dress Designing &amp; Garment
+                      Management</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='electrical') }}">Electrical
+                      Engineering</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='entc') }}">Electronics &amp; Telecommunication
+                      Engineering</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='it') }}">Information Technology
+                      Engineering</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='mechanical') }}">Mechanical
+                      Engineering</a></li>
+                </ul>
+              </li>
+
+              <li class="dropend">
+                <a class="dropdown-item dropdown-toggle" href="404.html">Allied
+                  Departments</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='science-humanities') }}">Science and
+                      Humanities</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='applied-mechanics') }}">Applied
+                      Mechanics</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='workshop') }}">Workshop</a></li>
+                </ul>
+              </li>
+
+              <li class="dropend">
+                <a class="dropdown-item dropdown-toggle"
+                  href="404.html">Advanced Diploma Programmes</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='mercedes-benz') }}">Mercedes Benz</a></li>
+                </ul>
+              </li>
+
+            </ul>
+          </li>
+
+          <!-- Student Section -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="{{ url_for('student_section') }}">Student Section</a>
+            <ul class="dropdown-menu">
+              
+              <li><a class="dropdown-item" href="{{ url_for('student_section', section='scholarship') }}">Scholarships</a></li>
+            </ul>
+          </li>
+
+          <!-- TPO -->
+          <!-- CHANGED: href updated to use ?section= query params instead of #hash -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="{{ url_for('tposection') }}">TPO</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ url_for('tposection', section='profile') }}">Profile</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('tposection', section='recruiters') }}">Our Recruiters</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('tposection', section='placement') }}">Placement Records</a></li>
+            </ul>
+          </li>
+
+          <!-- Facilities -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="{{ url_for('facility') }}">Facilities</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ url_for('facility', section='gymkhana') }}">Gymkhana</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('facility', section='library') }}">Library</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('facility', section='other-facilities') }}">Other Facilities</a>
+              </li>
+            </ul>
+          </li>
+
+          <!-- Downloads -->
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('downloads') }}">Downloads</a>
+          </li>
+
+          <!-- Contact -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="{{ url_for('contact') }}">Contact Us</a>
+
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- NAVBAR ENDS HERE -->
+
+
+
+
+
+  
+
+  <main class="error-wrapper">
+    <div class="error-container">
+      <div class="error-code">404</div>
+      <h2 class="error-title">Oops! Page Not Found</h2>
+      <p class="error-message">
+        The page you are looking for might have been removed, had its name changed, or is temporarily unavailable. 
+      </p>
+      <a href="{{ url_for('home') }}" class="home-btn"><i class="fas fa-home me-2"></i> Back to Homepage</a>
+    </div>
+  </main>
+
+  
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function toggleDrop(id) {
+      event.stopPropagation();
+      document.querySelectorAll('.dropdown-panel').forEach(d => { if (d.id !== id) d.style.display = 'none'; });
+      const el = document.getElementById(id);
+      el.style.display = el.style.display === 'block' ? 'none' : 'block';
+    }
+    function setFont(action) {
+      let currentZoom = parseFloat(localStorage.getItem('site_zoom')) || 1.0;
+      if (action === 'increase') currentZoom = Math.min(currentZoom + 0.1, 1.3);
+      else if (action === 'decrease') currentZoom = Math.max(currentZoom - 0.1, 0.8);
+      else currentZoom = 1.0;
+      localStorage.setItem('site_zoom', currentZoom);
+      document.body.style.zoom = currentZoom;
+    }
+    (function () {
+      let savedZoom = parseFloat(localStorage.getItem('site_zoom'));
+      if (savedZoom) document.body.style.zoom = savedZoom;
+      if (localStorage.getItem('site_theme') === 'dark') document.body.classList.add('dark');
+    })();
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+      localStorage.setItem('site_theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+    }
+    function setLanguage(lang) {
+      document.cookie = "googtrans=/en/" + lang + "; path=/";
+      window.location.reload();
+    }
+    document.addEventListener("click", () => { document.querySelectorAll('.dropdown-panel').forEach(d => d.style.display = 'none'); });
+  </script>
+
+
+
+
+
+
+
+  <!-- FOOTER -->
+  {% include 'footer_content.html' %}
+<script>
+    function setFont(action) {
+      event.stopPropagation();
+      let currentZoom = parseFloat(localStorage.getItem('site_zoom')) || 1.0;
+
+      if (action === 'increase') {
+        currentZoom = Math.min(currentZoom + 0.1, 1.3);
+      } else if (action === 'decrease') {
+        currentZoom = Math.max(currentZoom - 0.1, 0.8);
+      } else {
+        currentZoom = 1.0; // reset
+      }
+
+      localStorage.setItem('site_zoom', currentZoom);
+      document.body.style.zoom = currentZoom;
+    }
+
+    // Apply zoom immediately on load
+    (function () {
+      let savedZoom = parseFloat(localStorage.getItem('site_zoom'));
+      if (savedZoom && savedZoom !== 1.0) {
+        document.body.style.zoom = savedZoom;
+      }
+    })();
+    function toggleDrop(id) {
+      event.stopPropagation(); // VERY IMPORTANT
+
+      document.querySelectorAll('.dropdown-panel').forEach(d => {
+        if (d.id !== id) d.style.display = 'none';
+      });
+
+      const el = document.getElementById(id);
+      el.style.display = el.style.display === 'block' ? 'none' : 'block';
+    }
+
+
+    /* Language Logic via Google Translate */
+    function setLanguage(lang) {
+      if (lang === 'mr') {
+        document.cookie = "googtrans=/en/mr; path=/";
+        document.cookie = "googtrans=/en/mr; domain=" + window.location.hostname + "; path=/";
+      } else {
+        document.cookie = "googtrans=/en/en; path=/";
+        document.cookie = "googtrans=/en/en; domain=" + window.location.hostname + "; path=/";
+        // Clear cookie completely just in case
+        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      }
+      window.location.reload();
+    }
+
+    /* Auto-Marathi for Marathi browsers */
+    let initialLang = navigator.language.startsWith("mr") ? "mr" : "en";
+    // Only auto-translate if not already translated by user preference (cookie)
+    if (document.cookie.indexOf('googtrans') === -1 && initialLang === 'mr') {
+      document.cookie = "googtrans=/en/mr; path=/";
+      window.location.reload();
+    }
+
+    /* ===== CLOSE DROPDOWN WHEN CLICKING OUTSIDE ===== */
+    document.addEventListener("click", function (event) {
+      const dropdowns = document.querySelectorAll(".dropdown-panel");
+      const buttons = document.querySelectorAll(".util-dropdown button");
+
+      let clickedInside = false;
+
+      buttons.forEach(btn => {
+        if (btn.contains(event.target)) clickedInside = true;
+      });
+
+      dropdowns.forEach(panel => {
+        if (panel.contains(event.target)) clickedInside = true;
+      });
+
+      if (!clickedInside) {
+        dropdowns.forEach(panel => {
+          panel.style.display = "none";
+        });
+      }
+    });
+
+  </script>
+</body>
+</html>
+
+
+
+
+
+
