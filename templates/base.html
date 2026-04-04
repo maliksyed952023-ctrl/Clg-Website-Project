@@ -529,13 +529,15 @@
       .main-slider {
         margin-top: 10px;
       }
+
       .utility-bar {
         flex-direction: column;
         padding: 10px;
         gap: 10px;
       }
 
-      .util-left, .util-right {
+      .util-left,
+      .util-right {
         width: 100%;
         justify-content: center;
         flex-wrap: wrap;
@@ -594,7 +596,8 @@
         z-index: 5 !important;
       }
 
-      .btn-nav, .nav-btn {
+      .btn-nav,
+      .nav-btn {
         z-index: 10 !important;
       }
 
@@ -737,7 +740,8 @@
 
       <a class="navbar-brand" href="{{ url_for('home') }}">Home</a>
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" style="border-color: rgba(255,255,255,0.5);">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        style="border-color: rgba(255,255,255,0.5);">
         <i class="fas fa-bars" style="color: white; font-size: 1.5rem;"></i>
       </button>
 
@@ -755,7 +759,7 @@
                   Vision &amp; Mission
                 </a>
               </li>
-              
+
               <li>
                 <a class="dropdown-item" href="{{ url_for('about') }}"
                   onclick="sessionStorage.setItem('section','milestone')">
@@ -795,7 +799,8 @@
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="#">Curriculum Development Cell</a>
               </li>
-              <li><a class="dropdown-item" href="{{ url_for('exam_cell', section='notices') }}">Examination Cell</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('exam_cell', section='notices') }}">Examination Cell</a>
+              </li>
             </ul>
           </li>
 
@@ -804,8 +809,10 @@
             <a class="nav-link" href="#">Admission</a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="{{ url_for('first_year_admission') }}">First Year Admission</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('direct_second_year_admission') }}">Direct Second Year Admission</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('higher_classes_admission') }}">Higher Classes Admission</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('direct_second_year_admission') }}">Direct Second Year
+                  Admission</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('higher_classes_admission') }}">Higher Classes Admission</a>
+              </li>
             </ul>
           </li>
 
@@ -818,27 +825,36 @@
                 <a class="dropdown-item dropdown-toggle" href="404.html">Diploma
                   Programmes</a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="{{ url_for('department', name='aiml') }}?section=notices">Artificial Intelligence
+                  <li><a class="dropdown-item"
+                      href="{{ url_for('department', name='aiml') }}?section=notices">Artificial Intelligence
                       &amp;
                       Machine Learning</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('department', name='auto') }}?section=notices">Automobile
+                  <li><a class="dropdown-item"
+                      href="{{ url_for('department', name='auto') }}?section=notices">Automobile
                       Engineering</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('department', name='civil') }}?section=notices">Civil Engineering</a>
-                  </li>
-                  <li><a class="dropdown-item" href="{{ url_for('department', name='computer') }}?section=notices">Computer
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='civil') }}?section=notices">Civil
                       Engineering</a>
                   </li>
-                  <li><a class="dropdown-item" href="{{ url_for('department', name='ddgm') }}?section=notices">Dress Designing &amp;
+                  <li><a class="dropdown-item"
+                      href="{{ url_for('department', name='computer') }}?section=notices">Computer
+                      Engineering</a>
+                  </li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='ddgm') }}?section=notices">Dress
+                      Designing &amp;
                       Garment
                       Management</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('department', name='electrical') }}?section=notices">Electrical
+                  <li><a class="dropdown-item"
+                      href="{{ url_for('department', name='electrical') }}?section=notices">Electrical
                       Engineering</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('department', name='entc') }}?section=notices">Electronics &amp;
+                  <li><a class="dropdown-item"
+                      href="{{ url_for('department', name='entc') }}?section=notices">Electronics &amp;
                       Telecommunication
                       Engineering</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('department', name='it') }}?section=notices">Information Technology
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='it') }}?section=notices">Information
+                      Technology
                       Engineering</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('department', name='mechanical') }}?section=notices">Mechanical
+                  <li><a class="dropdown-item"
+                      href="{{ url_for('department', name='mechanical') }}?section=notices">Mechanical
                       Engineering</a></li>
                 </ul>
               </li>
@@ -880,10 +896,12 @@
           <li class="nav-item dropdown">
             <a class="nav-link" href="{{ url_for('tposection', section='tpo') }}">TPO</a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="{{ url_for('tposection', section='recruiters') }}">Our Recruiters</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('tposection', section='recruiters') }}">Our Recruiters</a>
+              </li>
               <li><a class="dropdown-item" href="{{ url_for('tposection', section='profile') }}">Activities</a></li>
               <li><a class="dropdown-item" href="{{ url_for('tposection', section='schedule') }}">Schedule</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('tposection', section='placement') }}">Placement Records</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('tposection', section='placement') }}">Placement Records</a>
+              </li>
             </ul>
           </li>
 
@@ -927,8 +945,9 @@
 
         <!-- SLIDE 1: About Institute — reference-style full bg + floating card -->
         <div class="slide slide-active slide-about">
-          <img src="{{ url_for('static', filename='images/background.jpeg') }}" alt="Government Polytechnic Campus"
-            class="slide-bg">
+          <img src="{{ url_for('static', filename='images/background.jpeg') }}" data-slug="home_hero_1"
+            data-fallback="{{ url_for('static', filename='images/background.jpeg') }}"
+            alt="Government Polytechnic Campus" class="slide-bg">
           <div class="about-card">
             <h2 class="about-card-title">About Government Polytechnic</h2>
             <div class="about-card-body">
@@ -949,18 +968,23 @@
 
         <!-- SLIDE 2: College Image -->
         <div class="slide">
-          <img src="{{ url_for('static', filename='images/college2.jpg') }}" alt="College Building" class="slide-bg">
+          <img src="{{ url_for('static', filename='images/college2.jpg') }}" data-slug="home_hero_2"
+            data-fallback="{{ url_for('static', filename='images/college2.jpg') }}" alt="College Building"
+            class="slide-bg">
         </div>
 
         <!-- SLIDE 3: College Image -->
         <div class="slide">
-          <img src="{{ url_for('static', filename='images/campus1.jpg.jpeg') }}" alt="College Facilities"
+          <img src="{{ url_for('static', filename='images/campus1.jpg.jpeg') }}" data-slug="home_hero_3"
+            data-fallback="{{ url_for('static', filename='images/campus1.jpg.jpeg') }}" alt="College Facilities"
             class="slide-bg">
         </div>
 
         <!-- SLIDE 4: College Image -->
         <div class="slide">
-          <img src="{{ url_for('static', filename='images/college4.jpg') }}" alt="College Activities" class="slide-bg">
+          <img src="{{ url_for('static', filename='images/college4.jpg') }}" data-slug="home_hero_4"
+            data-fallback="{{ url_for('static', filename='images/college4.jpg') }}" alt="College Activities"
+            class="slide-bg">
         </div>
 
         <!-- SLIDE 5: ALL DIRECTORS -->
@@ -973,7 +997,8 @@
               <!-- Director 1 -->
               <div class="director-box">
                 <div class="director-photo">
-                  <img src="{{ url_for('static', filename='images/director1.jpg') }}" alt="Director 1">
+                  <img src="{{ url_for('static', filename='images/director1.jpg') }}" data-slug="home_leadership_1"
+                    data-fallback="{{ url_for('static', filename='images/director1.jpg') }}" alt="Director 1">
                   <span class="director-num">1</span>
                 </div>
                 <h3>Shri B Venugopal Reddy, IAS</h3>
@@ -984,7 +1009,8 @@
               <!-- Director 2 -->
               <div class="director-box">
                 <div class="director-photo">
-                  <img src="{{ url_for('static', filename='images/director2.jpg') }}" alt="Director 2">
+                  <img src="{{ url_for('static', filename='images/director2.jpg') }}" data-slug="home_leadership_2"
+                    data-fallback="{{ url_for('static', filename='images/director2.jpg') }}" alt="Director 2">
                   <span class="director-num">2</span>
                 </div>
                 <h3>Dr. Vinod Mohitkar</h3>
@@ -995,7 +1021,8 @@
               <!-- Director 3 -->
               <div class="director-box">
                 <div class="director-photo">
-                  <img src="{{ url_for('static', filename='images/director3.jpg') }}" alt="Director 3">
+                  <img src="{{ url_for('static', filename='images/director3.jpg') }}" data-slug="home_leadership_3"
+                    data-fallback="{{ url_for('static', filename='images/director3.jpg') }}" alt="Director 3">
                   <span class="director-num">3</span>
                 </div>
                 <h3>Dr. K.B. Ladhane</h3>
@@ -1257,7 +1284,8 @@
 
       <!-- RIGHT -->
       <div class="footer-map">
-        <iframe src="https://www.google.com/maps?q=Government+Polytechnic+Aurangabad&output=embed" allowfullscreen></iframe>
+        <iframe src="https://www.google.com/maps?q=Government+Polytechnic+Aurangabad&output=embed"
+          allowfullscreen></iframe>
       </div>
     </div>
 
@@ -1272,9 +1300,10 @@
       background-color: #0b3c5d !important;
       color: #ffffff !important;
       padding: 40px 0 20px 0 !important;
-      border-top: 5px solid #f5c842; /* Gold strip matching screenshot */
+      border-top: 5px solid #f5c842;
+      /* Gold strip matching screenshot */
     }
-    
+
     .home-footer .footer-container {
       max-width: 1400px;
       margin: 0 auto;
@@ -1298,7 +1327,8 @@
       flex: 1;
       padding: 0 40px;
       display: flex;
-      justify-content: center; /* Shift towards center but keep content left-aligned */
+      justify-content: center;
+      /* Shift towards center but keep content left-aligned */
     }
 
     .home-footer .footer-info-block {
@@ -1314,7 +1344,8 @@
     }
 
     .home-footer .footer-icon {
-      color: #ff3e81; /* Pink icon matching screenshot */
+      color: #ff3e81;
+      /* Pink icon matching screenshot */
       margin-right: 12px;
       font-size: 18px;
     }
@@ -1333,7 +1364,8 @@
     }
 
     .home-footer .footer-links a {
-      color: #f5c842 !important; /* Yellow links */
+      color: #f5c842 !important;
+      /* Yellow links */
       text-decoration: underline;
       font-weight: 700;
       font-size: 16px;
@@ -1351,7 +1383,7 @@
       background: #fff;
       border-radius: 12px;
       padding: 10px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     }
 
     .home-footer .footer-map iframe {
@@ -1369,16 +1401,20 @@
         text-align: center;
         padding: 0 20px;
       }
+
       .home-footer .footer-middle {
         padding: 30px 0;
       }
+
       .home-footer .footer-info-block {
         text-align: center;
       }
+
       .home-footer .footer-contact,
       .home-footer .footer-email {
         justify-content: center;
       }
+
       .home-footer .footer-map {
         flex: 0 0 auto;
         width: 100%;
@@ -1397,87 +1433,7 @@
   <script type="text/javascript"
     src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
-  <script>
-    function setFont(action) {
-      event.stopPropagation();
-      let currentZoom = parseFloat(localStorage.getItem('site_zoom')) || 1.0;
-
-      if (action === 'increase') {
-        currentZoom = Math.min(currentZoom + 0.1, 1.3);
-      } else if (action === 'decrease') {
-        currentZoom = Math.max(currentZoom - 0.1, 0.8);
-      } else {
-        currentZoom = 1.0; // reset
-      }
-
-      localStorage.setItem('site_zoom', currentZoom);
-      document.body.style.zoom = currentZoom;
-    }
-
-    // Apply zoom immediately on load
-    (function () {
-      let savedZoom = parseFloat(localStorage.getItem('site_zoom'));
-      if (savedZoom && savedZoom !== 1.0) {
-        document.body.style.zoom = savedZoom;
-      }
-    })();
-    function toggleDrop(id) {
-      event.stopPropagation(); // VERY IMPORTANT
-
-      document.querySelectorAll('.dropdown-panel').forEach(d => {
-        if (d.id !== id) d.style.display = 'none';
-      });
-
-      const el = document.getElementById(id);
-      el.style.display = el.style.display === 'block' ? 'none' : 'block';
-    }
-
-
-    /* Language Logic via Google Translate */
-    function setLanguage(lang) {
-      if (lang === 'mr') {
-        document.cookie = "googtrans=/en/mr; path=/";
-        document.cookie = "googtrans=/en/mr; domain=" + window.location.hostname + "; path=/";
-      } else {
-        document.cookie = "googtrans=/en/en; path=/";
-        document.cookie = "googtrans=/en/en; domain=" + window.location.hostname + "; path=/";
-        // Clear cookie completely just in case
-        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-      }
-      window.location.reload();
-    }
-
-    /* Auto-Marathi for Marathi browsers */
-    let initialLang = navigator.language.startsWith("mr") ? "mr" : "en";
-    // Only auto-translate if not already translated by user preference (cookie)
-    if (document.cookie.indexOf('googtrans') === -1 && initialLang === 'mr') {
-      document.cookie = "googtrans=/en/mr; path=/";
-      window.location.reload();
-    }
-
-    /* ===== CLOSE DROPDOWN WHEN CLICKING OUTSIDE ===== */
-    document.addEventListener("click", function (event) {
-      const dropdowns = document.querySelectorAll(".dropdown-panel");
-      const buttons = document.querySelectorAll(".util-dropdown button");
-
-      let clickedInside = false;
-
-      buttons.forEach(btn => {
-        if (btn.contains(event.target)) clickedInside = true;
-      });
-
-      dropdowns.forEach(panel => {
-        if (panel.contains(event.target)) clickedInside = true;
-      });
-
-      if (!clickedInside) {
-        dropdowns.forEach(panel => {
-          panel.style.display = "none";
-        });
-      }
-    });
-
-  </script>
+  <script src="{{ url_for('static', filename='js/utility-bar.js') }}"></script>
   <script src="{{ url_for('static', filename='js/announcements.js') }}"></script>
   <script src="{{ url_for('static', filename='js/College-slider.js') }}"></script>
   <script src="{{ url_for('static', filename='js/notices.js') }}"></script>
@@ -1491,31 +1447,12 @@
     crossorigin="anonymous"></script>
 
 
-  <!-- ================= PERSISTENT DARK MODE LOGIC ================= -->
-  <script id="global-dark-mode-js">
-    // Function called by the theme toggle button
-    function toggleTheme() {
-      document.body.classList.toggle('dark');
-      // Save preference to localStorage
-      const isDark = document.body.classList.contains('dark');
-      localStorage.setItem('site_theme', isDark ? 'dark' : 'light');
-    }
-
-    // Apply immediately on load to prevent white flash
-    (function () {
-      const savedTheme = localStorage.getItem('site_theme');
-      // If explicitly set to dark, add class
-      if (savedTheme === 'dark') {
-        document.body.classList.add('dark');
-      }
-    })();
-  </script>
-  <!-- ============================================================== -->
 
 
   <script src="{{ url_for('static', filename='js/search_index.js') }}"></script>
   <script src="{{ url_for('static', filename='js/search.js') }}"></script>
+  <!-- Initialize Image Loader -->
+  <script src="{{ url_for('static', filename='js/image-loader.js') }}"></script>
 </body>
 
 </html>
-

@@ -1046,15 +1046,12 @@
       <div id="recruiters" class="section">
         <h2>Our Recruiters</h2>
 
-        <div class="logo-grid">
+        <div class="logo-grid" id="recruiterGrid">
+          <!-- Dynamically populated -->
           <div class="logo-box">Logo 1</div>
           <div class="logo-box">Logo 2</div>
           <div class="logo-box">Logo 3</div>
           <div class="logo-box">Logo 4</div>
-          <div class="logo-box">Logo 5</div>
-          <div class="logo-box">Logo 6</div>
-          <div class="logo-box">Logo 7</div>
-          <div class="logo-box">Logo 8</div>
         </div>
 
       </div>
@@ -1124,6 +1121,9 @@
       if (id === "tpo") {
         fetchTPONotices();
       }
+      if (id === "recruiters") {
+        loadRecruiterLogos();
+      }
     }
 
     // READ URL PARAM ON PAGE LOAD AND OPEN THE CORRECT SECTION
@@ -1135,6 +1135,7 @@
         showSection("profile", document.getElementById("profilebtn"));
       } else if (section === "recruiters") {
         showSection("recruiters", document.getElementById("recruitersbtn"));
+        loadRecruiterLogos();
       } else if (section === "placement") {
         showSection("placement", document.getElementById("placementbtn"));
       } else if (section === "schedule") {
@@ -1189,6 +1190,30 @@
         noticeBody.innerHTML = "<tr><td colspan='3' style='text-align:center; color:red;'>Failed to load notices.</td></tr>";
       }
     }
+
+    async function loadRecruiterLogos() {
+      const grid = document.getElementById("recruiterGrid");
+      if (!grid) return;
+
+      try {
+        const res = await fetch('/api/images?slug=tpo_recruiters');
+        const json = await res.json();
+        const data = json.data || [];
+
+        if (data.length > 0) {
+          grid.innerHTML = data.map(img => {
+            const name = (img.subcategory && img.subcategory.trim()) ? img.subcategory.trim() : 'Recruiter';
+            return `
+              <div class="logo-box" style="padding:10px; flex-direction:column; gap:8px;">
+                <img src="${img.url}" alt="${name}" style="max-width:100%; max-height:110px; object-fit:contain;">
+                <div style="font-size:13px; font-weight:600; color:#333; text-align:center; margin-top:6px;">${name}</div>
+              </div>`;
+          }).join('');
+        }
+      } catch (e) {
+        console.error("Error loading recruiter logos:", e);
+      }
+    }
   </script>
 
 
@@ -1215,27 +1240,9 @@
 
 
   <!-- HEADER & NAVBAR REQUIRED JS -->
+  <script src="{{ url_for('static', filename='js/utility-bar.js') }}"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- ================= PERSISTENT DARK MODE LOGIC ================= -->
-  <script id="global-dark-mode-js">
-    // Function called by the theme toggle button
-    function toggleTheme() {
-      document.body.classList.toggle('dark');
-      // Save preference to localStorage
-      const isDark = document.body.classList.contains('dark');
-      localStorage.setItem('site_theme', isDark ? 'dark' : 'light');
-    }
-
-    // Apply immediately on load to prevent white flash
-    (function () {
-      const savedTheme = localStorage.getItem('site_theme');
-      // If explicitly set to dark, add class
-      if (savedTheme === 'dark') {
-        document.body.classList.add('dark');
-      }
-    })();
-  </script>
   <!-- ============================================================== -->
 
 

@@ -136,11 +136,7 @@ const DEPARTMENTS_DATA = {
         { name: "MSBTE LAB – 1", equipment: "PC – 25", area: "", cost: "", remarks: "" },
         { name: "MSBTE LAB – 2", equipment: "PC – 25", area: "", cost: "", remarks: "" },
       ],
-      labPhotos: [
-        "/static/images/lab1.jpg.jpeg",
-        "/static/images/lab2.jpg.jpeg",
-        "/static/images/lab1.jpg.jpeg",
-      ],
+      labPhotos: [],
       magazines: [
         { title: "Technical", subtitle: "BITS & Bytes – I-CO\nDept. June 2022", downloadUrl: "#", viewUrl: "#" },
         { title: "Technical", subtitle: "AI & ML Special Edition\nDept. Dec 2023", downloadUrl: "#", viewUrl: "#" },
@@ -193,9 +189,7 @@ const DEPARTMENTS_DATA = {
         { name: "PROGRAMMING LAB", equipment: "Desktop PCs, Projector", area: "50.00", cost: "10,00,000", remarks: "" },
         { name: "NETWORKING LAB", equipment: "Routers, Switches, Servers", area: "40.00", cost: "8,00,000", remarks: "" },
       ],
-      labPhotos: [
-        "/static/images/lab1.jpg.jpeg",
-      ],
+      labPhotos: [],
       magazines: [
         { title: "Technical", subtitle: "BITS & Bytes – CO\nDept. June 2023", downloadUrl: "#", viewUrl: "#" },
       ],
@@ -257,9 +251,7 @@ const DEPARTMENTS_DATA = {
         { name: "IT LAB 1", equipment: "Desktop PCs, Printers", area: "55.00", cost: "9,50,000", remarks: "" },
         { name: "WEB DEVELOPMENT LAB", equipment: "Workstations, Servers", area: "45.00", cost: "7,00,000", remarks: "" },
       ],
-      labPhotos: [
-        "/static/images/lab2.jpg.jpeg",
-      ],
+      labPhotos: [],
       magazines: [
         { title: "Technical", subtitle: "IT Insights\nDept. March 2024", downloadUrl: "#", viewUrl: "#" },
       ],
@@ -307,7 +299,7 @@ const DEPARTMENTS_DATA = {
       labs: [
         { name: "AUTOMOBILE WORKSHOP", equipment: "Engine Models, Tools", area: "100.00", cost: "20,00,000", remarks: "" },
       ],
-      labPhotos: ["/static/images/lab1.jpg.jpeg"],
+      labPhotos: [],
     },
 
     // ─────────────── CIVIL ───────────────
@@ -366,7 +358,7 @@ const DEPARTMENTS_DATA = {
         { name: "SURVEY LAB", equipment: "Total Station, Theodolite", area: "60.00", cost: "12,00,000", remarks: "" },
         { name: "SOIL MECHANICS LAB", equipment: "Testing Equipment", area: "50.00", cost: "8,00,000", remarks: "" },
       ],
-      labPhotos: ["/static/images/lab3.jpg.jpeg"],
+      labPhotos: [],
     },
 
     // ─────────────── DDGM ───────────────
@@ -427,7 +419,7 @@ const DEPARTMENTS_DATA = {
       labs: [
         { name: "SEWING LAB", equipment: "Industrial Sewing Machines", area: "70.00", cost: "10,00,000", remarks: "" },
       ],
-      labPhotos: ["/static/images/lab4.jpg.jpeg"],
+      labPhotos: [],
     },
 
     // ─────────────── ELECTRICAL ───────────────
@@ -474,7 +466,7 @@ const DEPARTMENTS_DATA = {
       labs: [
         { name: "ELECTRICAL MACHINES LAB", equipment: "Motors, Generators, Transformers", area: "80.00", cost: "15,00,000", remarks: "" },
       ],
-      labPhotos: ["/static/images/lab2.jpg.jpeg"],
+      labPhotos: [],
     },
 
     // ─────────────── ENTC ───────────────
@@ -543,7 +535,7 @@ const DEPARTMENTS_DATA = {
         { name: "Computer Center", equipment: "", area: "", cost: " ", remarks: "" },
         { name: "Project Lab", equipment: "", area: "", cost: " ", remarks: "" },
       ],
-      labPhotos: ["/static/images/lab1.jpg.jpeg"],
+      labPhotos: [],
     },
 
     // ─────────────── MECHANICAL ───────────────
@@ -601,7 +593,7 @@ const DEPARTMENTS_DATA = {
         { name: "WORKSHOP", equipment: "Lathe, Milling, Drilling Machines", area: "150.00", cost: "25,00,000", remarks: "" },
         { name: "CAD/CAM LAB", equipment: "Workstations, AutoCAD, SolidWorks", area: "50.00", cost: "12,00,000", remarks: "" },
       ],
-      labPhotos: ["/static/images/lab1.jpg.jpeg"],
+      labPhotos: [],
     },
 
     // ═══════════════════════════════════════════════════
@@ -630,7 +622,7 @@ const DEPARTMENTS_DATA = {
         { name: "PHYSICS LAB", equipment: "Optical Instruments, Meters", area: "50.00", cost: "6,00,000", remarks: "" },
         { name: "CHEMISTRY LAB", equipment: "Chemicals, Glassware", area: "50.00", cost: "5,00,000", remarks: "" },
       ],
-      labPhotos: ["/static/images/lab4.jpg.jpeg"],
+      labPhotos: [],
     },
 
     // ─────────────── APPLIED MECHANICS ───────────────
@@ -661,7 +653,7 @@ const DEPARTMENTS_DATA = {
       labs: [
         { name: "MECHANICS LAB", equipment: "Testing Machines, Models", area: "60.00", cost: "8,00,000", remarks: "" },
       ],
-      labPhotos: ["/static/images/lab3.jpg.jpeg"],
+      labPhotos: [],
     },
 
     // ─────────────── WORKSHOP ───────────────
@@ -686,7 +678,7 @@ const DEPARTMENTS_DATA = {
         { name: "FITTING SHOP", equipment: "Vices, Files, Hacksaws", area: "80.00", cost: "5,00,000", remarks: "" },
         { name: "CARPENTRY SHOP", equipment: "Saws, Planes, Chisels", area: "80.00", cost: "4,00,000", remarks: "" },
       ],
-      labPhotos: ["https://images.unsplash.com/photo-1523050854058-8df90110c476?w=900&h=600&fit=crop"],
+      labPhotos: [],
     },
 
     // ═══════════════════════════════════════════════════

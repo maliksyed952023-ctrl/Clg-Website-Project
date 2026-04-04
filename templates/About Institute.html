@@ -1245,42 +1245,58 @@
         <div class="gallery">
 
           <div class="gallery-card" onclick="openLightbox('Campus View')">
-            <div class="gallery-img" data-category="Campus View"></div>
+            <div class="gallery-img" data-category="Campus View">
+              <img src="/static/images/campus1.jpg.jpeg" class="active">
+            </div>
             <div class="gallery-text">Campus View</div>
           </div>
 
           <div class="gallery-card" onclick="openLightbox('College Event')">
-            <div class="gallery-img" data-category="College Event"></div>
+            <div class="gallery-img" data-category="College Event">
+              <img src="/static/images/college_event1.jpeg" class="active">
+            </div>
             <div class="gallery-text">College Event</div>
           </div>
 
           <div class="gallery-card" onclick="openLightbox('Workshop')">
-            <div class="gallery-img" data-category="Workshop"></div>
+            <div class="gallery-img" data-category="Workshop">
+              <img src="/static/images/campus3.jpg.jpeg" class="active">
+            </div>
             <div class="gallery-text">Workshop</div>
           </div>
 
           <div class="gallery-card" onclick="openLightbox('Laboratory')">
-            <div class="gallery-img" data-category="Laboratory"></div>
+            <div class="gallery-img" data-category="Laboratory">
+              <img src="/static/images/lab1.jpg.jpeg" class="active">
+            </div>
             <div class="gallery-text">Laboratory</div>
           </div>
 
           <div class="gallery-card" onclick="openLightbox('Library')">
-            <div class="gallery-img" data-category="Library"></div>
+            <div class="gallery-img" data-category="Library">
+              <img src="/static/images/campus1.jpg.jpeg" class="active">
+            </div>
             <div class="gallery-text">Library</div>
           </div>
 
           <div class="gallery-card" onclick="openLightbox('Seminar Hall')">
-            <div class="gallery-img" data-category="Seminar Hall"></div>
+            <div class="gallery-img" data-category="Seminar Hall">
+              <img src="/static/images/seminar_hall1.jpg.jpeg" class="active">
+            </div>
             <div class="gallery-text">Seminar Hall</div>
           </div>
 
           <div class="gallery-card" onclick="openLightbox('Sports Activity')">
-            <div class="gallery-img" data-category="Sports Activity"></div>
+            <div class="gallery-img" data-category="Sports Activity">
+              <img src="/static/images/campus3.jpg.jpeg" class="active">
+            </div>
             <div class="gallery-text">Sports Activity</div>
           </div>
 
           <div class="gallery-card" onclick="openLightbox('Annual Function')">
-            <div class="gallery-img" data-category="Annual Function"></div>
+            <div class="gallery-img" data-category="Annual Function">
+              <img src="/static/images/annual_event.jpeg" class="active">
+            </div>
             <div class="gallery-text">Annual Function</div>
           </div>
 
@@ -1429,30 +1445,12 @@
   </script>
   <script type="text/javascript"
     src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <script src="{{ url_for('static', filename='js/utility-bar.js') }}"></script>
 
 
   <!-- HEADER & NAVBAR REQUIRED JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- ================= PERSISTENT DARK MODE LOGIC ================= -->
-  <script id="global-dark-mode-js">
-    // Function called by the theme toggle button
-    function toggleTheme() {
-      document.body.classList.toggle('dark');
-      // Save preference to localStorage
-      const isDark = document.body.classList.contains('dark');
-      localStorage.setItem('site_theme', isDark ? 'dark' : 'light');
-    }
-
-    // Apply immediately on load to prevent white flash
-    (function () {
-      const savedTheme = localStorage.getItem('site_theme');
-      // If explicitly set to dark, add class
-      if (savedTheme === 'dark') {
-        document.body.classList.add('dark');
-      }
-    })();
-  </script>
   <!-- ============================================================== -->
 
 
@@ -1474,55 +1472,42 @@
 
   <!-- PHOTO GALLERY LOGIC -->
   <script>
-    const galleryData = {
-      'Campus View': [
-        "{{ url_for('static', filename='images/campus1.jpg.jpeg') }}",
-        "{{ url_for('static', filename='images/campus2.jpg.jpeg') }}",
-        "{{ url_for('static', filename='images/campus3.jpg.jpeg') }}",
-        "{{ url_for('static', filename='images/campus4.jpeg') }}"
-      ],
-      'College Event': [
-        "{{ url_for('static', filename='images/college_event1.jpeg') }}",
-        "{{ url_for('static', filename='images/college_event2.jpeg') }}"
-      ],
-      'Workshop': [
-        "{{ url_for('static', filename='images/workshop1.jpg.jpeg') }}",
-        "{{ url_for('static', filename='images/workshop2.jpg.jpeg') }}",
+    let dynamicGalleryData = {};
 
-      ],
-      'Laboratory': [
-        "{{ url_for('static', filename='images/lab1.jpg.jpeg') }}",
-        "{{ url_for('static', filename='images/lab2.jpg.jpeg') }}",
-        "{{ url_for('static', filename='images/lab3.jpg.jpeg') }}",
-        "{{ url_for('static', filename='images/lab4.jpg.jpeg') }}"
-      ],
-      'Library': [
-        "{{ url_for('static', filename='images/library1.jpg.jpeg') }}",
-        "{{ url_for('static', filename='images/library2.jpg.jpeg') }}",
-        "{{ url_for('static', filename='images/library3.jpg.jpeg') }}",
-        "{{ url_for('static', filename='images/library4.jpg.jpeg') }}"
-      ],
-      'Seminar Hall': [
-        "{{ url_for('static', filename='images/seminar_hall1.jpg.jpeg') }}"
-      ],
-      'Sports Activity': [
-        "{{ url_for('static', filename='images/sports1.jpg.jpeg') }}",
-        "{{ url_for('static', filename='images/sport2.jpeg') }}",
-        "{{ url_for('static', filename='images/sports3.jpeg') }}"
-      ],
-      'Annual Function': [
-        "{{ url_for('static', filename='images/annual_event.jpeg') }}",
-        "{{ url_for('static', filename='images/annual_event2.jpeg') }}"
-      ]
-    };
+    async function fetchGalleryData() {
+      try {
+        const res = await fetch('/api/images?category=about');
+        const json = await res.json();
+        const data = json.data || [];
+        
+        // Group by subcategory name (which should match the card titles)
+        const grouped = {};
+        data.forEach(img => {
+          if (!grouped[img.subcategory]) grouped[img.subcategory] = [];
+          grouped[img.subcategory].push(img.url);
+        });
+        dynamicGalleryData = grouped;
+        return grouped;
+      } catch (e) {
+        console.error("Error fetching gallery data:", e);
+        return {};
+      }
+    }
 
     // Initialize gallery images in cards
-    function initGallery() {
+    async function initGallery() {
+      await fetchGalleryData();
       const containers = document.querySelectorAll('.gallery-img');
       containers.forEach(container => {
         const category = container.getAttribute('data-category');
-        const images = galleryData[category] || [];
+        const images = dynamicGalleryData[category] || [];
 
+        if (images.length === 0) {
+            // Leave hardcoded images alone if no dynamic results
+            return;
+        }
+
+        container.innerHTML = '';
         images.forEach((src, index) => {
           const img = document.createElement('img');
           img.src = src;
@@ -1552,7 +1537,21 @@
       title.innerText = category;
       grid.innerHTML = ''; // Clear previous
 
-      const images = galleryData[category] || [];
+      const images = dynamicGalleryData[category] || [];
+
+      if (images.length === 0) {
+        // No uploads yet — show a clean empty state instead of wrong placeholders
+        grid.innerHTML = `
+          <div style="grid-column:1/-1; text-align:center; padding:40px 20px; color:#888;">
+            <div style="font-size:48px; margin-bottom:12px;">🖼️</div>
+            <p style="font-size:16px; font-weight:600; color:#555; margin-bottom:6px;">No Photos Uploaded Yet</p>
+            <p style="font-size:13px; color:#999;">Photos for <strong>${category}</strong> will appear here once uploaded by the admin.</p>
+          </div>`;
+        lightbox.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        return;
+      }
+
       images.forEach(src => {
         const div = document.createElement('div');
         div.className = 'lightbox-item';

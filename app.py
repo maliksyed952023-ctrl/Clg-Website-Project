@@ -5,6 +5,7 @@ from flask_cors import CORS
 from routes.auth import auth_bp  
 from routes.announcements import announcements_bp
 from routes.pending import pending_bp
+from routes.images import images_bp
 
 
 
@@ -17,6 +18,7 @@ app.register_blueprint(announcements_bp, url_prefix='/api')
 
 app.register_blueprint(auth_bp, url_prefix='/api')
 app.register_blueprint(pending_bp, url_prefix='/api')
+app.register_blueprint(images_bp, url_prefix='/api')
  
 @app.route('/')
 @app.route('/home')

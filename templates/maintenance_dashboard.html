@@ -896,6 +896,69 @@
 
 <body>
 
+    <!-- ── IMAGE REQUEST MODAL ── -->
+    <div class="overlay" id="imageRequestOverlay">
+        <div class="modal" style="max-width:440px">
+            <div class="modal-header">
+                <div class="modal-title">Suggest Image Update</div>
+                <button class="close-btn" onclick="closeImageRequestModal()">✕</button>
+            </div>
+
+            <div class="form-body">
+                <div class="form-field" style="display:none">
+                    <label class="form-label">Internal Slug (Hidden)</label>
+                    <input class="form-input" type="text" id="reqSlug" readonly>
+                </div>
+
+                <div class="form-field">
+                    <label class="form-label">Main Category *</label>
+                    <select class="form-input" id="reqMainCategory" onchange="updateSubCategories()"
+                        style="background:var(--navy3); color:var(--white); border:1px solid var(--border)">
+                        <option value="">-- Select Main Category --</option>
+                        <option value="about">About Institute</option>
+                        <option value="department">Departments</option>
+                        <option value="tpo">TPO Section</option>
+                        <option value="facility">Facilities</option>
+                        <option value="general">General (Other)</option>
+                    </select>
+                </div>
+
+                <div class="form-field" id="reqSubCatField" style="display:none">
+                    <label class="form-label">Subcategory *</label>
+                    <select class="form-input" id="reqSubCategory" onchange="updateSlots()"
+                        style="background:var(--navy3); color:var(--white); border:1px solid var(--border)">
+                        <!-- Populated dynamically -->
+                    </select>
+                </div>
+
+                <div class="form-field" id="reqSlotField" style="display:none">
+                    <label class="form-label">Photo Slot (Select Number) *</label>
+                    <select class="form-input" id="reqSlot"
+                        style="background:var(--navy3); color:var(--white); border:1px solid var(--border)">
+                        <!-- Populated based on subcategory type -->
+                    </select>
+                    <small style="color:var(--muted); font-size:11px;">Pick which photo slot to suggest an update for.</small>
+                </div>
+
+                <div class="form-field">
+                    <label class="form-label">New Photo *</label>
+                    <div class="upload-zone" id="imgUploadZone" onclick="document.getElementById('imgInput').click()">
+                        <div class="upload-icon">📸</div>
+                        <div class="upload-text">Select new image to suggest</div>
+                        <img id="imgPreview" style="display:none; max-width:100%; border-radius:8px; margin-top:10px">
+                    </div>
+                    <input type="file" id="imgInput" accept="image/*" style="display:none"
+                        onchange="previewImage(this)">
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeImageRequestModal()">Cancel</button>
+                <button class="btn-save" id="imgSubmitBtn" onclick="submitImageRequest()">Submit Request</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ── SIDEBAR ── -->
     <aside class="sidebar">
         <div class="sidebar-logo">
@@ -909,7 +972,7 @@
         <div class="sidebar-scroll">
             <div class="nav-section">
                 <div class="nav-label">My Requests</div>
-                <div class="nav-item active" onclick="switchFilter('all', this)">
+                <div class="nav-item active" id="requestsNavItem" onclick="showRequestsView(this)">
                     <span class="nav-icon">📋</span> All Requests
                     <span class="nav-badge" id="badge-all">0</span>
                 </div>
@@ -924,6 +987,13 @@
                 <div class="nav-item" onclick="switchFilter('rejected', this)">
                     <span class="nav-icon">❌</span> Rejected
                     <span class="nav-badge red" id="badge-rejected">0</span>
+                </div>
+            </div>
+
+            <div class="nav-section" style="margin-top:16px; border-top:1px solid var(--border); padding-top:16px;">
+                <div class="nav-label">Media & Assets</div>
+                <div class="nav-item" onclick="showImagesView(this)">
+                    <span class="nav-icon">🖼️</span> Image Suggestions
                 </div>
             </div>
         </div>
@@ -953,12 +1023,38 @@
         <div class="topbar">
             <div>
                 <div class="page-title" id="pageTitle">My Requests</div>
-                <div class="page-sub">Submit notices for admin approval</div>
+                <div class="page-sub" id="pageSub">Submit notices for admin approval</div>
             </div>
-            <button class="add-btn" onclick="openAddModal()">＋ &nbsp;Submit New Request</button>
+            <button class="add-btn" id="topbarBtn" onclick="openAddModal()">＋ &nbsp;Submit New Request</button>
         </div>
 
-        <div class="content">
+        <!-- ── IMAGES VIEW ── -->
+        <div class="content" id="imagesView" style="display:none">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h3 style="margin:0; font-family:'Syne',sans-serif;">Managed Image Slots</h3>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Location (Slug)</th>
+                            <th>Current Preview</th>
+                            <th>Category / Subcategory</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="imagesTableBody">
+                        <tr class="loading-row">
+                            <td colspan="4">Loading available slots...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ── REQUESTS VIEW ── -->
+        <div class="content" id="requestsView">
 
             <!-- Approval Banner -->
             <div class="approval-banner">
@@ -1216,6 +1312,20 @@
             applyFilter(s);
         }
 
+        function showRequestsView(el) {
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('imagesView').style.display = 'none';
+            document.getElementById('requestsView').style.display = 'block';
+            document.getElementById('pageTitle').textContent = 'My Requests';
+            document.getElementById('pageSub').textContent = 'Submit notices for admin approval';
+            
+            const btn = document.getElementById('topbarBtn');
+            btn.style.display = 'flex';
+            btn.innerHTML = '＋ &nbsp;Submit New Request';
+            btn.onclick = () => openAddModal();
+        }
+
         // ── RENDER TABLE ──
         function renderTable(data) {
             const tbody = document.getElementById('tableBody');
@@ -1442,6 +1552,245 @@
         });
 
         fetchAll();
+
+        // ── IMAGE SUGGESTIONS LOGIC ──
+        async function showImagesView(el) {
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+
+            document.getElementById('requestsView').style.display = 'none';
+            document.getElementById('imagesView').style.display = 'block';
+
+            document.getElementById('pageTitle').textContent = 'Image Suggestions';
+            document.getElementById('pageSub').textContent = 'Suggest new photos for hardcoded slots';
+
+            const btn = document.getElementById('topbarBtn');
+            btn.style.display = 'flex';
+            btn.innerHTML = '＋ &nbsp;Suggest New Image';
+            btn.onclick = () => openImageRequestModal();
+
+            loadImagesForMaintenance();
+        }
+
+        async function loadImagesForMaintenance() {
+            const tbody = document.getElementById('imagesTableBody');
+            tbody.innerHTML = '<tr class="loading-row"><td colspan="4">Loading slots...</td></tr>';
+            try {
+                const res = await fetch(`${API}/images`);
+                const json = await res.json();
+                const data = json.data || [];
+
+                if (!data.length) {
+                    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:40px; color:var(--muted)">No image slots available to manage.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = data.map(img => `
+                    <tr>
+                        <td style="font-family:monospace; color:var(--gold)">${img.slug}</td>
+                        <td><img src="${img.url}" style="width:60px; height:40px; object-fit:cover; border-radius:4px; border:1px solid var(--border)"></td>
+                        <td>
+                            <div style="font-size:13px; font-weight:600">${img.category || 'general'}</div>
+                            <div style="font-size:11px; color:var(--muted)">${img.subcategory || '-'}</div>
+                        </td>
+                        <td>
+                            <button class="act-btn" style="background:rgba(232,184,75,0.1); color:var(--gold); border-color:rgba(232,184,75,0.2)" onclick="openImageRequestModal('${img.slug}')">Suggest Change</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (e) {
+                tbody.innerHTML = '<tr><td colspan="4">Error loading slots</td></tr>';
+            }
+        }
+
+        function openImageRequestModal(slug = '') {
+            document.getElementById('reqSlug').value = slug;
+            document.getElementById('imgPreview').style.display = 'none';
+            document.getElementById('imgInput').value = '';
+            
+            // If it's a new request (no slug), reset dropdowns
+            if (!slug) {
+                document.getElementById('reqMainCategory').value = '';
+                updateSubCategories();
+            } else {
+                // Parse slug (e.g. facility_library_1)
+                // This is a simplified approach, real parsing would depend on your slug format
+                // For now, let's just let them select manually even if a slug is passed, 
+                // but we could pre-fill if we had a more robust slug-to-category mapping.
+            }
+
+            document.querySelectorAll('.upload-icon, .upload-text').forEach(e => e.style.display = 'block');
+            document.getElementById('imageRequestOverlay').classList.add('open');
+        }
+
+        function closeImageRequestModal() {
+            document.getElementById('imageRequestOverlay').classList.remove('open');
+        }
+
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    const preview = document.getElementById('imgPreview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    document.querySelectorAll('.upload-icon, .upload-text').forEach(el => el.style.display = 'none');
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // ── CATEGORY MAPPING (Simplified for non-technical users) ──
+        const IMAGE_CATEGORIES = {
+            'home': [
+                { val: 'home_hero', label: 'Hero Slider (Main)', slots: 4 },
+                { val: 'home_leadership', label: 'Leadership / HODs', slots: 4 }
+            ],
+            'about': [
+                { val: 'about_gallery', label: 'General Institute Gallery', slots: 10 }
+            ],
+            'department': [
+                { val: 'dept_aiml_faculty', label: 'AIML - Faculty Photos', slots: 10 },
+                { val: 'dept_aiml_lab', label: 'AIML - Lab Photos', slots: 5 },
+                { val: 'dept_aiml_achievement', label: 'AIML - Achievements', slots: 5 },
+                { val: 'dept_auto_faculty', label: 'Automobile - Faculty Photos', slots: 10 },
+                { val: 'dept_auto_lab', label: 'Automobile - Lab Photos', slots: 5 },
+                { val: 'dept_auto_achievement', label: 'Automobile - Achievements', slots: 5 },
+                { val: 'dept_civil_faculty', label: 'Civil - Faculty Photos', slots: 10 },
+                { val: 'dept_civil_lab', label: 'Civil - Lab Photos', slots: 5 },
+                { val: 'dept_civil_achievement', label: 'Civil - Achievements', slots: 5 },
+                { val: 'dept_computer_faculty', label: 'Computer - Faculty Photos', slots: 10 },
+                { val: 'dept_computer_lab', label: 'Computer - Lab Photos', slots: 5 },
+                { val: 'dept_computer_achievement', label: 'Computer - Achievements', slots: 5 },
+                { val: 'dept_ddgm_faculty', label: 'DDGM - Faculty Photos', slots: 10 },
+                { val: 'dept_ddgm_lab', label: 'DDGM - Lab Photos', slots: 5 },
+                { val: 'dept_ddgm_achievement', label: 'DDGM - Achievements', slots: 5 },
+                { val: 'dept_electrical_faculty', label: 'Electrical - Faculty Photos', slots: 10 },
+                { val: 'dept_electrical_lab', label: 'Electrical - Lab Photos', slots: 5 },
+                { val: 'dept_electrical_achievement', label: 'Electrical - Achievements', slots: 5 },
+                { val: 'dept_entc_faculty', label: 'ENTC - Faculty Photos', slots: 10 },
+                { val: 'dept_entc_lab', label: 'ENTC - Lab Photos', slots: 5 },
+                { val: 'dept_entc_achievement', label: 'ENTC - Achievements', slots: 5 },
+                { val: 'dept_it_faculty', label: 'IT - Faculty Photos', slots: 10 },
+                { val: 'dept_it_lab', label: 'IT - Lab Photos', slots: 5 },
+                { val: 'dept_it_achievement', label: 'IT - Achievements', slots: 5 },
+                { val: 'dept_mechanical_faculty', label: 'Mechanical - Faculty Photos', slots: 10 },
+                { val: 'dept_mechanical_lab', label: 'Mechanical - Lab Photos', slots: 5 },
+                { val: 'dept_mechanical_achievement', label: 'Mechanical - Achievements', slots: 5 },
+                { val: 'dept_science-humanities_faculty', label: 'Sci & Hum - Faculty Photos', slots: 10 },
+                { val: 'dept_science-humanities_lab', label: 'Sci & Hum - Lab Photos', slots: 5 },
+                { val: 'dept_science-humanities_achievement', label: 'Sci & Hum - Achievements', slots: 5 },
+                { val: 'dept_applied-mechanics_faculty', label: 'App Mech - Faculty Photos', slots: 10 },
+                { val: 'dept_applied-mechanics_lab', label: 'App Mech - Lab Photos', slots: 5 },
+                { val: 'dept_applied-mechanics_achievement', label: 'App Mech - Achievements', slots: 5 },
+                { val: 'dept_workshop_faculty', label: 'Workshop - Faculty Photos', slots: 10 },
+                { val: 'dept_workshop_lab', label: 'Workshop - Lab Photos', slots: 5 },
+                { val: 'dept_workshop_achievement', label: 'Workshop - Achievements', slots: 5 },
+                { val: 'dept_mercedes-benz_faculty', label: 'Mercedes-Benz - Faculty Photos', slots: 5 },
+                { val: 'dept_mercedes-benz_lab', label: 'Mercedes-Benz - Lab Photos', slots: 5 },
+                { val: 'dept_mercedes-benz_achievement', label: 'Mercedes-Benz - Achievements', slots: 5 }
+            ],
+            'tpo': [
+                { val: 'tpo_recruiters', label: 'Recruiters Logos', slots: 20 }
+            ],
+            'facility': [
+                { val: 'facility_library', label: 'Library Photos', slots: 5 },
+                { val: 'facility_gymkhana', label: 'Gymkhana Photos', slots: 5 },
+                { val: 'facility_hostel_girls', label: 'Girls Hostel Photos', slots: 5 },
+                { val: 'facility_hostel_boys', label: 'Boys Hostel Photos', slots: 5 },
+                { val: 'facility_canteen', label: 'Other: Canteen', slots: 5 },
+                { val: 'facility_workshop', label: 'Other: Workshop', slots: 5 },
+                { val: 'facility_stationary', label: 'Other: Stationary Store', slots: 5 },
+                { val: 'facility_auditorium', label: 'Other: Auditorium', slots: 5 },
+                { val: 'facility_computer_center', label: 'Other: Computer Center', slots: 5 },
+                { val: 'facility_wifi', label: 'Other: WiFi Campus', slots: 5 },
+                { val: 'facility_parking', label: 'Other: Parking Area', slots: 5 }
+            ]
+        };
+
+        function updateSubCategories() {
+            const mainCat = document.getElementById('reqMainCategory').value;
+            const subCatSelect = document.getElementById('reqSubCategory');
+            const subCatField = document.getElementById('reqSubCatField');
+            const slotField = document.getElementById('reqSlotField');
+            
+            slotField.style.display = 'none';
+
+            if (!mainCat || !IMAGE_CATEGORIES[mainCat]) {
+                subCatField.style.display = 'none';
+                return;
+            }
+
+            subCatSelect.innerHTML = '<option value="">-- Select Subcategory --</option>' + 
+                IMAGE_CATEGORIES[mainCat].map(c => `<option value="${c.val}">${c.label}</option>`).join('');
+            
+            subCatField.style.display = 'block';
+        }
+
+        function updateSlots() {
+            const mainCat = document.getElementById('reqMainCategory').value;
+            const subCatVal = document.getElementById('reqSubCategory').value;
+            const slotSelect = document.getElementById('reqSlot');
+            const slotField = document.getElementById('reqSlotField');
+
+            if (!subCatVal) {
+                slotField.style.display = 'none';
+                return;
+            }
+
+            const item = IMAGE_CATEGORIES[mainCat].find(c => c.val === subCatVal);
+            const slotCount = item ? item.slots : 1;
+
+            slotSelect.innerHTML = '';
+            for(let i=1; i<=slotCount; i++) {
+                slotSelect.innerHTML += `<option value="${i}">Photo Slot ${i}</option>`;
+            }
+            
+            slotField.style.display = 'block';
+        }
+
+        async function submitImageRequest() {
+            const file = document.getElementById('imgInput').files[0];
+            const category = document.getElementById('reqMainCategory').value;
+            const subcategory = document.getElementById('reqSubCategory').value;
+            const slot = document.getElementById('reqSlot').value;
+            
+            // Auto-generate slug: subcategory_slot
+            const slug = `${subcategory}_${slot}`;
+
+            if (!file || !category || !subcategory) return showToast('Please select category and image', 'error');
+
+            const btn = document.getElementById('imgSubmitBtn');
+            btn.disabled = true;
+            btn.textContent = 'Submitting...';
+
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('slug', slug);
+            formData.append('category', category);
+            formData.append('subcategory', subcategory);
+            formData.append('submitted_by', adminEmail);
+            formData.append('role', 'maintenance');
+
+            try {
+                const res = await fetch(`${API}/images/request`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const json = await res.json();
+                if (json.error) throw new Error(json.error);
+
+                showToast('Suggestion submitted successfully!');
+                closeImageRequestModal();
+                showRequestsView(document.getElementById('requestsNavItem'));
+            } catch (e) {
+                showToast(e.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Submit Request';
+            }
+        }
+
     </script>
 </body>
 

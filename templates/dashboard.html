@@ -1104,11 +1104,22 @@
                 </div>
             </div>
 
-            <div class="nav-section" style="margin-top:12px; border-top:1px solid var(--border); padding-top:16px;">
-                <div class="nav-label">Workflow</div>
-                <div class="nav-item" id="pendingNavItem" onclick="showPendingView(this)">
-                    <span class="nav-icon">⏳</span> Pending Tasks <span class="nav-badge" id="badge-pending"
-                        style="background:var(--danger); color:white;">0</span>
+            <div class="nav-section" style="margin-top:16px; border-top:1px solid var(--border); padding-top:16px;">
+                <div class="nav-label">Media & Assets</div>
+                <div class="nav-item" onclick="showImagesView(this)">
+                    <span class="nav-icon">🖼️</span> Image Management
+                    <span class="nav-badge" id="badge-image-pending">0</span>
+                </div>
+            </div>
+
+            <div class="nav-section" style="margin-top:auto; padding-bottom:20px">
+                <div class="nav-label">System</div>
+                <div class="nav-item" onclick="showPendingView(this)">
+                    <span class="nav-icon">⏳</span> Pending Approvals
+                    <span class="nav-badge" id="badge-pending">0</span>
+                </div>
+                <div class="nav-item" onclick="logout()">
+                    <span class="nav-icon">🚪</span> Logout
                 </div>
             </div>
 
@@ -1144,7 +1155,7 @@
                 <div class="page-title" id="pageTitle">All Announcements</div>
                 <div class="page-sub" id="pageSub">Manage notices, tenders and news</div>
             </div>
-            <button class="add-btn" onclick="openAddModal()">＋ &nbsp;Add New</button>
+            <button class="add-btn" id="topbarBtn" onclick="openAddModal()">＋ &nbsp;Add New</button>
         </div>
 
         <div class="content" id="announcementsView">
@@ -1202,6 +1213,49 @@
             </div>
         </div>
 
+        <!-- ── IMAGES VIEW ── -->
+        <div class="content" id="imagesView" style="display:none">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h3 style="margin:0; font-family:'Syne',sans-serif;">Managed Image Slots</h3>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Location (Slug)</th>
+                            <th>Preview</th>
+                            <th>Category / Subcategory</th>
+                            <th>By / Role</th>
+                            <th>Last Updated</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="imagesTableBody">
+                        <tr class="loading-row"><td colspan="5">Loading images...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 style="margin-top:40px; margin-bottom:20px; font-family:'Syne',sans-serif;">Image Requests (from Maintenance)</h3>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Location</th>
+                            <th>Suggestion</th>
+                            <th>Submitted By</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="imageRequestsTableBody">
+                        <tr class="loading-row"><td colspan="5">No pending requests.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <!-- ── PENDING VIEW ── -->
         <div class="content" id="pendingView" style="display:none">
             <div class="table-wrap">
@@ -1219,6 +1273,25 @@
                         <tr class="loading-row">
                             <td colspan="5">Loading pending requests…</td>
                         </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Image Requests Section -->
+            <h3 style="margin-top:40px; margin-bottom:20px; font-family:'Syne',sans-serif;">Pending Image Updates</h3>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Location</th>
+                            <th>Suggestion</th>
+                            <th>Submitted By</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pendingImagesTableBody">
+                        <tr class="loading-row"><td colspan="5">Loading...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -1355,7 +1428,67 @@
         </div>
     </div>
 
-    <!-- ── DELETE CONFIRM MODAL ── -->
+    <!-- ── IMAGE UPLOAD MODAL ── -->
+    <div class="overlay" id="imageModalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">Manage Image</div>
+                <button class="close-btn" onclick="closeImageModal()">✕</button>
+            </div>
+
+            <div class="form-field" style="display:none">
+                <label class="form-label">Image Slug (Internal)</label>
+                <input class="form-input" type="text" id="imgSlug">
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Main Category *</label>
+                <select class="form-input" id="imgMainCategory" onchange="updateSubCategories()" style="background:var(--navy3); color:var(--white); border:1px solid var(--border)">
+                    <option value="home">Home Page</option>
+                    <option value="about">About Institute</option>
+                    <option value="department">Departments</option>
+                    <option value="tpo">TPO Section</option>
+                    <option value="facility">Facilities</option>
+                    <option value="general">General (Other)</option>
+                </select>
+            </div>
+
+            <div class="form-field" id="subCatField" style="display:none">
+                <label class="form-label">Subcategory *</label>
+                <select class="form-input" id="imgSubCategory" onchange="updateSlots()" style="background:var(--navy3); color:var(--white); border:1px solid var(--border)">
+                    <!-- Populated dynamically -->
+                </select>
+            </div>
+
+            <div class="form-field" id="slotField" style="display:none">
+                <label class="form-label">Photo Slot (Select Number) *</label>
+                <select class="form-input" id="imgSlot" style="background:var(--navy3); color:var(--white); border:1px solid var(--border)">
+                    <!-- Populated based on subcategory type -->
+                </select>
+                <small style="color:var(--muted); font-size:11px;">Pick which photo slot to update (e.g. Slot 1, Slot 2).</small>
+            </div>
+
+            <div class="form-field" id="cardTitleField">
+                <label class="form-label">Card/Gallery Display Title</label>
+                <input class="form-input" type="text" id="imgCardTitle" placeholder="e.g. Analog Lab / Project Lab">
+                <small style="color:var(--muted); font-size:11px;">Optional: This name will appear on the gallery card.</small>
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Photos (Select Multiple or Folder) *</label>
+                <input type="file" id="imgFileInput" accept="image/*" multiple onchange="previewImages(this)">
+                <div id="imgPreviewWrap" style="margin-top:10px; display:none;">
+                    <div id="bulkStatus" style="font-size:12px; font-weight:600; color:var(--gold); margin-bottom:10px;"></div>
+                    <div style="display:flex; gap:10px; overflow-x:auto; padding-bottom:10px;" id="previewGrid"></div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeImageModal()">Cancel</button>
+                <button class="btn-save" id="imgSaveBtn" onclick="saveImage()">Upload & Save</button>
+            </div>
+        </div>
+    </div>
     <div class="overlay" id="deleteOverlay">
         <div class="confirm-modal">
             <div class="confirm-icon">🗑️</div>
@@ -1406,16 +1539,423 @@
                 const json = await res.json();
                 allData = json.data || [];
                 updateStats();
-                fetchPendingCount(); // Fetch count for badge
+                fetchPendingCount(); 
+                fetchImagePendingCount(); // Image request count
                 applyFilter(currentFilter);
             } catch (e) {
-                showToast('Failed to load data. Is Flask running?', 'error');
-                document.getElementById('tableBody').innerHTML =
-                    `<tr class="loading-row"><td colspan="5">⚠️ Could not connect to server</td></tr>`;
+                showToast('Failed to load data.', 'error');
             }
         }
 
-        // ── STATS ──
+        async function fetchImagePendingCount() {
+            try {
+                const res = await fetch(`${API}/images/requests?status=pending`);
+                const json = await res.json();
+                document.getElementById('badge-image-pending').textContent = (json.data || []).length;
+            } catch (e) {}
+        }
+
+        // ── IMAGE MANAGEMENT LOGIC ──
+        async function showImagesView(el) {
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+            
+            // Hide other views
+            document.getElementById('announcementsView').style.display = 'none';
+            document.getElementById('pendingView').style.display = 'none';
+            document.getElementById('imagesView').style.display = 'block';
+            
+            document.getElementById('pageTitle').textContent = 'Image Management';
+            document.getElementById('pageSub').textContent = 'Manage dynamic photo slots across the website';
+
+            const btn = document.getElementById('topbarBtn');
+            btn.style.display = 'flex';
+            btn.innerHTML = '＋ &nbsp;New Image Slot';
+            btn.onclick = () => openImageUploadModal();
+            
+            // Add a "Clear All Dept Slots" button next to it
+            const clearBtn = document.createElement('button');
+            clearBtn.className = 'btn-cancel';
+            clearBtn.style.cssText = 'padding: 8px 16px; font-size:13px; color:#f08080; border-color:rgba(224,92,92,0.2)';
+            clearBtn.innerHTML = '🗑️ &nbsp;Clear All Dept Slots';
+            clearBtn.onclick = () => clearAllDeptSlots();
+            btn.parentElement.appendChild(clearBtn);
+            
+            loadManagedImages();
+            loadImageRequests();
+        }
+
+        async function loadManagedImages() {
+            const tbody = document.getElementById('imagesTableBody');
+            tbody.innerHTML = '<tr class="loading-row"><td colspan="5">Loading images...</td></tr>';
+            try {
+                const res = await fetch(`${API}/images`);
+                const json = await res.json();
+                const data = json.data || [];
+                
+                if (!data.length) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:40px; color:var(--muted)">No managed images yet.</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = data.map(img => `
+                    <tr>
+                        <td style="font-family:monospace; font-size:13px; color:var(--gold)">${img.slug}</td>
+                        <td>
+                            <a href="${img.url}" target="_blank">
+                                <img src="${img.url}" style="width:60px; height:40px; object-fit:cover; border-radius:4px; border:1px solid var(--border)">
+                            </a>
+                        </td>
+                        <td>
+                            <div style="font-size:13px; font-weight:600">${img.category || 'general'}</div>
+                            <div style="font-size:11px; color:var(--muted)">${img.subcategory || '-'}</div>
+                        </td>
+                        <td>
+                            <div style="font-size:12px;">${img.uploaded_by || 'admin'}</div>
+                            <div style="font-size:10px; color:var(--gold); text-transform:uppercase">${img.role || 'admin'}</div>
+                        </td>
+                        <td style="font-size:12px; color:var(--muted)">${formatDate(img.updated_at)}</td>
+                        <td style="display:flex; gap:6px">
+                            <button class="btn-cancel" style="padding:6px 12px; font-size:12px" onclick="openImageUploadModal('${img.slug}')">Add More</button>
+                            <button class="btn-cancel" style="padding:6px 12px; font-size:12px; border-color:rgba(224,92,92,0.15)" onclick="deleteManagedImageById('${img.id}', '${img.slug}')">Delete</button>
+                            <button class="btn-cancel" style="padding:6px 12px; font-size:12px; color:#f08080; border-color:rgba(224,92,92,0.3)" onclick="deleteManagedImage('${img.slug}')">Clear Slot</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch(e) {
+                tbody.innerHTML = '<tr><td colspan="5">Error loading images</td></tr>';
+            }
+        }
+
+        async function loadImageRequests(targetId = 'imageRequestsTableBody') {
+            const tbody = document.getElementById(targetId);
+            if (!tbody) return;
+            tbody.innerHTML = '<tr class="loading-row"><td colspan="5">Loading...</td></tr>';
+            try {
+                const res = await fetch(`${API}/images/requests?status=pending`);
+                const json = await res.json();
+                const data = json.data || [];
+                
+                if (!data.length) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:40px; color:var(--muted)">No pending requests.</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = data.map(req => `
+                    <tr>
+                        <td style="font-family:monospace; font-size:13px; color:var(--gold)">${req.slug}</td>
+                        <td>
+                            <a href="${req.suggested_url}" target="_blank" style="display:flex; align-items:center; gap:8px; text-decoration:none">
+                                <img src="${req.suggested_url}" style="width:50px; height:35px; object-fit:cover; border-radius:4px">
+                                <span style="font-size:11px; color:var(--muted)">View Full</span>
+                            </a>
+                        </td>
+                        <td style="font-size:12px">${req.submitted_by}</td>
+                        <td style="font-size:12px; color:var(--muted)">${formatDate(req.created_at)}</td>
+                        <td style="display:flex; gap:6px">
+                            <button class="btn-save" style="padding:6px 10px; font-size:11px" onclick="approveImageRequest('${req.id}')">Approve</button>
+                            <button class="btn-cancel" style="padding:6px 10px; font-size:11px; color:#f08080" onclick="rejectImageRequest('${req.id}')">Reject</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch(e) {
+                tbody.innerHTML = '<tr><td colspan="5">Error loading requests</td></tr>';
+            }
+        }
+
+        async function deleteManagedImageById(id, slug) {
+            if (!confirm(`Are you sure you want to delete this specific image from slot "${slug}"?`)) return;
+            try {
+                const res = await fetch(`${API}/images/id/${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    showToast('🗑️ Image deleted');
+                    loadManagedImages();
+                } else {
+                    const err = await res.json();
+                    showToast('Error: ' + err.error, 'error');
+                }
+            } catch (e) {
+                showToast('Database Error', 'error');
+            }
+        }
+
+        async function deleteManagedImage(slug) {
+            if (!confirm(`⚠️ This will delete ALL images for slot "${slug}". Proceed?`)) return;
+            try {
+                const res = await fetch(`${API}/images/${slug}`, { method: 'DELETE' });
+                if (res.ok) {
+                    showToast('🗑️ All images for slot cleared');
+                    loadManagedImages();
+                }
+            } catch (e) { showToast('Error', 'error'); }
+        }
+
+        async function clearAllDeptSlots() {
+            if (!confirm("⚠️ WARNING: This will delete ALL department lab photo slots from the database.\nYou will lose all uploaded department images. Proceed?")) return;
+            
+            try {
+                // Fetch all current images
+                const res = await fetch(`${API}/images`);
+                const json = await res.json();
+                const deptSlugs = (json.data || []).filter(img => img.slug.startsWith('dept_')).map(img => img.slug);
+                
+                if (deptSlugs.length === 0) {
+                    showToast('No department slots to clear.');
+                    return;
+                }
+
+                showToast(`Clearing ${deptSlugs.length} slots...`);
+                
+                for (const slug of deptSlugs) {
+                    await fetch(`${API}/images/${slug}`, { method: 'DELETE' });
+                }
+                
+                showToast('✅ All department slots cleared!');
+                loadManagedImages();
+            } catch (e) {
+                showToast('Bulk delete failed', 'error');
+            }
+        }
+
+        // ── CATEGORY MAPPING (Simplified for non-technical admins) ──
+        const IMAGE_CATEGORIES = {
+            'home': [
+                { val: 'home_hero', label: 'Hero Slider (Main)', slots: 4 },
+                { val: 'home_leadership', label: 'Leadership / HODs', slots: 4 }
+            ],
+            'about': [
+                { val: 'about_gallery', label: 'General Institute Gallery', slots: 10 }
+            ],
+            'department': [
+                { val: 'dept_aiml_faculty', label: 'AIML - Faculty Photos', slots: 10 },
+                { val: 'dept_aiml_lab', label: 'AIML - Lab Photos', slots: 5 },
+                { val: 'dept_aiml_achievement', label: 'AIML - Achievements', slots: 5 },
+                { val: 'dept_auto_faculty', label: 'Automobile - Faculty Photos', slots: 10 },
+                { val: 'dept_auto_lab', label: 'Automobile - Lab Photos', slots: 5 },
+                { val: 'dept_auto_achievement', label: 'Automobile - Achievements', slots: 5 },
+                { val: 'dept_civil_faculty', label: 'Civil - Faculty Photos', slots: 10 },
+                { val: 'dept_civil_lab', label: 'Civil - Lab Photos', slots: 5 },
+                { val: 'dept_civil_achievement', label: 'Civil - Achievements', slots: 5 },
+                { val: 'dept_computer_faculty', label: 'Computer - Faculty Photos', slots: 10 },
+                { val: 'dept_computer_lab', label: 'Computer - Lab Photos', slots: 5 },
+                { val: 'dept_computer_achievement', label: 'Computer - Achievements', slots: 5 },
+                { val: 'dept_ddgm_faculty', label: 'DDGM - Faculty Photos', slots: 10 },
+                { val: 'dept_ddgm_lab', label: 'DDGM - Lab Photos', slots: 5 },
+                { val: 'dept_ddgm_achievement', label: 'DDGM - Achievements', slots: 5 },
+                { val: 'dept_electrical_faculty', label: 'Electrical - Faculty Photos', slots: 10 },
+                { val: 'dept_electrical_lab', label: 'Electrical - Lab Photos', slots: 5 },
+                { val: 'dept_electrical_achievement', label: 'Electrical - Achievements', slots: 5 },
+                { val: 'dept_entc_faculty', label: 'ENTC - Faculty Photos', slots: 10 },
+                { val: 'dept_entc_lab', label: 'ENTC - Lab Photos', slots: 5 },
+                { val: 'dept_entc_achievement', label: 'ENTC - Achievements', slots: 5 },
+                { val: 'dept_it_faculty', label: 'IT - Faculty Photos', slots: 10 },
+                { val: 'dept_it_lab', label: 'IT - Lab Photos', slots: 5 },
+                { val: 'dept_it_achievement', label: 'IT - Achievements', slots: 5 },
+                { val: 'dept_mechanical_faculty', label: 'Mechanical - Faculty Photos', slots: 10 },
+                { val: 'dept_mechanical_lab', label: 'Mechanical - Lab Photos', slots: 5 },
+                { val: 'dept_mechanical_achievement', label: 'Mechanical - Achievements', slots: 5 },
+                { val: 'dept_science-humanities_faculty', label: 'Sci & Hum - Faculty Photos', slots: 10 },
+                { val: 'dept_science-humanities_lab', label: 'Sci & Hum - Lab Photos', slots: 5 },
+                { val: 'dept_science-humanities_achievement', label: 'Sci & Hum - Achievements', slots: 5 },
+                { val: 'dept_applied-mechanics_faculty', label: 'App Mech - Faculty Photos', slots: 10 },
+                { val: 'dept_applied-mechanics_lab', label: 'App Mech - Lab Photos', slots: 5 },
+                { val: 'dept_applied-mechanics_achievement', label: 'App Mech - Achievements', slots: 5 },
+                { val: 'dept_workshop_faculty', label: 'Workshop - Faculty Photos', slots: 10 },
+                { val: 'dept_workshop_lab', label: 'Workshop - Lab Photos', slots: 5 },
+                { val: 'dept_workshop_achievement', label: 'Workshop - Achievements', slots: 5 },
+                { val: 'dept_mercedes-benz_faculty', label: 'Mercedes-Benz - Faculty Photos', slots: 5 },
+                { val: 'dept_mercedes-benz_lab', label: 'Mercedes-Benz - Lab Photos', slots: 5 },
+                { val: 'dept_mercedes-benz_achievement', label: 'Mercedes-Benz - Achievements', slots: 5 }
+            ],
+            'tpo': [
+                { val: 'tpo_recruiters', label: 'Recruiters Logos', slots: 20 }
+            ],
+            'facility': [
+                { val: 'facility_library', label: 'Library Photos', slots: 5 },
+                { val: 'facility_gymkhana', label: 'Gymkhana Photos', slots: 5 },
+                { val: 'facility_hostel_girls', label: 'Girls Hostel Photos', slots: 5 },
+                { val: 'facility_hostel_boys', label: 'Boys Hostel Photos', slots: 5 },
+                { val: 'facility_canteen', label: 'Other: Canteen', slots: 5 },
+                { val: 'facility_workshop', label: 'Other: Workshop', slots: 5 },
+                { val: 'facility_stationary', label: 'Other: Stationary Store', slots: 5 },
+                { val: 'facility_auditorium', label: 'Other: Auditorium', slots: 5 },
+                { val: 'facility_computer_center', label: 'Other: Computer Center', slots: 5 },
+                { val: 'facility_wifi', label: 'Other: WiFi Campus', slots: 5 },
+                { val: 'facility_parking', label: 'Other: Parking Area', slots: 5 }
+            ]
+        };
+
+        function updateSubCategories() {
+            const mainCat = document.getElementById('imgMainCategory').value;
+            const subCatSelect = document.getElementById('imgSubCategory');
+            const subCatField = document.getElementById('subCatField');
+            const slotField = document.getElementById('slotField');
+            
+            slotField.style.display = 'none';
+
+            if (!mainCat || !IMAGE_CATEGORIES[mainCat]) {
+                subCatField.style.display = 'none';
+                return;
+            }
+
+            subCatSelect.innerHTML = '<option value="">-- Select Subcategory --</option>' + 
+                IMAGE_CATEGORIES[mainCat].map(c => `<option value="${c.val}">${c.label}</option>`).join('');
+            
+            subCatField.style.display = 'block';
+        }
+
+        function updateSlots() {
+            const mainCat = document.getElementById('imgMainCategory').value;
+            const subCatVal = document.getElementById('imgSubCategory').value;
+            const slotSelect = document.getElementById('imgSlot');
+            const slotField = document.getElementById('slotField');
+
+            if (!subCatVal) {
+                slotField.style.display = 'none';
+                return;
+            }
+
+            const item = IMAGE_CATEGORIES[mainCat].find(c => c.val === subCatVal);
+            const slotCount = item ? item.slots : 1;
+
+            slotSelect.innerHTML = '';
+            for(let i=1; i<=slotCount; i++) {
+                slotSelect.innerHTML += `<option value="${i}">Photo Slot ${i}</option>`;
+            }
+            
+            slotField.style.display = 'block';
+        }
+
+        function openImageUploadModal(slug = '') {
+            document.getElementById('imgSlug').value = slug;
+            document.getElementById('imgPreviewWrap').style.display = 'none';
+            document.getElementById('imgFileInput').value = '';
+            document.getElementById('imageModalOverlay').style.display = 'flex';
+        }
+
+        function closeImageModal() {
+            document.getElementById('imageModalOverlay').style.display = 'none';
+        }
+
+        function previewImages(input) {
+            const wrap = document.getElementById('imgPreviewWrap');
+            const grid = document.getElementById('previewGrid');
+            const status = document.getElementById('bulkStatus');
+            grid.innerHTML = '';
+            
+            if (input.files && input.files.length > 0) {
+                status.textContent = `${input.files.length} file(s) selected`;
+                wrap.style.display = 'block';
+                
+                // Show first 5 previews to keep UI clean
+                const limit = Math.min(input.files.length, 5);
+                for (let i = 0; i < limit; i++) {
+                    const reader = new FileReader();
+                    reader.onload = e => {
+                        grid.innerHTML += `<img src="${e.target.result}" style="width:80px; height:60px; object-fit:cover; border-radius:4px; border:1px solid var(--border)">`;
+                    };
+                    reader.readAsDataURL(input.files[i]);
+                }
+                if (input.files.length > 5) grid.innerHTML += `<div style="padding:20px; color:var(--muted)">+${input.files.length - 5} more</div>`;
+            } else {
+                wrap.style.display = 'none';
+            }
+        }
+
+        async function saveImage() {
+            const files = document.getElementById('imgFileInput').files;
+            const mainCat = document.getElementById('imgMainCategory').value;
+            const subCat = document.getElementById('imgSubCategory').value;
+            const slot = document.getElementById('imgSlot').value;
+            const title = document.getElementById('imgCardTitle').value;
+            const admin_email = localStorage.getItem('admin_email') || 'admin';
+            
+            // Validate required fields
+            if (!mainCat || !subCat) return showToast('Please select a category and subcategory.', 'error');
+            if (!files.length) return showToast('Please select at least one image file.', 'error');
+            
+            const btn = document.getElementById('imgSaveBtn');
+            const status = document.getElementById('bulkStatus');
+            btn.disabled = true;
+            
+            // Auto-generate slug from subcategory + slot
+            const baseSlug = `${subCat}_${slot || '1'}`;
+            
+            let successCount = 0;
+            let errorCount = 0;
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                btn.textContent = `Uploading ${i+1}/${files.length}...`;
+                status.textContent = `Processing: ${file.name}`;
+
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('slug', baseSlug);
+                formData.append('category', mainCat);
+                formData.append('subcategory', title || subCat || '');
+                formData.append('slot', slot || '');
+                formData.append('is_active', true);
+                formData.append('uploaded_by', admin_email);
+                formData.append('role', 'admin');
+
+                try {
+                    const res = await fetch(`${API}/images/upload`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const json = await res.json();
+                    if (json.error) throw new Error(json.error);
+                    successCount++;
+                } catch(e) {
+                    console.error(`Upload failed for ${file.name}:`, e);
+                    errorCount++;
+                }
+            }
+
+            if (successCount > 0) {
+                showToast(`Successfully uploaded ${successCount} image(s)!`);
+                if (errorCount > 0) showToast(`${errorCount} file(s) failed.`, 'error');
+                closeImageModal();
+                loadManagedImages();
+                fetchImagePendingCount();
+            } else {
+                showToast('All uploads failed. Check terminal for errors.', 'error');
+            }
+
+            btn.disabled = false;
+            btn.textContent = 'Upload & Save';
+        }
+
+        async function approveImageRequest(id) {
+            if (!confirm('Approve this image? It will go live immediately.')) return;
+            try {
+                const res = await fetch(`${API}/images/requests/${id}/approve`, { method: 'POST' });
+                if (res.ok) {
+                    showToast('Approved!');
+                    loadImageRequests();
+                    loadManagedImages();
+                    fetchImagePendingCount();
+                }
+            } catch(e) { showToast('Error approving', 'error'); }
+        }
+
+        async function rejectImageRequest(id) {
+            const note = prompt('Reason for rejection?');
+            if (!note) return;
+            try {
+                const res = await fetch(`${API}/images/requests/${id}/reject`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ note })
+                });
+                if (res.ok) {
+                    showToast('Rejected');
+                    loadImageRequests();
+                    fetchImagePendingCount();
+                }
+            } catch(e) { showToast('Error rejecting', 'error'); }
+        }
         function updateStats() {
             const count = cat => allData.filter(r => {
                 const cats = r.categories || (r.category ? [r.category] : []);
@@ -1463,11 +2003,15 @@
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             el.classList.add('active');
             document.getElementById('announcementsView').style.display = 'none';
+            document.getElementById('imagesView').style.display = 'none';
             document.getElementById('pendingView').style.display = 'block';
             document.getElementById('pageTitle').textContent = 'Pending Approval Requests';
             document.getElementById('pageSub').textContent = 'Review and approve/reject staff submissions';
 
-            // Fetch
+            const btn = document.getElementById('topbarBtn');
+            btn.style.display = 'none'; // No "Add New" button in approval desk
+
+            // Fetch announcements
             const tbody = document.getElementById('pendingTableBody');
             tbody.innerHTML = '<tr class="loading-row"><td colspan="5">Loading…</td></tr>';
 
@@ -1479,92 +2023,9 @@
             } catch (e) {
                 tbody.innerHTML = '<tr><td colspan="5">Error loading requests</td></tr>';
             }
-        }
 
-        function renderPendingTable(data) {
-            const tbody = document.getElementById('pendingTableBody');
-            if (!data.length) {
-                tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="big">✅</div><p>No pending requests.</p></div></td></tr>';
-                return;
-            }
-            tbody.innerHTML = data.map(r => `
-                <tr>
-                    <td class="td-title">
-                        ${escHtml(r.title)}
-                        <small>${escHtml(r.description || 'No description')}</small>
-                        ${r.file_url ? `<a href="${r.file_url}" target="_blank" style="color:var(--gold); font-size:12px; text-decoration:none; display:block; margin-top:4px;">📎 View attached PDF</a>` : ''}
-                    </td>
-                    <td>${renderBadges(r.categories || [r.category])}</td>
-                    <td><span style="font-size:12px; color:var(--muted)">${escHtml(r.submitted_by)}</span></td>
-                    <td>${formatDate(r.created_at)}</td>
-                    <td>
-                        <div class="actions">
-                            <button class="act-btn act-edit" style="background:rgba(76,175,136,0.1); color:#4caf88; border-color:rgba(76,175,136,0.2);" onclick="approveRequest('${r.id}')">Approve</button>
-                            <button class="act-btn act-del" onclick="rejectRequest('${r.id}')">Reject</button>
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        async function approveRequest(id) {
-            if (!confirm('Approve and publish this record?')) return;
-            try {
-                const res = await fetch(`${API}/pending/${id}/approve`, { method: 'POST' });
-                if (res.ok) {
-                    showToast('Approved successfully!');
-                    showPendingView(document.getElementById('pendingNavItem'));
-                    fetchAll(); // Refresh admin stats
-                }
-            } catch (e) { showToast('Approval failed', 'error'); }
-        }
-
-        async function rejectRequest(id) {
-            const note = prompt('Reason for rejection (optional):');
-            if (note === null) return;
-            try {
-                const res = await fetch(`${API}/pending/${id}/reject`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ note })
-                });
-                if (res.ok) {
-                    showToast('Request rejected.');
-                    showPendingView(document.getElementById('pendingNavItem'));
-                }
-            } catch (e) { showToast('Rejection failed', 'error'); }
-        }
-
-        // ── PENDING REQUESTS LOGIC ──
-        async function fetchPendingCount() {
-            try {
-                const res = await fetch(`${API}/pending?status=pending`);
-                const json = await res.json();
-                document.getElementById('badge-pending').textContent = (json.data || []).length;
-            } catch (e) { }
-        }
-
-        async function showPendingView(el) {
-            // UI state
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            el.classList.add('active');
-            document.getElementById('announcementsView').style.display = 'none';
-            document.getElementById('pendingView').style.display = 'block';
-            document.getElementById('pageTitle').textContent = 'Pending Approval Requests';
-            document.getElementById('pageSub').textContent = 'Review and approve/reject staff submissions';
-
-            // Fetch
-            const tbody = document.getElementById('pendingTableBody');
-            tbody.innerHTML = '<tr class="loading-row"><td colspan="5">Loading…</td></tr>';
-
-            try {
-                const res = await fetch(`${API}/pending?status=pending`);
-                const json = await res.json();
-                const data = json.data || [];
-                renderPendingTable(data);
-            } catch (e) {
-                tbody.innerHTML = '<tr><td colspan="5">Error loading requests</td></tr>';
-            }
+            // Fetch image requests
+            loadImageRequests('pendingImagesTableBody');
         }
 
         function renderPendingTable(data) {
@@ -1685,6 +2146,12 @@
                 notice_dept_mercedes_benz: 'Notice Board — Mercedes-Benz',
             };
             document.getElementById('pageTitle').textContent = titles[cat] || 'Announcements';
+            
+            const btn = document.getElementById('topbarBtn');
+            btn.style.display = 'flex';
+            btn.innerHTML = '＋ &nbsp;Add New';
+            btn.onclick = () => openAddModal();
+
             document.querySelectorAll('.filter-tab').forEach((t, i) => {
                 const cats = ['all', 'notice', 'tender', 'news_event'];
                 t.classList.toggle('active', cats[i] === cat);
