@@ -1,25 +1,23 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template
 import os
-import sys
 from flask_cors import CORS
+
+# Blueprints
 from routes.auth import auth_bp  
 from routes.announcements import announcements_bp
 from routes.pending import pending_bp
 from routes.images import images_bp
 
-
-
-
-
 app = Flask(__name__)
 CORS(app)
 
+# Register Blueprints
 app.register_blueprint(announcements_bp, url_prefix='/api')
-
 app.register_blueprint(auth_bp, url_prefix='/api')
 app.register_blueprint(pending_bp, url_prefix='/api')
 app.register_blueprint(images_bp, url_prefix='/api')
- 
+
+# Routes
 @app.route('/')
 @app.route('/home')
 def home():
@@ -36,7 +34,6 @@ def dashboard_page():
 @app.route('/maintenance')
 def maintenance_page():
     return render_template('maintenance_dashboard.html')
-
 
 @app.route('/about')
 def about():
@@ -72,7 +69,6 @@ def departments():
 
 @app.route('/dept/<name>')
 def department(name):
-    # Ensure name is handled correctly (e.g., lowercase)
     return render_template(f'college_dept/departments/{name}.html')
 
 @app.route('/contact')
@@ -123,18 +119,8 @@ def web_policy():
 def copyright():
     return render_template('copyright.html')
 
-@app.route('/hyperlinking')
-def hyperlinking():
-    return render_template('hyperlinking.html')
-
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
 
-if __name__ == '__main__':
-    app.run(debug=True)
 
-if __name__ == "__main__":
-    import os
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
