@@ -1,8 +1,37 @@
 from flask import Blueprint, request, jsonify
-from config import supabase
+from config import supabase, SUPABASE_URL, SUPABASE_KEY
 import re
+import time
+import urllib.request
+import urllib.error
 
 images_bp = Blueprint('images', __name__)
+
+# ─── DIRECT HTTP STORAGE UPLOAD (bypasses supabase-py storage client auth bugs) ─
+def storage_upload(bucket: str, file_path: str, file_bytes: bytes, content_type: str) -> str:
+    """Upload directly to Supabase Storage REST API using service_role key.
+    Returns the public URL of the uploaded file."""
+    url = f"{SUPABASE_URL}/storage/v1/object/{bucket}/{file_path}"
+    req = urllib.request.Request(
+        url,
+        data=file_bytes,
+        method='POST',
+        headers={
+            'Authorization': f'Bearer {SUPABASE_KEY}',
+            'apikey': SUPABASE_KEY,
+            'Content-Type': content_type,
+            'x-upsert': 'true',  # overwrite if same path exists
+        }
+    )
+    try:
+        with urllib.request.urlopen(req) as resp:
+            pass  # success (200/201)
+    except urllib.error.HTTPError as e:
+        body = e.read().decode('utf-8', errors='replace')
+        raise Exception(f"Storage HTTP {e.code}: {body}")
+    
+    public_url = f"{SUPABASE_URL}/storage/v1/object/public/{bucket}/{file_path}"
+    return public_url
 
 # ─── ADMIN: DIRECT UPLOAD OR MANUAL UPDATE ────────────────────────────────────
 @images_bp.route('/images/upload', methods=['POST'])
@@ -22,20 +51,15 @@ def admin_upload():
 
     try:
         # 1. Generate unique identifiers
-        import time
         timestamp = int(time.time() * 1000)
         
-        # 2. Upload to Storage with a unique filename to prevent 409 Conflicts
+        # 2. Upload to Storage via direct HTTP (bypasses supabase-py auth issues)
         safe_filename = re.sub(r'[^a-zA-Z0-9._-]', '_', file.filename)
         file_path = f"managed/{slug}/{timestamp}_{safe_filename}"
+        content_type = file.content_type or 'image/jpeg'
         
         file_content = file.read()
-        supabase.storage.from_('images').upload(
-            path=file_path,
-            file=file_content,
-            file_options={'content-type': file.content_type}
-        )
-        public_url = supabase.storage.from_('images').get_public_url(file_path)
+        public_url = storage_upload('images', file_path, file_content, content_type)
 
         # 3. Insert into database with unique slug suffix
         unique_slug = f"{slug}::{timestamp}"
@@ -44,15 +68,14 @@ def admin_upload():
             'slug': unique_slug,
             'url': public_url,
             'category': category,
-            'subcategory': subcategory, # This will store our custom Card Title
+            'subcategory': subcategory,
             'uploaded_by': uploaded_by,
             'role': 'admin'
         }
         
         db_res = supabase.table('managed_images').insert(upsert_data).execute()
         
-        # 4. Also update all older images of this slug to have the same subcategory/title
-        # if the subcategory was provided (synchronizing the collection title)
+        # 4. Sync subcategory/title across all images in the same base slug
         if subcategory:
             supabase.table('managed_images').update({'subcategory': subcategory})\
                 .ilike('slug', f"{slug}%").execute()
@@ -60,6 +83,7 @@ def admin_upload():
         return jsonify({'data': db_res.data, 'file_url': public_url, 'title': subcategory}), 200
         
     except Exception as e:
+        print(f"[ERROR] admin_upload failed: {type(e).__name__}: {e}")
         return jsonify({'error': str(e)}), 500
 
 # ─── FETCH IMAGES ─────────────────────────────────────────────────────────────
@@ -84,7 +108,7 @@ def get_images():
         try:
             # Order by updated_at Descending so index 0 is always the latest (Latest as Cover)
             # Use 'slug' as a tie-breaker to ensure stable sorting and prevent "random" jumps
-            res = query.order('updated_at', descending=True).order('slug', descending=True).execute()
+            res = query.order('updated_at', desc=True).order('slug', desc=True).execute()
         except Exception as sort_err:
             print(f"[DEBUG] Stable sort failed ({str(sort_err)}). Falling back to basic query.")
             # Fallback: same query with filters but without the specific order that failed
@@ -125,19 +149,15 @@ def maintenance_request():
     file_bytes = file.read()
     safe_filename = re.sub(r'[^a-zA-Z0-9._-]', '_', file.filename)
     file_path = f"requests/{slug}_{safe_filename}"
+    content_type = file.content_type or 'application/octet-stream'
 
     try:
-        # 1. Upload to Storage (Pending folder)
+        # 1. Upload to Storage via direct HTTP
         try:
-            supabase.storage.from_('images').upload(
-                path=file_path,
-                file=file_bytes,
-                file_options={'content-type': file.content_type}
-            )
+            public_url = storage_upload('images', file_path, file_bytes, content_type)
         except Exception as storage_err:
+            print(f"[ERROR] maintenance_request storage upload failed: {storage_err}")
             return jsonify({'error': f'Storage Upload Error: {str(storage_err)}'}), 403
-
-        public_url = supabase.storage.from_('images').get_public_url(file_path)
 
         # 2. Log in pending table
         req_data = {

@@ -161,7 +161,7 @@ def upload_file():
     response = supabase.storage.from_('announcements-files').upload(
         path=file_path,
         file=file_bytes,
-        file_options={ 'content-type': file.content_type }
+        file_options={ 'contentType': file.content_type or 'application/pdf' }
     )
 
     # Build public URL

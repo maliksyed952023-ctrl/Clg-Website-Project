@@ -33,10 +33,10 @@
             .lb-header h3 { margin: 0; font-size: 1.3rem; color: #c1121f; font-weight: 700; }
             .lb-close { background: #f8f9fa; border: none; font-size: 24px; cursor: pointer; color: #666; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
             .lb-close:hover { background: #fee2e2; color: #c1121f; transform: rotate(90deg); }
-            .lb-grid { padding: 30px; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; overflow-y: auto; flex: 1; min-height: 0; align-items: start; background: #fff; }
-            .lb-item { aspect-ratio: 16 / 10; border-radius: 12px; overflow: hidden; cursor: pointer; border: 1px solid #eee; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: all 0.3s ease; position: relative; width: 100%; }
+            .lb-grid { padding: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); grid-auto-rows: 160px; gap: 16px; overflow-y: auto; flex: 1; min-height: 0; background: #f8f9fa; }
+            .lb-item { border-radius: 10px; overflow: hidden; cursor: pointer; border: 2px solid #eee; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: all 0.3s ease; width: 100%; height: 100%; }
             .lb-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; display: block; }
-            .lb-item:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.12); }
+            .lb-item:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); border-color: #c1121f; }
             .lb-item:hover img { transform: scale(1.05); }
             
             .gallery-style-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; padding: 20px 0; }
@@ -250,7 +250,6 @@
         }
         html += `<section id="lab-photos" class="section"><h2>Laboratories Gallery</h2><div class="gallery-style-grid">${cards}</div></section>`;
         
-        // Fetch logic
         setTimeout(async () => {
           for (let i = 0; i < maxLabSlots; i++) {
             const slug = `dept_${deptId}_lab_${i + 1}`;
@@ -266,9 +265,12 @@
                 img.src = first.url;
                 if(wrapper) wrapper.style.display = 'block';
                 
-                // Keep relevant name
-                const cardTitle = cardEl.querySelector('.gallery-card-title').textContent;
-                cardEl.onclick = () => window.openLabGalleryFromData(json.data, cardTitle);
+                // ✅ Use admin-entered title (subcategory field) if available, else fall back to lab name
+                const defaultName = (dept.labs && dept.labs[i]) ? dept.labs[i].name : `Lab ${i+1}`;
+                const adminTitle = first.subcategory && first.subcategory.trim() ? first.subcategory.trim() : defaultName;
+                cardEl.querySelector('.gallery-card-title').textContent = adminTitle;
+                
+                cardEl.onclick = () => window.openLabGalleryFromData(json.data, adminTitle);
               } else {
                 cardEl.onclick = () => window.openLabGallery(slug, cardEl.querySelector('.gallery-card-title').textContent);
               }

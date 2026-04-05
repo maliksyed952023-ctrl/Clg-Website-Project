@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 import os
 from flask_cors import CORS
 
@@ -9,6 +9,7 @@ from routes.pending import pending_bp
 from routes.images import images_bp
 
 app = Flask(__name__)
+app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100 MB max upload
 CORS(app)
 
 # Register Blueprints
@@ -123,4 +124,10 @@ def copyright():
 def page_not_found(e):
     return render_template('404.html'), 404
 
+@app.errorhandler(413)
+def request_entity_too_large(e):
+    return jsonify({'error': 'File too large. Maximum upload size is 100MB.'}), 413
 
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)

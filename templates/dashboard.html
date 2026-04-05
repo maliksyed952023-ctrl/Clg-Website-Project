@@ -1476,7 +1476,12 @@
 
             <div class="form-field">
                 <label class="form-label">Photos (Select Multiple or Folder) *</label>
-                <input type="file" id="imgFileInput" accept="image/*" multiple onchange="previewImages(this)">
+                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                    <input type="file" id="imgFileInput" accept="image/*" multiple onchange="previewImages(this)" style="flex:1; min-width:0;">
+                    <button type="button" onclick="document.getElementById('imgFolderInput').click()"
+                        style="background:var(--navy3); border:1px solid var(--border); border-radius:8px; padding:8px 14px; color:var(--gold); font-size:12px; font-family:'DM Sans',sans-serif; cursor:pointer; white-space:nowrap;">📁 Select Folder</button>
+                    <input type="file" id="imgFolderInput" accept="image/*" multiple webkitdirectory style="display:none" onchange="mergeFolderFiles(this)">
+                </div>
                 <div id="imgPreviewWrap" style="margin-top:10px; display:none;">
                     <div id="bulkStatus" style="font-size:12px; font-weight:600; color:var(--gold); margin-bottom:10px;"></div>
                     <div style="display:flex; gap:10px; overflow-x:auto; padding-bottom:10px;" id="previewGrid"></div>
@@ -1835,7 +1840,15 @@
 
         function closeImageModal() {
             document.getElementById('imageModalOverlay').style.display = 'none';
+            window._mergedFiles = [];
+            document.getElementById('imgFileInput').value = '';
+            document.getElementById('imgFolderInput').value = '';
+            document.getElementById('imgPreviewWrap').style.display = 'none';
+            document.getElementById('previewGrid').innerHTML = '';
         }
+
+        // Holds files from either the regular input OR the webkitdirectory folder picker
+        window._mergedFiles = [];
 
         function previewImages(input) {
             const wrap = document.getElementById('imgPreviewWrap');
@@ -1843,27 +1856,69 @@
             const status = document.getElementById('bulkStatus');
             grid.innerHTML = '';
             
-            if (input.files && input.files.length > 0) {
-                status.textContent = `${input.files.length} file(s) selected`;
+            // Store in shared array
+            window._mergedFiles = Array.from(input.files).filter(f => f.size > 0 && f.type.startsWith('image/'));
+            
+            if (window._mergedFiles.length > 0) {
+                status.textContent = `${window._mergedFiles.length} image(s) selected`;
                 wrap.style.display = 'block';
                 
                 // Show first 5 previews to keep UI clean
-                const limit = Math.min(input.files.length, 5);
+                const limit = Math.min(window._mergedFiles.length, 5);
                 for (let i = 0; i < limit; i++) {
                     const reader = new FileReader();
                     reader.onload = e => {
                         grid.innerHTML += `<img src="${e.target.result}" style="width:80px; height:60px; object-fit:cover; border-radius:4px; border:1px solid var(--border)">`;
                     };
-                    reader.readAsDataURL(input.files[i]);
+                    reader.readAsDataURL(window._mergedFiles[i]);
                 }
-                if (input.files.length > 5) grid.innerHTML += `<div style="padding:20px; color:var(--muted)">+${input.files.length - 5} more</div>`;
+                if (window._mergedFiles.length > 5) grid.innerHTML += `<div style="padding:20px; color:var(--muted)">+${window._mergedFiles.length - 5} more</div>`;
             } else {
                 wrap.style.display = 'none';
+                if (input.files.length > 0) {
+                    document.getElementById('bulkStatus').textContent = '⚠️ No valid image files found in selection.';
+                    wrap.style.display = 'block';
+                }
             }
         }
 
+        function mergeFolderFiles(input) {
+            // Called from the hidden webkitdirectory input — merge into shared file list
+            const wrap = document.getElementById('imgPreviewWrap');
+            const grid = document.getElementById('previewGrid');
+            const status = document.getElementById('bulkStatus');
+            grid.innerHTML = '';
+            
+            // Filter to image files only (skip .DS_Store, thumbs.db, hidden files, etc.)
+            window._mergedFiles = Array.from(input.files).filter(f => {
+                return f.size > 0 && f.type.startsWith('image/');
+            });
+            
+            if (window._mergedFiles.length === 0) {
+                status.textContent = '⚠️ No valid image files found in selected folder.';
+                wrap.style.display = 'block';
+                return;
+            }
+            
+            status.textContent = `📁 Folder: ${window._mergedFiles.length} image(s) ready to upload`;
+            wrap.style.display = 'block';
+            
+            const limit = Math.min(window._mergedFiles.length, 5);
+            for (let i = 0; i < limit; i++) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    grid.innerHTML += `<img src="${e.target.result}" style="width:80px; height:60px; object-fit:cover; border-radius:4px; border:1px solid var(--border)">`;
+                };
+                reader.readAsDataURL(window._mergedFiles[i]);
+            }
+            if (window._mergedFiles.length > 5) grid.innerHTML += `<div style="padding:20px; color:var(--muted)">+${window._mergedFiles.length - 5} more</div>`;
+        }
+
         async function saveImage() {
-            const files = document.getElementById('imgFileInput').files;
+            // Use merged files from either the regular picker or webkitdirectory folder picker
+            const files = window._mergedFiles && window._mergedFiles.length > 0
+                ? window._mergedFiles
+                : Array.from(document.getElementById('imgFileInput').files).filter(f => f.size > 0 && f.type.startsWith('image/'));
             const mainCat = document.getElementById('imgMainCategory').value;
             const subCat = document.getElementById('imgSubCategory').value;
             const slot = document.getElementById('imgSlot').value;
@@ -1883,6 +1938,7 @@
             
             let successCount = 0;
             let errorCount = 0;
+            let lastError = '';
 
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
@@ -1909,18 +1965,19 @@
                     successCount++;
                 } catch(e) {
                     console.error(`Upload failed for ${file.name}:`, e);
+                    lastError = e.message || 'Unknown error';
                     errorCount++;
                 }
             }
 
             if (successCount > 0) {
                 showToast(`Successfully uploaded ${successCount} image(s)!`);
-                if (errorCount > 0) showToast(`${errorCount} file(s) failed.`, 'error');
+                if (errorCount > 0) showToast(`${errorCount} file(s) failed: ${lastError}`, 'error');
                 closeImageModal();
                 loadManagedImages();
                 fetchImagePendingCount();
             } else {
-                showToast('All uploads failed. Check terminal for errors.', 'error');
+                showToast(`Upload failed: ${lastError}`, 'error');
             }
 
             btn.disabled = false;
