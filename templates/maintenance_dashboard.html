@@ -1647,7 +1647,14 @@
                 { val: 'home_leadership', label: 'Leadership / HODs', slots: 4 }
             ],
             'about': [
-                { val: 'about_gallery', label: 'General Institute Gallery', slots: 10 }
+                { val: 'Campus View', label: 'Campus View', slots: 10 },
+                { val: 'College Event', label: 'College Event', slots: 10 },
+                { val: 'Workshop', label: 'Workshop', slots: 10 },
+                { val: 'Laboratory', label: 'Laboratory', slots: 10 },
+                { val: 'Library', label: 'Library', slots: 10 },
+                { val: 'Seminar Hall', label: 'Seminar Hall', slots: 10 },
+                { val: 'Sports Activity', label: 'Sports Activity', slots: 10 },
+                { val: 'Annual Function', label: 'Annual Function', slots: 10 }
             ],
             'department': [
                 { val: 'dept_aiml_faculty', label: 'AIML - Faculty Photos', slots: 10 },
@@ -1755,8 +1762,8 @@
             const subcategory = document.getElementById('reqSubCategory').value;
             const slot = document.getElementById('reqSlot').value;
             
-            // Auto-generate slug: subcategory_slot
-            const slug = `${subcategory}_${slot}`;
+            // Auto-generate slug: subcategory_slot (Sanitized for URL)
+            const slug = `${subcategory.toString().replace(/\s+/g, '_')}_${slot}`;
 
             if (!file || !category || !subcategory) return showToast('Please select category and image', 'error');
 

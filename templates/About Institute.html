@@ -1480,11 +1480,12 @@
         const json = await res.json();
         const data = json.data || [];
         
-        // Group by subcategory name (which should match the card titles)
+        // Group by subcategory name (normalized to lowercase)
         const grouped = {};
         data.forEach(img => {
-          if (!grouped[img.subcategory]) grouped[img.subcategory] = [];
-          grouped[img.subcategory].push(img.url);
+          const sub = (img.subcategory || "").toLowerCase().trim();
+          if (!grouped[sub]) grouped[sub] = [];
+          grouped[sub].push(img.url);
         });
         dynamicGalleryData = grouped;
         return grouped;
@@ -1499,7 +1500,7 @@
       await fetchGalleryData();
       const containers = document.querySelectorAll('.gallery-img');
       containers.forEach(container => {
-        const category = container.getAttribute('data-category');
+        const category = (container.getAttribute('data-category') || "").toLowerCase().trim();
         const images = dynamicGalleryData[category] || [];
 
         if (images.length === 0) {
@@ -1537,7 +1538,7 @@
       title.innerText = category;
       grid.innerHTML = ''; // Clear previous
 
-      const images = dynamicGalleryData[category] || [];
+      const images = dynamicGalleryData[category.toLowerCase().trim()] || [];
 
       if (images.length === 0) {
         // No uploads yet — show a clean empty state instead of wrong placeholders
