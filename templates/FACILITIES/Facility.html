@@ -118,85 +118,6 @@
       border-top: 1px solid #eee;
     }
 
-    /* LIGHTBOX POPUP */
-    .lightbox {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.9);
-      z-index: 9999;
-      justify-content: center;
-      align-items: center;
-      padding: 40px;
-    }
-
-    .lightbox-content {
-      position: relative;
-      background: white;
-      width: 90%;
-      max-width: 1000px;
-      max-height: 90vh;
-      border-radius: 12px;
-      padding: 30px;
-      overflow-y: auto;
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-    }
-
-    .lightbox-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      border-bottom: 2px solid #0b3c5d;
-      padding-bottom: 10px;
-    }
-
-    .lightbox-title {
-      font-size: 24px;
-      color: #0b3c5d;
-      font-weight: bold;
-      margin: 0;
-    }
-
-    .close-lightbox {
-      font-size: 30px;
-      color: #c1121f;
-      cursor: pointer;
-      transition: color 0.3s;
-      line-height: 1;
-    }
-
-    .close-lightbox:hover {
-      color: #8a0e16;
-    }
-
-    .lightbox-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
-    }
-
-    .lightbox-item {
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease;
-    }
-
-    .lightbox-item:hover {
-      transform: scale(1.03);
-    }
-
-    .lightbox-item img {
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-      display: block;
-    }
-
     /* DARK MODE OVERRIDES FOR GALLERY/LIGHTBOX */
     body.dark .gallery-card, body.dark .event-card {
       background: #1e1e1e;
@@ -209,12 +130,37 @@
       border-top-color: #333;
     }
 
-    body.dark .lightbox-content {
-      background: #1e1e1e;
-      color: #e0e0e0;
+    /* GYMKHANA SECTION OVERRIDES */
+    #gymkhana .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      margin-top: 35px;
+      margin-bottom: 40px;
     }
 
-    body.dark .lightbox-title {
+    #gymkhana .gallery-card {
+      width: 520px;
+      max-width: 100%;
+      border-radius: 15px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    #gymkhana .gallery-img {
+      height: 380px;
+    }
+
+    #gymkhana .gallery-text {
+      font-size: 18px;
+      padding: 18px;
+      background: #fff;
+      color: #0b3c5d;
+      font-weight: 700;
+    }
+
+    body.dark #gymkhana .gallery-text {
+      background: #2a2a2a;
       color: #f4c430;
     }
 
@@ -557,6 +503,8 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/lightbox.css') }}">
   
 
   <!-- ================= COMPREHENSIVE DARK MODE ================= -->
@@ -1214,24 +1162,11 @@ Students of all departments take active participation in various activities cond
 
 <div class="gallery">
 
-<div class="gallery-card" onclick="openLightbox('Sports Competition')">
-<div class="gallery-img" data-category="Sports Competition"><img src="/static/images/default_event.jpg" class="active" alt="Sports Competition"></div>
-<div class="gallery-text">Sports Competition</div>
+<div class="gallery-card" onclick="openLightbox('Gymkhana Activities')">
+<div class="gallery-img" data-category="Gymkhana Activities">
+    <img src="/static/images/default_event.jpg" class="active" alt="Gymkhana Activities">
 </div>
-
-<div class="gallery-card" onclick="openLightbox('Cultural Festival')">
-<div class="gallery-img" data-category="Cultural Festival"><img src="/static/images/default_event.jpg" class="active" alt="Cultural Festival"></div>
-<div class="gallery-text">Cultural Festival</div>
-</div>
-
-<div class="gallery-card" onclick="openLightbox('Shiv Jayanti')">
-<div class="gallery-img" data-category="Shiv Jayanti"><img src="/static/images/default_event.jpg" class="active" alt="Shiv Jayanti"></div>
-<div class="gallery-text">Shiv Jayanti</div>
-</div>
-
-<div class="gallery-card" onclick="openLightbox('Annual Sports Day')">
-<div class="gallery-img" data-category="Annual Sports Day"><img src="/static/images/default_event.jpg" class="active" alt="Annual Sports Day"></div>
-<div class="gallery-text">Annual Sports Day</div>
+<div id="gymkhana_caption" class="gallery-text">Gymkhana Activities</div>
 </div>
 
 </div>
@@ -1318,6 +1253,7 @@ Students of all departments take active participation in various activities cond
 
 <script src="{{ url_for('static', filename='js/image-loader.js') }}"></script>
 <script src="{{ url_for('static', filename='js/facility_script.js') }}"></script>
+<script src="{{ url_for('static', filename='js/lightbox.js') }}"></script>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -1330,18 +1266,6 @@ Students of all departments take active participation in various activities cond
         }
     });
 </script>
-  <!-- PHOTO GALLERY LIGHTBOX MODAL -->
-  <div id="galleryLightbox" class="lightbox">
-    <div class="lightbox-content">
-      <div class="lightbox-header">
-        <h3 class="lightbox-title" id="lightboxTitle">Gallery</h3>
-        <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
-      </div>
-      <div class="lightbox-grid" id="lightboxGrid">
-        <!-- Images injected by JS -->
-      </div>
-    </div>
-  </div>
 
   <script>
     let dynamicGalleryData = {};
@@ -1352,12 +1276,34 @@ Students of all departments take active participation in various activities cond
         const json = await res.json();
         const data = json.data || [];
         
-        // Group by subcategory name (normalized to lowercase)
         const grouped = {};
         data.forEach(img => {
+          // Store objects with URL and Label
+          const item = { url: img.url, label: img.subcategory };
+          
+          // Group by Slug Base (e.g. facility_gymkhana_activities_1::123 -> facility_gymkhana_activities)
+          // Matches technical IDs defined in getBackendCategory()
+          let slugBase = (img.slug || "").split('::')[0]; // Remove timestamp
+          slugBase = slugBase.replace(/_\d+$/, "").toLowerCase().trim(); // Remove slot number
+          
+          // Legacy Compatibility Mapping
+          if (slugBase === "facility_gymkhana") {
+            slugBase = "facility_gymkhana_activities";
+            if (item.label === "facility_gymkhana") item.label = "Gymkhana Activity";
+          }
+          if (slugBase === "facility_library") slugBase = "facility_lib_institute";
+
+          if (slugBase) {
+            if (!grouped[slugBase]) grouped[slugBase] = [];
+            grouped[slugBase].push(item);
+          }
+          
+          // Also group by Subcategory label for fallback/legacy compatibility
           const sub = (img.subcategory || "").toLowerCase().trim();
-          if (!grouped[sub]) grouped[sub] = [];
-          grouped[sub].push(img.url);
+          if (sub && sub !== slugBase) {
+            if (!grouped[sub]) grouped[sub] = [];
+            grouped[sub].push(item);
+          }
         });
         dynamicGalleryData = grouped;
         return grouped;
@@ -1380,24 +1326,28 @@ Students of all departments take active participation in various activities cond
       if (cat === "parking area") return "facility_parking";
       
       // Gymkhana
-      if (["sports competition", "cultural festival", "shiv jayanti", "annual sports day"].includes(cat)) {
-        return "facility_gymkhana";
+      if (cat === "gymkhana activities") {
+        return "facility_gymkhana_activities";
       }
       
       // Hostels
-      if (["boys hostel", "boys hostel campus"].includes(cat)) return "facility_hostel_boys";
-      if (["girls hostel", "girls hostel campus"].includes(cat)) return "facility_hostel_girls";
+      if (cat === "boys hostel") return "facility_hostel_boys_main";
+      if (cat === "boys hostel campus") return "facility_hostel_boys_campus";
+      if (cat === "girls hostel") return "facility_hostel_girls_main";
+      if (cat === "girls hostel campus") return "facility_hostel_girls_campus";
+      
       if (cat === "rector office" || cat === "room") {
+          const suffix = (cat === "rector office") ? "rector" : "room";
           // Check DOM to differentiate Boys vs Girls hostel if element is passed
-          if (container && container.closest('#boysHostel')) return "facility_hostel_boys";
-          if (container && container.closest('#girlsHostel')) return "facility_hostel_girls";
-          return "facility_hostel_boys"; // fallback
+          if (container && container.closest('#boysHostel')) return `facility_hostel_boys_${suffix}`;
+          if (container && container.closest('#girlsHostel')) return `facility_hostel_girls_${suffix}`;
+          return `facility_hostel_boys_${suffix}`; // fallback
       }
       
       // Library
-      if (["institute library", "girls study section", "boys study section"].includes(cat)) {
-        return "facility_library";
-      }
+      if (cat === "institute library") return "facility_lib_institute";
+      if (cat === "boys study section") return "facility_lib_boys";
+      if (cat === "girls study section") return "facility_lib_girls";
 
       return cat; // fallback directly to title
     }
@@ -1417,9 +1367,10 @@ Students of all departments take active participation in various activities cond
         }
 
         container.innerHTML = '';
-        images.forEach((src, index) => {
+        images.forEach((imgObj, index) => {
           const img = document.createElement('img');
-          img.src = src;
+          img.src = imgObj.url;
+          img.dataset.label = imgObj.label;
           if (index === 0) img.classList.add('active');
           container.appendChild(img);
         });
@@ -1433,7 +1384,19 @@ Students of all departments take active participation in various activities cond
           imgs[currentIndex].classList.remove('active');
           currentIndex = (currentIndex + 1) % imgs.length;
           imgs[currentIndex].classList.add('active');
+          
+          // Special update for gymkhana caption
+          if (category.toLowerCase() === 'gymkhana activities') {
+              const caption = document.getElementById('gymkhana_caption');
+              if (caption) caption.textContent = imgs[currentIndex].dataset.label || 'Gymkhana Activities';
+          }
         }, 5000);
+        
+        // Initial caption if gymkhana
+        if (category.toLowerCase() === 'gymkhana activities') {
+            const caption = document.getElementById('gymkhana_caption');
+            if (caption) caption.textContent = images[0].label || 'Gymkhana Activities';
+        }
       });
     }
 
@@ -1446,47 +1409,30 @@ Students of all departments take active participation in various activities cond
     }, true);
 
     function openLightbox(category) {
-      const lightbox = document.getElementById('galleryLightbox');
-      const title = document.getElementById('lightboxTitle');
-      const grid = document.getElementById('lightboxGrid');
-
-      title.innerText = category;
-      grid.innerHTML = ''; // Clear previous
+      if (!window.GlobalLightbox) {
+          console.error('GlobalLightbox not loaded');
+          return;
+      }
 
       const backendCat = getBackendCategory(category, window.lastClickedContainer);
       const images = dynamicGalleryData[backendCat] || dynamicGalleryData[category.toLowerCase().trim()] || [];
 
       if (images.length === 0) {
-        // No uploads yet — show a clean empty state
-        grid.innerHTML = `
-          <div style="grid-column:1/-1; text-align:center; padding:40px 20px; color:#888;">
-            <div style="font-size:48px; margin-bottom:12px;">🖼️</div>
-            <p style="font-size:16px; font-weight:600; color:#555; margin-bottom:6px;">No Photos Uploaded Yet</p>
-            <p style="font-size:13px; color:#999;">Photos for <strong>${category}</strong> will appear here once uploaded by the admin.</p>
-          </div>`;
-        lightbox.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
+        alert('No photos available for this card.');
         return;
       }
 
-      images.forEach(src => {
-        const div = document.createElement('div');
-        div.className = 'lightbox-item';
-        const img = document.createElement('img');
-        img.src = src;
-        img.alt = category;
-        div.appendChild(img);
-        grid.appendChild(div);
-      });
+      // Map to formatted objects for GlobalLightbox
+      const formatted = images.map(imgObj => ({
+        url: imgObj.url, 
+        label: imgObj.label || category
+      }));
 
-      lightbox.style.display = 'flex';
-      document.body.style.overflow = 'hidden'; // Prevent scroll
+      window.GlobalLightbox.open(formatted, category);
     }
 
     function closeLightbox() {
-      const lightbox = document.getElementById('galleryLightbox');
-      lightbox.style.display = 'none';
-      document.body.style.overflow = 'auto';
+      if (window.GlobalLightbox) window.GlobalLightbox.close();
     }
 
     // Close lightbox on outside click

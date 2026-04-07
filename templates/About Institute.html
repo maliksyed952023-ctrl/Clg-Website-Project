@@ -14,6 +14,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon/favicon-16x16.png') }}">
   <link rel="manifest" href="{{ url_for('static', filename='favicon/site.webmanifest') }}">
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/favicon.ico') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/lightbox.css') }}">
 
 
   <style>
@@ -107,86 +108,7 @@
       border-top: 1px solid #eee;
     }
 
-    /* LIGHTBOX POPUP */
-    .lightbox {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.9);
-      z-index: 9999;
-      justify-content: center;
-      align-items: center;
-      padding: 40px;
-    }
-
-    .lightbox-content {
-      position: relative;
-      background: white;
-      width: 90%;
-      max-width: 1000px;
-      max-height: 90vh;
-      border-radius: 12px;
-      padding: 30px;
-      overflow-y: auto;
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-    }
-
-    .lightbox-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      border-bottom: 2px solid #0b3c5d;
-      padding-bottom: 10px;
-    }
-
-    .lightbox-title {
-      font-size: 24px;
-      color: #0b3c5d;
-      font-weight: bold;
-      margin: 0;
-    }
-
-    .close-lightbox {
-      font-size: 30px;
-      color: #c1121f;
-      cursor: pointer;
-      transition: color 0.3s;
-      line-height: 1;
-    }
-
-    .close-lightbox:hover {
-      color: #8a0e16;
-    }
-
-    .lightbox-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
-    }
-
-    .lightbox-item {
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease;
-    }
-
-    .lightbox-item:hover {
-      transform: scale(1.03);
-    }
-
-    .lightbox-item img {
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-      display: block;
-    }
-
-    /* DARK MODE OVERRIDES FOR GALLERY/LIGHTBOX */
+    /* DARK MODE OVERRIDES FOR GALLERY */
     body.dark .gallery-card {
       background: #1e1e1e;
       box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5);
@@ -196,15 +118,6 @@
       background: #2a2a2a;
       color: #f4c430;
       border-top-color: #333;
-    }
-
-    body.dark .lightbox-content {
-      background: #1e1e1e;
-      color: #e0e0e0;
-    }
-
-    body.dark .lightbox-title {
-      color: #f4c430;
     }
 
     /* ORGANIZATIONAL CHART */
@@ -739,6 +652,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Sans+3:wght@300;400;500;600;700&display=swap"
     rel="stylesheet">
+  <script src="{{ url_for('static', filename='js/lightbox.js') }}"></script>
 </head>
 
 <body>
@@ -1454,18 +1368,6 @@
   <!-- ============================================================== -->
 
 
-  <!-- PHOTO GALLERY LIGHTBOX MODAL -->
-  <div id="galleryLightbox" class="lightbox">
-    <div class="lightbox-content">
-      <div class="lightbox-header">
-        <h3 class="lightbox-title" id="lightboxTitle">Gallery</h3>
-        <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
-      </div>
-      <div class="lightbox-grid" id="lightboxGrid">
-        <!-- Images injected by JS -->
-      </div>
-    </div>
-  </div>
 
   <script src="{{ url_for('static', filename='js/search_index.js') }}"></script>
   <script src="{{ url_for('static', filename='js/search.js') }}"></script>
@@ -1531,54 +1433,29 @@
 
     // Lightbox functions
     function openLightbox(category) {
-      const lightbox = document.getElementById('galleryLightbox');
-      const title = document.getElementById('lightboxTitle');
-      const grid = document.getElementById('lightboxGrid');
-
-      title.innerText = category;
-      grid.innerHTML = ''; // Clear previous
-
+      if (!window.GlobalLightbox) {
+          console.error('GlobalLightbox not loaded');
+          return;
+      }
+      
       const images = dynamicGalleryData[category.toLowerCase().trim()] || [];
 
       if (images.length === 0) {
-        // No uploads yet — show a clean empty state instead of wrong placeholders
-        grid.innerHTML = `
-          <div style="grid-column:1/-1; text-align:center; padding:40px 20px; color:#888;">
-            <div style="font-size:48px; margin-bottom:12px;">🖼️</div>
-            <p style="font-size:16px; font-weight:600; color:#555; margin-bottom:6px;">No Photos Uploaded Yet</p>
-            <p style="font-size:13px; color:#999;">Photos for <strong>${category}</strong> will appear here once uploaded by the admin.</p>
-          </div>`;
-        lightbox.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
+        alert('No photos available for this card.');
         return;
       }
 
-      images.forEach(src => {
-        const div = document.createElement('div');
-        div.className = 'lightbox-item';
-        const img = document.createElement('img');
-        img.src = src;
-        img.alt = category;
-        div.appendChild(img);
-        grid.appendChild(div);
-      });
+      // Map to formatted objects (this file uses plain URL strings in dynamicGalleryData)
+      const formatted = images.map(url => ({
+        url: url,
+        label: category
+      }));
 
-      lightbox.style.display = 'flex';
-      document.body.style.overflow = 'hidden'; // Prevent scroll
+      window.GlobalLightbox.open(formatted, category);
     }
 
     function closeLightbox() {
-      const lightbox = document.getElementById('galleryLightbox');
-      lightbox.style.display = 'none';
-      document.body.style.overflow = 'auto';
-    }
-
-    // Close lightbox on outside click
-    window.onclick = function (event) {
-      const lightbox = document.getElementById('galleryLightbox');
-      if (event.target == lightbox) {
-        closeLightbox();
-      }
+      if (window.GlobalLightbox) window.GlobalLightbox.close();
     }
 
     // Initialize on load

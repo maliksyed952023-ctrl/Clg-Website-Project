@@ -12,64 +12,6 @@
     const S = dept.sections || {};
     let html = "";
     
-    // Inject Lightbox HTML & Gallery Styles if not exists
-    if (!document.getElementById('labLightbox')) {
-        const lbHtml = `
-        <div id="labLightbox" class="lab-lightbox" style="display:none;">
-          <div class="lb-content">
-            <div class="lb-header">
-              <h3 id="lbTitle">Laboratory Gallery</h3>
-              <button class="lb-close" onclick="window.closeLabLightbox()">&times;</button>
-            </div>
-            <div id="lbGrid" class="lb-grid"></div>
-          </div>
-        </div>
-        <style>
-            .lab-lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; backdrop-filter: blur(5px); }
-            .lab-lightbox.active { opacity: 1; }
-            .lb-content { background: #fff; width: 95%; max-width: 1100px; max-height: 90vh; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; animation: lbScaleIn 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
-            @keyframes lbScaleIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-            .lb-header { padding: 18px 25px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; background: #fff; position: sticky; top:0; z-index: 10; }
-            .lb-header h3 { margin: 0; font-size: 1.3rem; color: #c1121f; font-weight: 700; }
-            .lb-close { background: #f8f9fa; border: none; font-size: 24px; cursor: pointer; color: #666; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-            .lb-close:hover { background: #fee2e2; color: #c1121f; transform: rotate(90deg); }
-            .lb-grid { padding: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); grid-auto-rows: 160px; gap: 16px; overflow-y: auto; flex: 1; min-height: 0; background: #f8f9fa; }
-            .lb-item { border-radius: 10px; overflow: hidden; cursor: pointer; border: 2px solid #eee; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: all 0.3s ease; width: 100%; height: 100%; }
-            .lb-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; display: block; }
-            .lb-item:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); border-color: #c1121f; }
-            .lb-item:hover img { transform: scale(1.05); }
-            
-            .gallery-style-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; padding: 20px 0; }
-            .gallery-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); transition: all 0.3s ease; border: 1px solid #eee; }
-            .gallery-card:hover { transform: translateY(-8px); box-shadow: 0 12px 25px rgba(0,0,0,0.15); }
-            .gallery-img-wrapper { height: 200px; position: relative; overflow: hidden; background: #f8f9fa; }
-            .gallery-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
-            .gallery-overlay { position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(193, 18, 31, 0.7); display: flex; align-items: center; justify-content: center; opacity:0; transition: 0.3s; }
-            .gallery-card:hover .gallery-overlay { opacity: 1; }
-            .overlay-content { color: #fff; text-align: center; }
-            .overlay-content i { font-size: 2rem; margin-bottom: 8px; display: block; }
-            .gallery-info { padding: 15px; border-top: 1px solid #f0f0f0; }
-            .gallery-card-title { margin: 0 0 5px; font-size: 1.1rem; color: #333; font-weight: 700; }
-            .gallery-card-subtitle { margin: 0; font-size: 0.9rem; color: #888; }
-            
-            .table-container { margin-top: 20px; overflow: hidden; border-radius: 8px; border: 1px solid #eee; }
-            .data-table { width: 100%; border-collapse: collapse; }
-            .data-table th, .data-table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
-            .data-table th { background: #f8f9fa; color: #c1121f; font-weight: 600; }
-        </style>
-        `;
-        document.body.insertAdjacentHTML('beforeend', lbHtml);
-        window.closeLabLightbox = function() {
-            const lb = document.getElementById('labLightbox');
-            if(!lb) return;
-            lb.classList.remove('active');
-            setTimeout(() => {
-                lb.style.display = 'none';
-                document.getElementById('lbGrid').innerHTML = ''; // Clear content to avoid flashing old images next time
-            }, 300);
-        };
-    }
-
     // ─── BREADCRUMB ───
     const breadcrumbEl = document.getElementById("dept-breadcrumb");
     if (breadcrumbEl) breadcrumbEl.textContent = dept.name;
@@ -423,36 +365,34 @@
     }
 
     window.openLabGalleryFromData = function(images, title) {
-      const grid = document.getElementById('lbGrid');
-      const lbTitle = document.getElementById('lbTitle');
-      const lb = document.getElementById('labLightbox');
-      lbTitle.textContent = title;
-      lb.style.display = 'flex';
-      setTimeout(() => lb.classList.add('active'), 10);
-      grid.innerHTML = images.map(img => `<div class="lb-item"><img src="${img.url}" onclick="window.openFullImage('${img.url}')"></div>`).join('');
+      if (!window.GlobalLightbox) {
+          console.error('GlobalLightbox not loaded');
+          return;
+      }
+      // Map API objects to {url, label} format
+      const formatted = images.map(img => ({ url: img.url, label: img.subcategory }));
+      window.GlobalLightbox.open(formatted, title);
     };
-
+ 
     window.openLabGallery = async function(slug, title) {
-      const grid = document.getElementById('lbGrid');
-      const lbTitle = document.getElementById('lbTitle');
-      const lb = document.getElementById('labLightbox');
-      lbTitle.textContent = title;
-      grid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; padding:50px;">Loading...</p>';
-      lb.style.display = 'flex';
-      setTimeout(() => lb.classList.add('active'), 10);
+      if (!window.GlobalLightbox) return;
       try {
         const res = await fetch(`/api/images?slug=${slug}`);
         const json = await res.json();
         const images = json.data || [];
         if (images.length === 0) {
-          grid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; padding:50px;">No photos available.</p>';
+          alert('No photos available for this card.');
         } else {
-          grid.innerHTML = images.map(img => `<div class="lb-item"><img src="${img.url}" onclick="window.openFullImage('${img.url}')"></div>`).join('');
+          const formatted = images.map(img => ({ url: img.url, label: img.subcategory }));
+          window.GlobalLightbox.open(formatted, title);
         }
-      } catch (e) { grid.innerHTML = '<p>Error.</p>'; }
+      } catch (e) { console.error(e); }
     };
-
-    window.openFullImage = function(url) { window.open(url, '_blank'); };
+ 
+    window.openFullImage = function(url) { 
+        if (window.GlobalLightbox) window.GlobalLightbox.open([{url: url}], 'Full Image');
+        else window.open(url, '_blank');
+    };
   }
 
   function initViewToggle() {

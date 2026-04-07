@@ -14,6 +14,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon/favicon-16x16.png') }}">
   <link rel="manifest" href="{{ url_for('static', filename='favicon/site.webmanifest') }}">
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/favicon.ico') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/lightbox.css') }}">
 
 
   <style>
@@ -1204,7 +1205,7 @@
           grid.innerHTML = data.map(img => {
             const name = (img.subcategory && img.subcategory.trim()) ? img.subcategory.trim() : 'Recruiter';
             return `
-              <div class="logo-box" style="padding:10px; flex-direction:column; gap:8px;">
+              <div class="logo-box" onclick="GlobalLightbox.open([{url: '${img.url}', label: '${name}'}], '${name}')" style="padding:10px; flex-direction:column; gap:8px; cursor:pointer;">
                 <img src="${img.url}" alt="${name}" style="max-width:100%; max-height:110px; object-fit:contain;">
                 <div style="font-size:13px; font-weight:600; color:#333; text-align:center; margin-top:6px;">${name}</div>
               </div>`;
@@ -1248,6 +1249,7 @@
 
   <script src="{{ url_for('static', filename='js/') }}search_index.js"></script>
   <script src="{{ url_for('static', filename='js/') }}search.js"></script>
+  <script src="{{ url_for('static', filename='js/lightbox.js') }}"></script>
   <!-- FOOTER -->
   {% include 'footer_content.html' %}
 </body>
