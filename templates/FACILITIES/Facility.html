@@ -64,25 +64,158 @@
     .gallery-card {
       background: white;
       border-radius: 8px;
-      box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
       overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+    }
+
+    .gallery-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .event-card {
+      cursor: pointer;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .event-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
     }
 
     .gallery-img {
-      height: 150px;
-      background: #e6e6e6;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #666;
-      font-size: 14px;
+      height: 180px;
+      background: #eee;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gallery-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .gallery-img img.active {
+      opacity: 1;
     }
 
     .gallery-text {
-      padding: 10px;
+      padding: 12px;
       text-align: center;
+      font-weight: 600;
+      color: #0b3c5d;
+      background: #f8f9fa;
+      border-top: 1px solid #eee;
+    }
+
+    /* LIGHTBOX POPUP */
+    .lightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+    }
+
+    .lightbox-content {
+      position: relative;
+      background: white;
+      width: 90%;
+      max-width: 1000px;
+      max-height: 90vh;
+      border-radius: 12px;
+      padding: 30px;
+      overflow-y: auto;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .lightbox-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #0b3c5d;
+      padding-bottom: 10px;
+    }
+
+    .lightbox-title {
+      font-size: 24px;
+      color: #0b3c5d;
       font-weight: bold;
-      color: #0e5a61;
+      margin: 0;
+    }
+
+    .close-lightbox {
+      font-size: 30px;
+      color: #c1121f;
+      cursor: pointer;
+      transition: color 0.3s;
+      line-height: 1;
+    }
+
+    .close-lightbox:hover {
+      color: #8a0e16;
+    }
+
+    .lightbox-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .lightbox-item {
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .lightbox-item:hover {
+      transform: scale(1.03);
+    }
+
+    .lightbox-item img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* DARK MODE OVERRIDES FOR GALLERY/LIGHTBOX */
+    body.dark .gallery-card, body.dark .event-card {
+      background: #1e1e1e;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    body.dark .gallery-text {
+      background: #2a2a2a;
+      color: #f4c430;
+      border-top-color: #333;
+    }
+
+    body.dark .lightbox-content {
+      background: #1e1e1e;
+      color: #e0e0e0;
+    }
+
+    body.dark .lightbox-title {
+      color: #f4c430;
     }
 
     /* ORGANIZATIONAL CHART */
@@ -604,31 +737,7 @@
 
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/facility_style.css') }}">
-<style>
-/* Override to fit within new main/container structure */
 
-
-
-.gallery-img { 
-    background: #f4f6f9; 
-    height: 180px; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    overflow: hidden;
-}
-.gallery-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-}
-.gallery-card:hover .gallery-img img {
-    transform: scale(1.05);
-}
-/* Global active item fixes */
-.sub-btn.active-item, 
-</style>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -939,23 +1048,23 @@ Other Facilities <span class="arrow">▶</span>
 
 <div class="gallery">
 
-<div class="gallery-card">
-<div class="gallery-img">
-    <img src="/static/images/campus1.jpg.jpeg" data-slug="facility_library_1" data-fallback="/static/images/campus1.jpg.jpeg" alt="Library">
+<div class="gallery-card" onclick="openLightbox('Institute Library')">
+<div class="gallery-img" data-category="Institute Library">
+    <img src="/static/images/campus1.jpg.jpeg" class="active" alt="Institute Library">
 </div>
 <div class="gallery-text">Institute Library</div>
 </div>
 
-<div class="gallery-card">
-<div class="gallery-img">
-    <img src="/static/images/campus2.jpg.jpeg" data-slug="facility_library_2" data-fallback="/static/images/campus2.jpg.jpeg" alt="Library">
+<div class="gallery-card" onclick="openLightbox('Girls study section')">
+<div class="gallery-img" data-category="Girls study section">
+    <img src="/static/images/campus2.jpg.jpeg" class="active" alt="Girls study section">
 </div>
 <div class="gallery-text">Girls study section</div>
 </div>
 
-<div class="gallery-card">
-<div class="gallery-img">
-    <img src="/static/images/campus3.jpg.jpeg" data-slug="facility_library_3" data-fallback="/static/images/campus3.jpg.jpeg" alt="Library">
+<div class="gallery-card" onclick="openLightbox('Boys study section')">
+<div class="gallery-img" data-category="Boys study section">
+    <img src="/static/images/campus3.jpg.jpeg" class="active" alt="Boys study section">
 </div>
 <div class="gallery-text">Boys study section</div>
 </div>
@@ -985,30 +1094,30 @@ The library also provides reading facilities, newspaper access and reference mat
 
 <div class="gallery">
 
-<div class="gallery-card">
-<div class="gallery-img">
-    <img src="/static/images/campus4.jpg.jpeg" data-slug="facility_boys_hostel_1" data-fallback="/static/images/campus4.jpg.jpeg" alt="Boys Hostel">
+<div class="gallery-card" onclick="openLightbox('Boys Hostel')">
+<div class="gallery-img" data-category="Boys Hostel">
+    <img src="/static/images/campus4.jpg.jpeg" class="active" alt="Boys Hostel">
 </div>
 <div class="gallery-text">Boys Hostel</div>
 </div>
 
-<div class="gallery-card">
-<div class="gallery-img">
-    <img src="/static/images/campus1.jpg.jpeg" data-slug="facility_boys_hostel_2" data-fallback="/static/images/campus1.jpg.jpeg" alt="Boys Hostel Campus">
+<div class="gallery-card" onclick="openLightbox('Boys Hostel Campus')">
+<div class="gallery-img" data-category="Boys Hostel Campus">
+    <img src="/static/images/campus1.jpg.jpeg" class="active" alt="Boys Hostel Campus">
 </div>
 <div class="gallery-text">Boys Hostel Campus</div>
 </div>
 
-<div class="gallery-card">
-<div class="gallery-img">
-    <img src="/static/images/campus3.jpg.jpeg" data-slug="facility_hostel_boys_1" data-fallback="/static/images/campus3.jpg.jpeg" alt="Rector Office">
+<div class="gallery-card" onclick="openLightbox('Rector Office')">
+<div class="gallery-img" data-category="Rector Office">
+    <img src="/static/images/campus3.jpg.jpeg" class="active" alt="Rector Office">
 </div>
 <div class="gallery-text">Rector Office</div>
 </div>
 
-<div class="gallery-card">
-<div class="gallery-img">
-    <img src="/static/images/campus2.jpg.jpeg" data-slug="facility_hostel_boys_2" data-fallback="/static/images/campus2.jpg.jpeg" alt="Room">
+<div class="gallery-card" onclick="openLightbox('Room')">
+<div class="gallery-img" data-category="Room">
+    <img src="/static/images/campus2.jpg.jpeg" class="active" alt="Room">
 </div>
 <div class="gallery-text">Room</div>
 </div>
@@ -1040,30 +1149,30 @@ The hostel administration maintains proper rules and regulations to ensure safet
 
 <div class="gallery">
 
-<div class="gallery-card">
-<div class="gallery-img">
-    <img src="/static/images/campus1.jpg.jpeg" data-slug="facility_hostel_girls_1" data-fallback="/static/images/campus1.jpg.jpeg" alt="Girls Hostel">
+<div class="gallery-card" onclick="openLightbox('Girls Hostel')">
+<div class="gallery-img" data-category="Girls Hostel">
+    <img src="/static/images/campus1.jpg.jpeg" class="active" alt="Girls Hostel">
 </div>
 <div class="gallery-text">Girls Hostel</div>
 </div>
 
-<div class="gallery-card">
-<div class="gallery-img">
-    <img src="/static/images/campus2.jpg.jpeg" data-slug="facility_hostel_girls_2" data-fallback="/static/images/campus2.jpg.jpeg" alt="Girls Hostel Campus">
+<div class="gallery-card" onclick="openLightbox('Girls Hostel Campus')">
+<div class="gallery-img" data-category="Girls Hostel Campus">
+    <img src="/static/images/campus2.jpg.jpeg" class="active" alt="Girls Hostel Campus">
 </div>
 <div class="gallery-text">Girls Hostel Campus</div>
 </div>
 
-<div class="gallery-card">
-<div class="gallery-img">
-    <img src="/static/images/campus3.jpg.jpeg" data-slug="facility_hostel_girls_3" data-fallback="/static/images/campus3.jpg.jpeg" alt="Rector Office">
+<div class="gallery-card" onclick="openLightbox('Rector Office')">
+<div class="gallery-img" data-category="Rector Office">
+    <img src="/static/images/campus3.jpg.jpeg" class="active" alt="Rector Office">
 </div>
 <div class="gallery-text">Rector Office</div>
 </div>
 
-<div class="gallery-card">
-<div class="gallery-img">
-    <img src="/static/images/campus4.jpg.jpeg" data-slug="facility_hostel_girls_4" data-fallback="/static/images/campus4.jpg.jpeg" alt="Room">
+<div class="gallery-card" onclick="openLightbox('Room')">
+<div class="gallery-img" data-category="Room">
+    <img src="/static/images/campus4.jpg.jpeg" class="active" alt="Room">
 </div>
 <div class="gallery-text"> Room</div>
 </div>
@@ -1103,35 +1212,27 @@ Students of all departments take active participation in various activities cond
 
 <h2>Events</h2>
 
-<div class="events-wrapper">
+<div class="gallery">
 
-<button class="scroll-btn" onclick="scrollEvents(-1)">◀</button>
-
-<div class="events-container" id="eventsScroll">
-
-<div class="event-card">
-<div class="gallery-img"><img src="/static/images/default_event.jpg" data-slug="facility_gymkhana_1" data-fallback="/static/images/default_event.jpg"></div>
+<div class="gallery-card" onclick="openLightbox('Sports Competition')">
+<div class="gallery-img" data-category="Sports Competition"><img src="/static/images/default_event.jpg" class="active" alt="Sports Competition"></div>
 <div class="gallery-text">Sports Competition</div>
 </div>
 
-<div class="event-card">
-<div class="gallery-img"><img src="/static/images/default_event.jpg" data-slug="facility_gymkhana_2" data-fallback="/static/images/default_event.jpg"></div>
+<div class="gallery-card" onclick="openLightbox('Cultural Festival')">
+<div class="gallery-img" data-category="Cultural Festival"><img src="/static/images/default_event.jpg" class="active" alt="Cultural Festival"></div>
 <div class="gallery-text">Cultural Festival</div>
 </div>
 
-<div class="event-card">
-<div class="gallery-img"><img src="/static/images/default_event.jpg" data-slug="facility_gymkhana_3" data-fallback="/static/images/default_event.jpg"></div>
+<div class="gallery-card" onclick="openLightbox('Shiv Jayanti')">
+<div class="gallery-img" data-category="Shiv Jayanti"><img src="/static/images/default_event.jpg" class="active" alt="Shiv Jayanti"></div>
 <div class="gallery-text">Shiv Jayanti</div>
 </div>
 
-<div class="event-card">
-<div class="gallery-img"><img src="/static/images/default_event.jpg" data-slug="facility_gymkhana_4" data-fallback="/static/images/default_event.jpg"></div>
+<div class="gallery-card" onclick="openLightbox('Annual Sports Day')">
+<div class="gallery-img" data-category="Annual Sports Day"><img src="/static/images/default_event.jpg" class="active" alt="Annual Sports Day"></div>
 <div class="gallery-text">Annual Sports Day</div>
 </div>
-
-</div>
-
-<button class="scroll-btn" onclick="scrollEvents(1)">▶</button>
 
 </div>
 
@@ -1146,38 +1247,38 @@ Students of all departments take active participation in various activities cond
 
 <div class="gallery">
 
-<div class="gallery-card">
-<div class="gallery-img"><img src="/static/images/default_facility.jpg" data-slug="facility_canteen_1" data-fallback="/static/images/default_facility.jpg"></div>
+<div class="gallery-card" onclick="openLightbox('Canteen')">
+<div class="gallery-img" data-category="Canteen"><img src="/static/images/default_facility.jpg" class="active" alt="Canteen"></div>
 <div class="gallery-text">Canteen</div>
 </div>
 
-<div class="gallery-card">
-<div class="gallery-img"><img src="/static/images/default_facility.jpg" data-slug="facility_workshop_1" data-fallback="/static/images/default_facility.jpg"></div>
+<div class="gallery-card" onclick="openLightbox('Workshop')">
+<div class="gallery-img" data-category="Workshop"><img src="/static/images/default_facility.jpg" class="active" alt="Workshop"></div>
 <div class="gallery-text">Workshop</div>
 </div>
 
-<div class="gallery-card">
-<div class="gallery-img"><img src="/static/images/default_stationary.jpg" data-slug="facility_stationary_1" data-fallback="/static/images/default_stationary.jpg"></div>
+<div class="gallery-card" onclick="openLightbox('Student Stationary Store')">
+<div class="gallery-img" data-category="Student Stationary Store"><img src="/static/images/default_stationary.jpg" class="active" alt="Student Stationary Store"></div>
 <div class="gallery-text">Student Stationary Store</div>
 </div>
 
-<div class="gallery-card">
-<div class="gallery-img"><img src="/static/images/default_auditorium.jpg" data-slug="facility_auditorium_1" data-fallback="/static/images/default_auditorium.jpg"></div>
+<div class="gallery-card" onclick="openLightbox('Auditorium')">
+<div class="gallery-img" data-category="Auditorium"><img src="/static/images/default_auditorium.jpg" class="active" alt="Auditorium"></div>
 <div class="gallery-text">Auditorium</div>
 </div>
 
-<div class="gallery-card">
-<div class="gallery-img"><img src="/static/images/default_comp.jpg" data-slug="facility_computer_center_1" data-fallback="/static/images/default_comp.jpg"></div>
+<div class="gallery-card" onclick="openLightbox('Computer Center')">
+<div class="gallery-img" data-category="Computer Center"><img src="/static/images/default_comp.jpg" class="active" alt="Computer Center"></div>
 <div class="gallery-text">Computer Center</div>
 </div>
 
-<div class="gallery-card">
-<div class="gallery-img"><img src="/static/images/default_wifi.jpg" data-slug="facility_wifi_1" data-fallback="/static/images/default_wifi.jpg"></div>
+<div class="gallery-card" onclick="openLightbox('Wi-Fi Campus')">
+<div class="gallery-img" data-category="Wi-Fi Campus"><img src="/static/images/default_wifi.jpg" class="active" alt="Wi-Fi Campus"></div>
 <div class="gallery-text">Wi-Fi Campus</div>
 </div>
 
-<div class="gallery-card">
-<div class="gallery-img"><img src="/static/images/default_parking.jpg" data-slug="facility_parking_1" data-fallback="/static/images/default_parking.jpg"></div>
+<div class="gallery-card" onclick="openLightbox('Parking Area')">
+<div class="gallery-img" data-category="Parking Area"><img src="/static/images/default_parking.jpg" class="active" alt="Parking Area"></div>
 <div class="gallery-text">Parking Area</div>
 </div>
 
@@ -1229,6 +1330,177 @@ Students of all departments take active participation in various activities cond
         }
     });
 </script>
+  <!-- PHOTO GALLERY LIGHTBOX MODAL -->
+  <div id="galleryLightbox" class="lightbox">
+    <div class="lightbox-content">
+      <div class="lightbox-header">
+        <h3 class="lightbox-title" id="lightboxTitle">Gallery</h3>
+        <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
+      </div>
+      <div class="lightbox-grid" id="lightboxGrid">
+        <!-- Images injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let dynamicGalleryData = {};
+
+    async function fetchGalleryData() {
+      try {
+        const res = await fetch('/api/images?category=facility');
+        const json = await res.json();
+        const data = json.data || [];
+        
+        // Group by subcategory name (normalized to lowercase)
+        const grouped = {};
+        data.forEach(img => {
+          const sub = (img.subcategory || "").toLowerCase().trim();
+          if (!grouped[sub]) grouped[sub] = [];
+          grouped[sub].push(img.url);
+        });
+        dynamicGalleryData = grouped;
+        return grouped;
+      } catch (e) {
+        console.error("Error fetching gallery data:", e);
+        return {};
+      }
+    }
+
+    // Map exact frontend titles to the backend subcategories defined in dashboard.html
+    function getBackendCategory(category, container = null) {
+      const cat = category.toLowerCase().trim();
+      // Other Facilities
+      if (cat === "canteen") return "facility_canteen";
+      if (cat === "workshop") return "facility_workshop";
+      if (cat === "student stationary store") return "facility_stationary";
+      if (cat === "auditorium") return "facility_auditorium";
+      if (cat === "computer center") return "facility_computer_center";
+      if (cat === "wi-fi campus") return "facility_wifi";
+      if (cat === "parking area") return "facility_parking";
+      
+      // Gymkhana
+      if (["sports competition", "cultural festival", "shiv jayanti", "annual sports day"].includes(cat)) {
+        return "facility_gymkhana";
+      }
+      
+      // Hostels
+      if (["boys hostel", "boys hostel campus"].includes(cat)) return "facility_hostel_boys";
+      if (["girls hostel", "girls hostel campus"].includes(cat)) return "facility_hostel_girls";
+      if (cat === "rector office" || cat === "room") {
+          // Check DOM to differentiate Boys vs Girls hostel if element is passed
+          if (container && container.closest('#boysHostel')) return "facility_hostel_boys";
+          if (container && container.closest('#girlsHostel')) return "facility_hostel_girls";
+          return "facility_hostel_boys"; // fallback
+      }
+      
+      // Library
+      if (["institute library", "girls study section", "boys study section"].includes(cat)) {
+        return "facility_library";
+      }
+
+      return cat; // fallback directly to title
+    }
+
+    // Initialize gallery images in cards
+    async function initGallery() {
+      await fetchGalleryData();
+      const containers = document.querySelectorAll('.gallery-img');
+      containers.forEach(container => {
+        const category = container.getAttribute('data-category') || "";
+        const backendCat = getBackendCategory(category, container);
+        const images = dynamicGalleryData[backendCat] || dynamicGalleryData[category.toLowerCase().trim()] || [];
+
+        if (images.length === 0) {
+            // Leave hardcoded images alone if no dynamic results
+            return;
+        }
+
+        container.innerHTML = '';
+        images.forEach((src, index) => {
+          const img = document.createElement('img');
+          img.src = src;
+          if (index === 0) img.classList.add('active');
+          container.appendChild(img);
+        });
+
+        // Start cycling for this container
+        let currentIndex = 0;
+        setInterval(() => {
+          const imgs = container.querySelectorAll('img');
+          if (imgs.length <= 1) return;
+
+          imgs[currentIndex].classList.remove('active');
+          currentIndex = (currentIndex + 1) % imgs.length;
+          imgs[currentIndex].classList.add('active');
+        }, 5000);
+      });
+    }
+
+    // Lightbox functions
+    // Need to pass the context optionally if title is ambiguous like "Room"
+    window.lastClickedContainer = null;
+    document.addEventListener('click', e => {
+      const card = e.target.closest('.gallery-card, .event-card');
+      if(card) window.lastClickedContainer = card;
+    }, true);
+
+    function openLightbox(category) {
+      const lightbox = document.getElementById('galleryLightbox');
+      const title = document.getElementById('lightboxTitle');
+      const grid = document.getElementById('lightboxGrid');
+
+      title.innerText = category;
+      grid.innerHTML = ''; // Clear previous
+
+      const backendCat = getBackendCategory(category, window.lastClickedContainer);
+      const images = dynamicGalleryData[backendCat] || dynamicGalleryData[category.toLowerCase().trim()] || [];
+
+      if (images.length === 0) {
+        // No uploads yet — show a clean empty state
+        grid.innerHTML = `
+          <div style="grid-column:1/-1; text-align:center; padding:40px 20px; color:#888;">
+            <div style="font-size:48px; margin-bottom:12px;">🖼️</div>
+            <p style="font-size:16px; font-weight:600; color:#555; margin-bottom:6px;">No Photos Uploaded Yet</p>
+            <p style="font-size:13px; color:#999;">Photos for <strong>${category}</strong> will appear here once uploaded by the admin.</p>
+          </div>`;
+        lightbox.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        return;
+      }
+
+      images.forEach(src => {
+        const div = document.createElement('div');
+        div.className = 'lightbox-item';
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = category;
+        div.appendChild(img);
+        grid.appendChild(div);
+      });
+
+      lightbox.style.display = 'flex';
+      document.body.style.overflow = 'hidden'; // Prevent scroll
+    }
+
+    function closeLightbox() {
+      const lightbox = document.getElementById('galleryLightbox');
+      lightbox.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    // Close lightbox on outside click
+    window.onclick = function (event) {
+      const lightbox = document.getElementById('galleryLightbox');
+      if (event.target == lightbox) {
+        closeLightbox();
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initGallery();
+    });
+  </script>
 
   <!-- FOOTER -->
   {% include 'footer_content.html' %}

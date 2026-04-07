@@ -706,10 +706,8 @@
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody>
-              <tr><td>1</td><td>Academic Calendar 2024-25</td><td><a href="{{ url_for('static', filename='pdfs/Academic-Calendar-2024-25.pdf') }}" class="download-btn" download><i class="fas fa-download"></i> Download</a></td></tr>
-              <tr><td>2</td><td>Syllabus - All Departments</td><td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td></tr>
-              <tr><td>3</td><td>Standard Operating Procedures</td><td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td></tr>
+            <tbody id="academic-tbody">
+              <tr><td colspan="3">Loading data...</td></tr>
             </tbody>
           </table>
         </div>
@@ -725,10 +723,8 @@
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody>
-              <tr><td>1</td><td>Direct Second Year Admission Form</td><td><a href="{{ url_for('static', filename='pdfs/Addmission/Direct-Second-Year-Admission-Notification.pdf') }}" class="download-btn" download><i class="fas fa-download"></i> Download</a></td></tr>
-              <tr><td>2</td><td>Hostel Admission Form</td><td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td></tr>
-              <tr><td>3</td><td>Income Certificate Format</td><td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td></tr>
+            <tbody id="admission-tbody">
+              <tr><td colspan="3">Loading data...</td></tr>
             </tbody>
           </table>
         </div>
@@ -744,10 +740,8 @@
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody>
-              <tr><td>1</td><td>Examination Form - Regular</td><td><a href="{{ url_for('static', filename='pdfs/Exam-Cell/Summer-24-Exam-Schedule.pdf') }}" class="download-btn" download><i class="fas fa-download"></i> Download</a></td></tr>
-              <tr><td>2</td><td>Re-Checking/Photo Copy Form</td><td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td></tr>
-              <tr><td>3</td><td>Duplicate Marksheet Application</td><td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td></tr>
+            <tbody id="exam-tbody">
+              <tr><td colspan="3">Loading data...</td></tr>
             </tbody>
           </table>
         </div>
@@ -773,6 +767,54 @@
         const arrow = element.querySelector(".arrow");
         if(arrow) arrow.innerHTML = "▼";
       }
+    }
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const res = await fetch('/api/downloads');
+        const json = await res.json();
+        const docs = json.data || [];
+
+        renderTable('academic-tbody', docs.filter(d => d.section === 'academic'));
+        renderTable('admission-tbody', docs.filter(d => d.section === 'admission'));
+        renderTable('exam-tbody', docs.filter(d => d.section === 'exam'));
+
+      } catch (err) {
+        console.error("Failed to load downloads:", err);
+        ['academic-tbody', 'admission-tbody', 'exam-tbody'].forEach(id => {
+          document.getElementById(id).innerHTML = '<tr><td colspan="3">Failed to load downloads data.</td></tr>';
+        });
+      }
+    });
+
+    function renderTable(tbodyId, items) {
+      const tbody = document.getElementById(tbodyId);
+      if(items.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3">No documents available at the moment.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = items.map((item, index) => {
+        const title = escapeHtml(item.name);
+        const href = item.external_link ? item.external_link : (item.file_url ? item.file_url : '#');
+        return `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${title}</td>
+            <td><a href="${href}" ${item.external_link ? 'target="_blank"' : 'download'} class="download-btn"><i class="fas fa-${item.external_link ? 'external-link-alt' : 'download'}"></i> ${item.external_link ? 'Open Link' : 'Download'}</a></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function escapeHtml(unsafe) {
+      if(!unsafe) return "";
+      return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
     }
   </script>
 

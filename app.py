@@ -7,7 +7,9 @@ from routes.auth import auth_bp
 from routes.announcements import announcements_bp
 from routes.pending import pending_bp
 from routes.images import images_bp
-
+from routes.faculty import faculty_bp
+from routes.labs import labs_bp
+from routes.downloads import downloads_bp
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100 MB max upload
 CORS(app)
@@ -17,7 +19,9 @@ app.register_blueprint(announcements_bp, url_prefix='/api')
 app.register_blueprint(auth_bp, url_prefix='/api')
 app.register_blueprint(pending_bp, url_prefix='/api')
 app.register_blueprint(images_bp, url_prefix='/api')
-
+app.register_blueprint(faculty_bp, url_prefix='/api')
+app.register_blueprint(labs_bp, url_prefix='/api')
+app.register_blueprint(downloads_bp, url_prefix='/api')
 # Routes
 @app.route('/')
 @app.route('/home')

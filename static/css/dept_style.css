@@ -65,13 +65,14 @@ body {
   max-width: 100%;
   margin: 0;
   overflow: hidden;
-  aspect-ratio: 16/5;
-  background: #0e5a61;
+  aspect-ratio: 16/7;
+  max-height: 500px;
+  background: var(--clr-bg);
 }
 .dept-slider .slides { position: relative; width: 100%; height: 100%; }
 .dept-slider .slide {
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-  object-fit: cover; opacity: 0; transition: opacity .7s ease;
+  object-fit: cover; object-position: center center; opacity: 0; transition: opacity .7s ease;
 }
 .dept-slider .slide.active { opacity: 1; }
 .dept-slider .prev, .dept-slider .next {
@@ -455,7 +456,7 @@ body {
   .sub-dropdown-content { position: static; box-shadow: none; }
   .footer-grid { grid-template-columns: 1fr; gap: 24px; }
   .faculty-card { min-width: 240px; }
-  .dept-slider { aspect-ratio: 16/7; }
+  .dept-slider { aspect-ratio: 16/9; max-height: 350px; }
 }
 /* ─── GALLERY-STYLE IMAGE CARDS (Achievements & Magazines) ─── */
 .gallery-style-grid {

@@ -79,10 +79,24 @@
     if (titleEl) titleEl.textContent = dept.name.toUpperCase();
 
     // ─── HERO SLIDER ───
-    const sliderImages = dept.sliderImages || DATA.defaultSliderImages;
-    if (typeof initHeroSlider === "function") {
-      initHeroSlider("dept-slider", sliderImages);
+    async function loadHeroSlider() {
+      try {
+        const res = await fetch(`/api/images?slug=dept_${deptId}_slider&_t=${Date.now()}`);
+        const json = await res.json();
+        let sliderImages = dept.sliderImages || DATA.defaultSliderImages;
+        if (json.data && json.data.length > 0) {
+            sliderImages = json.data.map(img => img.url);
+        }
+        if (typeof initHeroSlider === "function") {
+          initHeroSlider("dept-slider", sliderImages);
+        }
+      } catch(e) {
+          if (typeof initHeroSlider === "function") {
+             initHeroSlider("dept-slider", dept.sliderImages || DATA.defaultSliderImages);
+          }
+      }
     }
+    loadHeroSlider();
 
     // ─── SIDEBAR ───
     renderSidebar();
@@ -199,38 +213,105 @@
         html += `<section id="salient-features" class="section"><h2>Salient Features</h2><ul class="features-list">${dept.salientFeatures.map(f => `<li>${f}</li>`).join("")}</ul></section>`;
       }
 
-      if (S.faculty && dept.faculty) {
-        const cards = dept.faculty.map((f, i) => {
-          const slug = `dept_${deptId}_faculty_${i + 1}`;
-          return `
-          <div class="faculty-card">
-            <div class="card-inner">
-              <img class="photo" src="${f.image}" data-slug="${slug}" data-fallback="${f.image}" alt="${f.name}" loading="lazy">
-              <div class="card-body">
-                <h3>${f.name}</h3><div class="role">${f.role}</div>
-                <div class="contact">📞 <a href="tel:${f.phone}">${f.phone}</a><br>✉️ <a href="mailto:${f.email}">${f.email}</a></div>
-              </div>
-            </div>
-          </div>`;
-        }).join("");
-        html += `<section id="faculty" class="section"><h2>Faculty</h2><div class="slider-container"><div class="slider-wrapper"><div class="slider" id="facultySlider">${cards}</div></div><div class="arrows"><button class="arrow-btn" id="prevBtn">←</button><button class="arrow-btn" id="nextBtn">→</button></div></div></section>`;
+      if (S.faculty) {
+        html += `<section id="faculty" class="section"><h2>Faculty</h2><div id="faculty-dynamic-container">Loading faculty...</div></section>`;
+        
+        setTimeout(async () => {
+          try {
+            const res = await fetch(`/api/faculty?department=${deptId}`);
+            const json = await res.json();
+            const dbFaculty = json.data || [];
+            
+            // Fallback to static data if no dynamic data found
+            const facultyList = dbFaculty.length > 0 ? dbFaculty : (dept.faculty || []);
+            const isDynamic = dbFaculty.length > 0;
+            
+            if (facultyList.length > 0) {
+              const cards = facultyList.map((f, i) => {
+                const slug = `dept_${deptId}_faculty_${i + 1}`;
+                const photoSrc = isDynamic ? (f.photo_url || '/static/images/director4.jpg') : f.image;
+                const name = f.name;
+                const role = isDynamic ? f.designation : f.role;
+                const phone = isDynamic ? f.contact_no : f.phone;
+                const email = f.email;
+                
+                return `
+                <div class="faculty-card">
+                  <div class="card-inner">
+                    <img class="photo" src="${photoSrc}" data-slug="${isDynamic ? '' : slug}" data-fallback="${photoSrc}" alt="${name}" loading="lazy">
+                    <div class="card-body">
+                      <h3>${name}</h3><div class="role">${role}</div>
+                      <div class="contact">📞 ${phone ? `<a href="tel:${phone}">${phone}</a>` : '-'}<br>✉️ ${email ? `<a href="mailto:${email}">${email}</a>` : '-'}</div>
+                    </div>
+                  </div>
+                </div>`;
+              }).join("");
+              
+              document.getElementById('faculty-dynamic-container').innerHTML = `
+                <div class="slider-container">
+                  <div class="slider-wrapper">
+                    <div class="slider" id="facultySlider">${cards}</div>
+                  </div>
+                  <div class="arrows">
+                    <button class="arrow-btn" id="prevBtn">←</button>
+                    <button class="arrow-btn" id="nextBtn">→</button>
+                  </div>
+                </div>`;
+                
+              if (window.ImageLoader) window.ImageLoader.updateDOM();
+            } else {
+              document.getElementById('faculty-dynamic-container').innerHTML = `<p style="padding:20px; color:#666;">No faculty information available at the moment.</p>`;
+            }
+          } catch(e) {
+            console.error('Failed to load faculty:', e);
+            document.getElementById('faculty-dynamic-container').innerHTML = '<p>Error loading faculty information.</p>';
+          }
+        }, 100);
       }
 
-      if (S.laboratory && dept.labs) {
-        const rows = dept.labs.map((l, i) => `<tr><td>${i+1}</td><td>${l.name}</td><td>${l.equipment}</td><td>${l.area}</td><td>${l.remarks || ''}</td></tr>`).join("");
+      if (S.laboratory) {
         html += `
           <section id="lab-info" class="section">
             <h2>Lab Information</h2>
-            <div class="table-container">
-              <div class="table-scroll" data-rows="${dept.labs.length}" data-limit="5">
-                <table class="data-table">
-                  <thead><tr><th>Sr.</th><th>Name of Lab</th><th>Major Equipment</th><th>Area (m²)</th><th>Remarks</th></tr></thead>
-                  <tbody>${rows}</tbody>
-                </table>
-              </div>
-              ${dept.labs.length > 5 ? '<button class="view-toggle-btn" onclick="toggleTableView(this)">View More</button>' : ''}
+            <div id="labs-dynamic-container" class="table-container" style="padding:20px; color:#666;">
+              Loading lab information...
             </div>
           </section>`;
+          
+        setTimeout(async () => {
+          try {
+            const res = await fetch(`/api/labs?department=${deptId}&_t=${Date.now()}`);
+            const json = await res.json();
+            const dbLabs = json.data || [];
+            
+            // Combine legacy data with new dynamically added data
+            const legacyLabs = dept.labs || [];
+            const combinedLabs = [...dbLabs, ...legacyLabs];
+            
+            if (combinedLabs.length > 0) {
+              const rows = combinedLabs.map((l, i) => `<tr><td>${i+1}</td><td>${l.name}</td><td>${l.equipment}</td></tr>`).join("");
+              
+              document.getElementById('labs-dynamic-container').outerHTML = `
+                <div class="table-container">
+                  <div class="table-scroll" data-rows="${combinedLabs.length}" data-limit="5">
+                    <table class="data-table">
+                      <thead><tr><th>Sr.</th><th>Name of Lab</th><th>Major Equipment</th></tr></thead>
+                      <tbody>${rows}</tbody>
+                    </table>
+                  </div>
+                  ${combinedLabs.length > 5 ? '<button class="view-toggle-btn" onclick="toggleTableView(this)">View More</button>' : ''}
+                </div>
+              `;
+              
+              if(typeof initViewToggle === 'function') initViewToggle();
+            } else {
+              document.getElementById('labs-dynamic-container').outerHTML = `<div class="table-container"><p style="padding:20px; color:#666;">No lab information available at the moment.</p></div>`;
+            }
+          } catch(e) {
+            console.error('Failed to load labs:', e);
+            document.getElementById('labs-dynamic-container').innerHTML = 'Error loading lab information.';
+          }
+        }, 100);
       }
 
       if (S.labPhotos) {
