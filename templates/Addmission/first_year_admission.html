@@ -1237,33 +1237,11 @@
               <th>Download</th>
             </tr>
 
-            <tr>
-              <td>1</td>
-              <td>First Year Admitted Students Last Three Years List</td>
-              <td><a href="#">View</a></td>
-              <td><a href="#" class="download-btn">Download</a></td>
-            </tr>
-
-            <tr>
-              <td>2</td>
-              <td>Merit List</td>
-              <td><a href="#">View</a></td>
-              <td><a href="#" class="download-btn">Download</a></td>
-            </tr>
-
-            <tr>
-              <td>3</td>
-              <td>Cut Off List</td>
-              <td><a href="#">View</a></td>
-              <td><a href="#" class="download-btn">Download</a></td>
-            </tr>
-
-            <tr>
-              <td>4</td>
-              <td>Documents Required for Admission</td>
-              <td><a href="#">View</a></td>
-              <td><a href="#" class="download-btn">Download</a></td>
-            </tr>
+            <tbody id="admissionDetailsBody">
+              <tr>
+                <td colspan="4" style="text-align:center;">Loading admission details...</td>
+              </tr>
+            </tbody>
 
           </table>
 
@@ -1283,29 +1261,11 @@
               <th>Total Amount</th>
             </tr>
 
-            <tr>
-              <td>01</td>
-              <td>OPEN/EWS/SEBC</td>
-              <td>3000/-</td>
-              <td>1750/-</td>
-              <td>4750/-</td>
-            </tr>
-
-            <tr>
-              <td>02</td>
-              <td>Minority</td>
-              <td>6000/-</td>
-              <td>1750/-</td>
-              <td>7750/-</td>
-            </tr>
-
-            <tr>
-              <td>03</td>
-              <td>SC/ST/OBC</td>
-              <td>-</td>
-              <td>1750/-</td>
-              <td>1750/-</td>
-            </tr>
+            <tbody id="feesStructureBody">
+              <tr>
+                <td colspan="5" style="text-align:center;">Loading fees structure...</td>
+              </tr>
+            </tbody>
 
           </table>
 
@@ -1328,39 +1288,11 @@
             <th>Download</th>
           </tr>
 
-          <tr>
-            <td>1</td>
-            <td>Merit List</td>
-            <td><a href="#">View</a></td>
-            <td><a href="#" class="download-btn">Download</a></td>
-          </tr>
-
-          <tr>
-            <td>2</td>
-            <td>Allotment List 1</td>
-            <td><a href="Semester 5.pdf">View</a></td>
-            <td><a href="Semester 5.pdf" class="download-btn">Download</a></td>
-          </tr>
-
-          <tr>
-            <td>3</td>
-            <td>Allotment List 2</td>
-            <td>
-              <a href="allotment list 2.zip">View</a>
-            </td>
-
-            <td>
-              <a href="allotment list 2.zip" class="download-btn">Download</a>
-            </td>
-          </tr>
-
-
-          <tr>
-            <td>4</td>
-            <td>Documents Required for Hostel Admission</td>
-            <td><a href="Required details.zip">View</a></td>
-            <td><a href="Required details.zip" class="download-btn">Download</a></td>
-          </tr>
+            <tbody id="girlsHostelBody">
+              <tr>
+                <td colspan="4" style="text-align:center;">Loading girls hostel details...</td>
+              </tr>
+            </tbody>
 
         </table>
 
@@ -1381,34 +1313,11 @@
             <th>Download</th>
           </tr>
 
-          <tr>
-            <td>1</td>
-            <td>Merit List</td>
-            <td><a href="#">View</a></td>
-            <td><a href="#" class="download-btn">Download</a></td>
-          </tr>
-
-          <tr>
-            <td>2</td>
-            <td>Allotment List 1</td>
-            <td><a href="#">View</a></td>
-            <td><a href="#" class="download-btn">Download</a></td>
-          </tr>
-
-          <tr>
-            <td>3</td>
-            <td>Allotment List 2</td>
-            <td><a href="#">View</a></td>
-            <td><a href="#" class="download-btn">Download</a></td>
-          </tr>
-
-
-          <tr>
-            <td>4</td>
-            <td>Documents Required for Hostel Admission</td>
-            <td><a href="#">View</a></td>
-            <td><a href="#" class="download-btn">Download</a></td>
-          </tr>
+            <tbody id="boysHostelBody">
+              <tr>
+                <td colspan="4" style="text-align:center;">Loading boys hostel details...</td>
+              </tr>
+            </tbody>
 
         </table>
       </div>
@@ -1517,6 +1426,72 @@
         noticeBody.innerHTML = "<tr><td colspan='3' style='text-align:center; color:red;'>Failed to load notices.</td></tr>";
       }
     }
+
+    async function fetchAdmissionDetails() {
+      const container = document.getElementById("admissionDetailsBody");
+      if (!container) return;
+      try {
+        const res = await fetch('/api/downloads?section=admission_first_year');
+        const { data } = await res.json();
+        container.innerHTML = data.length ? "" : "<tr><td colspan='4' style='text-align:center;'>No details available.</td></tr>";
+        data.forEach((item, index) => {
+          const row = `<tr>
+            <td>${index + 1}</td>
+            <td>${item.name}</td>
+            <td><a href="${item.file_url}" target="_blank">View</a></td>
+            <td><a href="${item.file_url}" download class="download-btn">Download</a></td>
+          </tr>`;
+          container.innerHTML += row;
+        });
+      } catch (e) { container.innerHTML = "<tr><td colspan='4' style='text-align:center; color:red;'>Failed to load.</td></tr>"; }
+    }
+
+    async function fetchFeesStructure() {
+      const container = document.getElementById("feesStructureBody");
+      if (!container) return;
+      try {
+        const res = await fetch('/api/fees');
+        const { data } = await res.json();
+        container.innerHTML = data.length ? "" : "<tr><td colspan='5' style='text-align:center;'>No data available.</td></tr>";
+        data.forEach((item, index) => {
+          const row = `<tr>
+            <td>${(index + 1).toString().padStart(2, '0')}</td>
+            <td>${item.category}</td>
+            <td>${item.govt_fees || '-'}</td>
+            <td>${item.non_govt_fees || '-'}</td>
+            <td>${item.total_amount || '-'}</td>
+          </tr>`;
+          container.innerHTML += row;
+        });
+      } catch (e) { container.innerHTML = "<tr><td colspan='5' style='text-align:center; color:red;'>Failed to load.</td></tr>"; }
+    }
+
+    async function fetchHostelDetails(section, tableId) {
+      const container = document.getElementById(tableId);
+      if (!container) return;
+      try {
+        const res = await fetch(`/api/downloads?section=${section}`);
+        const { data } = await res.json();
+        container.innerHTML = data.length ? "" : "<tr><td colspan='4' style='text-align:center;'>No details available.</td></tr>";
+        data.forEach((item, index) => {
+          const row = `<tr>
+            <td>${index + 1}</td>
+            <td>${item.name}</td>
+            <td><a href="${item.file_url}" target="_blank">View</a></td>
+            <td><a href="${item.file_url}" download class="download-btn">Download</a></td>
+          </tr>`;
+          container.innerHTML += row;
+        });
+      } catch (e) { container.innerHTML = "<tr><td colspan='4' style='text-align:center; color:red;'>Failed to load.</td></tr>"; }
+    }
+
+    // Call fetchers on load
+    window.addEventListener("DOMContentLoaded", () => {
+      fetchAdmissionDetails();
+      fetchFeesStructure();
+      fetchHostelDetails('girls_hostel', 'girlsHostelBody');
+      fetchHostelDetails('boys_hostel', 'boysHostelBody');
+    });
 
   </script>
 

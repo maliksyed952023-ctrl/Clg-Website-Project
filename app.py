@@ -10,6 +10,7 @@ from routes.images import images_bp
 from routes.faculty import faculty_bp
 from routes.labs import labs_bp
 from routes.downloads import downloads_bp
+from routes.fees import fees_bp
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100 MB max upload
 CORS(app)
@@ -22,6 +23,7 @@ app.register_blueprint(images_bp, url_prefix='/api')
 app.register_blueprint(faculty_bp, url_prefix='/api')
 app.register_blueprint(labs_bp, url_prefix='/api')
 app.register_blueprint(downloads_bp, url_prefix='/api')
+app.register_blueprint(fees_bp, url_prefix='/api')
 # Routes
 @app.route('/')
 @app.route('/home')
