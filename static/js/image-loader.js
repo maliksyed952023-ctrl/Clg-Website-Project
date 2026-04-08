@@ -48,8 +48,12 @@ const ImageLoader = {
             const dynamicUrl = this.getUrl(slug);
             
             if (dynamicUrl) {
+                el.loading = 'lazy';
+                el.decoding = 'async';
                 el.src = dynamicUrl;
             } else if (fallback) {
+                el.loading = 'lazy';
+                el.decoding = 'async';
                 el.src = fallback;
             }
         });

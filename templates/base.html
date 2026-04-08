@@ -28,6 +28,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/Tenders.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/college-systems.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/lightbox.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
@@ -1254,7 +1255,7 @@
       <!-- LEFT -->
       <div class="footer-left">
         <a href="{{ url_for('home') }}">
-          <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="College Logo">
+          <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="College Logo" loading="lazy" decoding="async">
         </a>
       </div>
 
@@ -1400,7 +1401,8 @@
         flex-direction: column;
         align-items: center;
         text-align: center;
-        padding: 0 20px;
+        padding: 0 15px;
+        gap: 30px;
       }
 
       .home-footer .footer-middle {
@@ -1455,6 +1457,53 @@
   <script src="{{ url_for('static', filename='js/lightbox.js') }}"></script>
   <!-- Initialize Image Loader -->
   <script src="{{ url_for('static', filename='js/image-loader.js') }}"></script>
+
+  <!-- GPCS AI Chatbot Widget HTML (base.html version) -->
+  <div id="gpcs-chatbot-fab" onclick="toggleGPCSChat()" style="display:none;">
+    <div class="gpcs-chat-fab-label">Chat with AI</div>
+    <i class="fa-solid fa-robot"></i>
+    <div class="gpcs-chat-badge" id="gpcs-chat-badge" style="display:none;"></div>
+  </div>
+
+  <div id="gpcs-chatbot-window">
+    <div class="gpcs-chat-header">
+      <div class="gpcs-chat-header-info">
+        <div class="gpcs-chat-avatar"><i class="fa-solid fa-robot"></i></div>
+        <div class="gpcs-chat-title">
+          <span class="name">GPCS AI Assistant</span>
+          <span class="status">Online - Ready to help</span>
+        </div>
+      </div>
+      <div class="gpcs-chat-actions">
+        <button class="gpcs-chat-btn" onclick="clearGPCSChat()" title="Clear Chat"><i class="fa-solid fa-trash-can"></i></button>
+        <button class="gpcs-chat-btn" id="gpcs-fullscreen-btn" onclick="toggleGPCSFullscreen()" title="Fullscreen"><i class="fa-solid fa-expand"></i></button>
+        <button class="gpcs-chat-btn" onclick="toggleGPCSChat()" title="Close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+    <div class="gpcs-chat-body" id="gpcs-chat-body">
+      <div class="gpcs-chat-welcome" id="gpcs-welcome-screen">
+        <div class="gpcs-chat-welcome-icon"><i class="fa-solid fa-robot"></i></div>
+        <h3>Hi! I'm GPCS AI 👋</h3>
+        <p>Ask me about admissions, facilities, departments, or anything else about Government Polytechnic!</p>
+        <div class="gpcs-chat-suggestions">
+          <div class="gpcs-chat-suggestion" onclick="sendGPCSSuggestion('What courses are offered?')">What courses are offered?</div>
+          <div class="gpcs-chat-suggestion" onclick="sendGPCSSuggestion('Tell me about the college')">About the college</div>
+          <div class="gpcs-chat-suggestion" onclick="sendGPCSSuggestion('Tell me about TPO section')">Tell me about TPO</div>
+          <div class="gpcs-chat-suggestion" onclick="sendGPCSSuggestion('Contact details')">Contact details</div>
+        </div>
+      </div>
+    </div>
+    <div class="gpcs-chat-footer">
+      <div class="gpcs-chat-input-wrapper">
+        <textarea class="gpcs-chat-textarea" id="gpcs-chat-input" placeholder="Ask me anything..." rows="1" onkeydown="handleGPCSKeyPress(event)"></textarea>
+        <button class="gpcs-chat-send" id="gpcs-chat-send" onclick="sendGPCSMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+      </div>
+      <div class="gpcs-chat-footer-hint">Enter to send &bull; Shift+Enter for new line</div>
+    </div>
+  </div>
+
+  <!-- GPCS AI Chatbot JS -->
+  <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
 </body>
 
 </html>

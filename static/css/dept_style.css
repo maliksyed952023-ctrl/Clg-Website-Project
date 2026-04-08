@@ -442,11 +442,12 @@ body {
 
 /* ─── RESPONSIVE ─── */
 @media (max-width: 900px) {
-  .container { flex-direction: column; padding: 0 12px; }
-  .sidebar { width: 100%; position: static; border-radius: var(--radius); }
-  .dept-title { font-size: 1.2rem; }
-  .header { font-size: 1.1rem; padding: 14px; }
-  .section { padding: 20px; }
+  .container { flex-direction: column; padding: 0 12px; margin-top: 10px; }
+  .sidebar { width: 100%; position: static; border-radius: var(--radius); margin-bottom: 15px; }
+  .dept-title { font-size: 1.3rem; padding: 15px 15px 5px; }
+  .header { font-size: 1.1rem; padding: 12px; }
+  .section { padding: 18px; margin-bottom: 20px; }
+  .section h2 { font-size: 1.25rem; margin-bottom: 12px; padding-bottom: 6px; }
 }
 @media (max-width: 700px) {
   .navbar { display: none; flex-direction: column; }
@@ -461,9 +462,15 @@ body {
 /* ─── GALLERY-STYLE IMAGE CARDS (Achievements & Magazines) ─── */
 .gallery-style-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 25px;
   padding: 15px 0;
+}
+@media (max-width: 600px) {
+  .gallery-style-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
 }
 
 .gallery-style-card {
@@ -508,7 +515,97 @@ body {
   font-size: 0.95rem;
 }
 
+/* ─── DYNAMIC GALLERY CARDS (department.js classes) ─── */
+.gallery-card {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--clr-border);
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.gallery-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+.gallery-img-wrapper {
+  width: 100%;
+  aspect-ratio: 4/3;
+  position: relative;
+  overflow: hidden;
+  background: #eee;
+  border-bottom: 3px solid var(--clr-accent);
+}
+
+.gallery-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.gallery-card:hover .gallery-img-wrapper img {
+  transform: scale(1.1);
+}
+
+.gallery-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(14, 90, 97, 0.6);
+  display: flex;
+  align-items: center; justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gallery-card:hover .gallery-overlay {
+  opacity: 1;
+}
+
+.overlay-content {
+  color: #fff;
+  text-align: center;
+}
+
+.overlay-content i {
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.gallery-info {
+  padding: 15px;
+  text-align: center;
+  flex-grow: 1;
+}
+
+.gallery-card-title {
+  font-family: var(--font-heading);
+  color: var(--clr-primary);
+  font-size: 1.05rem;
+  margin-bottom: 4px;
+  font-weight: 700;
+}
+
+.gallery-card-subtitle {
+  color: var(--clr-text-light);
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
 /* Dark Mode support for Gallery Cards */
+body.dark .gallery-card {
+  background: #2a2a2a !important;
+  border-color: #444 !important;
+}
+body.dark .gallery-card-title { color: #f5c842 !important; }
+body.dark .gallery-card-subtitle { color: #aaa !important; }
+
 body.dark .gallery-style-card {
   background: #2a2a2a !important;
   border-color: #444 !important;
@@ -532,7 +629,7 @@ body.dark .gallery-style-text {
     font-size: 0.95rem;
 }
 .notice-table td {
-    padding: 12px;
+    padding: 14px 12px;
     border-bottom: 1px solid #eee;
     font-size: 0.9rem;
     vertical-align: middle;
@@ -575,5 +672,105 @@ body.dark .notice-table tr:hover {
     background: #2a2a2a !important;
 }
 body.dark .notice-table .description {
+    color: #f5c842 !important;
+}
+
+/* ─── DYNAMIC MAGAZINE CARDS ─── */
+.magazine-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    padding: 20px 0;
+}
+
+.magazine-card {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--clr-border);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+}
+
+.magazine-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.magazine-thumb {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: linear-gradient(45deg, var(--clr-primary), var(--clr-primary-light));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 3rem;
+}
+
+.magazine-body {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.magazine-title {
+    font-family: var(--font-heading);
+    color: var(--clr-primary);
+    font-size: 1.15rem;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.magazine-meta {
+    font-size: 0.85rem;
+    color: var(--clr-text-light);
+    margin-bottom: 20px;
+}
+
+.magazine-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: auto;
+}
+
+.mag-btn {
+    padding: 10px;
+    border-radius: var(--radius);
+    text-align: center;
+    text-decoration: none !important;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: var(--transition);
+}
+
+.mag-btn.view {
+    background: var(--clr-primary);
+    color: #fff !important;
+}
+
+.mag-btn.view:hover {
+    background: var(--clr-primary-dark);
+}
+
+.mag-btn.download {
+    background: var(--clr-accent);
+    color: var(--clr-primary-dark) !important;
+}
+
+.mag-btn.download:hover {
+    background: var(--clr-accent-light);
+}
+
+body.dark .magazine-card {
+    background: #2a2a2a !important;
+    border-color: #444 !important;
+}
+
+body.dark .magazine-title {
     color: #f5c842 !important;
 }

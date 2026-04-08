@@ -351,11 +351,58 @@
       }
 
       if (S.magazine) {
-        const mags = (dept.magazines && dept.magazines.length > 0) ? dept.magazines : [
-          { title: "Technical", subtitle: "BITS & Bytes – Issue 1", viewUrl: "#" }
-        ];
-        const cards = mags.map(m => `<div class="gallery-card" onclick="window.open('${m.viewUrl}','_blank')"><div class="gallery-info"><h3 class="gallery-card-title">${m.title}</h3><p class="gallery-card-subtitle">${m.subtitle}</p></div></div>`).join("");
-        html += `<section id="magazines-sec" class="section"><h2>E-Magazines</h2><div class="gallery-style-grid">${cards}</div></section>`;
+        html += `<section id="magazines-sec" class="section"><h2>E-Magazines</h2><div id="magazines-dynamic-container" class="magazine-grid">Loading magazines...</div></section>`;
+        
+        setTimeout(async () => {
+          const container = document.getElementById('magazines-dynamic-container');
+          if (!container) return;
+          try {
+            const res = await fetch(`/api/magazines?dept_slug=${deptId}&_t=${Date.now()}`);
+            const json = await res.json();
+            const mags = json.data || [];
+            
+            if (mags.length > 0) {
+              container.innerHTML = mags.map(m => `
+                <div class="magazine-card">
+                  <div class="magazine-thumb">
+                    ${m.thumbnail_url ? `<img src="${m.thumbnail_url}" alt="${m.name}" loading="lazy">` : '📚'}
+                  </div>
+                  <div class="magazine-body">
+                    <h3 class="magazine-title">${m.name}</h3>
+                    <p class="magazine-meta">Department E-Magazine</p>
+                    <div class="magazine-actions">
+                      <a href="${m.file_url}" target="_blank" class="mag-btn view">View</a>
+                      <a href="${m.file_url}" download="${m.name}.pdf" class="mag-btn download">Download</a>
+                    </div>
+                  </div>
+                </div>
+              `).join("");
+            } else {
+              // Fallback if no dynamic magazines are found
+              const fallbackMags = (dept.magazines && dept.magazines.length > 0) ? dept.magazines : [
+                { title: "Technical", subtitle: "BITS & Bytes – Issue 1", viewUrl: "#" }
+              ];
+              container.innerHTML = fallbackMags.map(m => `
+                <div class="magazine-card">
+                  <div class="magazine-thumb">
+                    ${m.thumbnail_url ? `<img src="${m.thumbnail_url}" alt="${m.title || m.name}" loading="lazy">` : '📚'}
+                  </div>
+                  <div class="magazine-body">
+                    <h3 class="magazine-title">${m.title || m.name}</h3>
+                    <p class="magazine-meta">${m.subtitle || 'Department E-Magazine'}</p>
+                    <div class="magazine-actions">
+                      <a href="${m.viewUrl || m.file_url}" target="_blank" class="mag-btn view">View</a>
+                      <a href="${m.viewUrl || m.file_url}" download class="mag-btn download">Download</a>
+                    </div>
+                  </div>
+                </div>
+              `).join("");
+            }
+          } catch(e) {
+            console.error('Failed to load magazines:', e);
+            container.innerHTML = '<p>Error loading e-magazines.</p>';
+          }
+        }, 100);
       }
 
       html += `<section id="notices" class="section"><h2>Notice Board</h2><div class="table-container"><table class="data-table"><thead><tr><th>Date</th><th>Description</th><th>Download</th></tr></thead><tbody id="deptNoticeBody"><tr><td colspan="3">Loading...</td></tr></tbody></table></div></section>`;

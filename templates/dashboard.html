@@ -16,6 +16,11 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
         rel="stylesheet">
+    <!-- PDF.js for Thumbnail Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    </script>
     <style>
         *,
         *::before,
@@ -1135,6 +1140,12 @@
                 <div class="nav-item" onclick="showDownloadsView(this)">
                     <span class="nav-icon">⬇️</span> Downloads Management
                 </div>
+                <div class="nav-item" onclick="showMagazinesView(this)">
+                    <span class="nav-icon">📖</span> E-Magazines
+                </div>
+                <div class="nav-item" onclick="showCalendarView(this)">
+                    <span class="nav-icon">📅</span> TPO Calendar
+                </div>
                 <div class="nav-item" onclick="showAdmissionsView(this)">
                     <span class="nav-icon">🎓</span> Admissions & Hostel
                 </div>
@@ -1413,6 +1424,52 @@
             </div>
         </div>
 
+        <!-- ── E-MAGAZINES VIEW ── -->
+        <div class="content" id="magazinesView" style="display:none">
+            <div class="topbar" style="padding:0 0 16px 0; border:none; display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <div class="page-title">E-Magazine Management</div>
+                    <div class="page-sub">Manage departmental e-magazines</div>
+                </div>
+                <button class="add-btn" onclick="openMagazinesModal()">＋ &nbsp;Add Magazine</button>
+            </div>
+            
+            <div class="filter-row">
+                <select class="search-input" id="magazinesDeptFilter" onchange="fetchMagazines(this.value)" style="width:250px;">
+                    <option value="">All Departments</option>
+                    <option value="aiml">Artificial Intelligence & Machine Learning</option>
+                    <option value="auto">Automobile Engineering</option>
+                    <option value="civil">Civil Engineering</option>
+                    <option value="computer">Computer Engineering</option>
+                    <option value="ddgm">Dress Designing (DDGM)</option>
+                    <option value="electrical">Electrical Engineering</option>
+                    <option value="entc">Electronics & Telecom</option>
+                    <option value="it">Information Technology</option>
+                    <option value="mechanical">Mechanical Engineering</option>
+                    <option value="science-humanities">Science & Humanities</option>
+                    <option value="applied-mechanics">Applied Mechanics</option>
+                    <option value="workshop">Workshop</option>
+                    <option value="mercedes-benz">Mercedes-Benz</option>
+                </select>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Department</th>
+                            <th>Magazine Name</th>
+                            <th>File</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="magazinesTableBody">
+                        <tr class="loading-row"><td colspan="4">Loading magazines...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <!-- ── ADMISSIONS VIEW ── -->
         <div class="content" id="admissionsView" style="display:none">
             <div class="topbar" style="padding:0 0 16px 0; border:none; display:flex; justify-content:space-between; align-items:center;">
@@ -1574,6 +1631,44 @@
                         <tr class="loading-row"><td colspan="5">Loading...</td></tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+        <!-- ── TPO CALENDAR VIEW ── -->
+        <div class="content" id="calendarView" style="display:none">
+            <div class="stats-grid" style="grid-template-columns: 1fr; gap: 20px;">
+                <div class="stat-card" style="padding: 24px; background: var(--navy2); border: 1px solid var(--border);">
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="color: var(--gold); margin-bottom: 8px;">How to Manage Events</h3>
+                        <p style="font-size: 13.5px; color: var(--muted); line-height: 1.6;">
+                            1. Open <b>gpcs1955@gmail.com</b> on <a href="https://calendar.google.com" target="_blank" style="color:var(--info)">Google Calendar</a>.<br>
+                            2. Add, Edit, or Delete events directly on the Google platform.<br>
+                            3. Ensure your calendar is <b>Public</b>: Settings > Access permissions > "Make available to public".<br>
+                            4. If you create a new calendar, update the <b>Calendar ID</b> below.
+                        </p>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+                        <input type="text" id="calendarIdInput" class="search-input" placeholder="Calendar ID (e.g. gpcs1955@gmail.com)" style="flex: 1; border: 1px solid var(--navy4);">
+                        <button class="add-btn" onclick="updateCalendarId()" style="padding: 0 24px; height: 42px;">Update ID</button>
+                    </div>
+
+                    <button class="add-btn" onclick="window.open('https://calendar.google.com/calendar/u/0/r', '_blank')" style="width: 100%; background: var(--navy3); border: 1px solid var(--border); height: 48px; font-weight: 600;">
+                        📅 Open Google Calendar to Manage Events
+                    </button>
+                </div>
+            </div>
+
+            <div class="view-card" style="margin-top: 24px; background: var(--navy2); border-radius: 12px; overflow: hidden; border: 1px solid var(--border);">
+                <div style="padding: 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                    <h4 style="margin: 0; font-size: 15px;">Live Preview</h4>
+                    <span id="calendarStatus" style="font-size: 12px; color: var(--success); display: none;">● Connected</span>
+                </div>
+                <div id="calendarPreviewContainer" style="height: 600px; background: #fff;">
+                    <!-- Iframe will be injected here -->
+                    <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #333;">
+                        Loading preview...
+                    </div>
+                </div>
             </div>
         </div>
     </main>
@@ -1739,6 +1834,55 @@
                 <div class="modal-footer">
                     <button type="button" class="btn-cancel" onclick="closeDownloadsModal()">Cancel</button>
                     <button type="submit" class="btn-save" id="btnDownloadsSave">Save Document</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ── MAGAZINES MODAL ── -->
+    <div class="overlay" id="magazinesOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title" id="magazinesModalTitle">Add Magazine</div>
+                <button class="close-btn" onclick="closeMagazinesModal()">✕</button>
+            </div>
+            <form id="magazinesForm" onsubmit="saveMagazine(event)">
+                <input type="hidden" id="mag_id">
+                
+                <div class="form-field">
+                    <label class="form-label">Department *</label>
+                    <select class="form-select" id="mag_dept" required>
+                        <option value="">Select Department</option>
+                        <option value="aiml">Artificial Intelligence & Machine Learning</option>
+                        <option value="auto">Automobile Engineering</option>
+                        <option value="civil">Civil Engineering</option>
+                        <option value="computer">Computer Engineering</option>
+                        <option value="ddgm">Dress Designing (DDGM)</option>
+                        <option value="electrical">Electrical Engineering</option>
+                        <option value="entc">Electronics & Telecom</option>
+                        <option value="it">Information Technology</option>
+                        <option value="mechanical">Mechanical Engineering</option>
+                        <option value="science-humanities">Science & Humanities</option>
+                        <option value="applied-mechanics">Applied Mechanics</option>
+                        <option value="workshop">Workshop</option>
+                        <option value="mercedes-benz">Mercedes-Benz</option>
+                    </select>
+                </div>
+                
+                <div class="form-field">
+                    <label class="form-label">Magazine Name *</label>
+                    <input class="form-input" type="text" id="mag_name" placeholder="e.g. IT VOYAGE 2024" required>
+                </div>
+
+                <div class="form-field">
+                    <label class="form-label">Upload Magazine (PDF) *</label>
+                    <input type="file" class="form-input" id="mag_file" accept=".pdf" style="padding: 8px;">
+                    <small style="color:var(--muted); font-size:11px;">Leave empty when editing to keep current file.</small>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" onclick="closeMagazinesModal()">Cancel</button>
+                    <button type="submit" class="btn-save" id="btnMagazinesSave">Save Magazine</button>
                 </div>
             </form>
         </div>
@@ -3597,6 +3741,248 @@
                     fetchFees();
                 }
             } catch (e) { showToast('Delete failed', 'error'); }
+        }
+
+        // ── MAGAZINES LOGIC ──
+        let magazinesData = [];
+        let magazinesEditingId = null;
+
+        function showMagazinesView(el) {
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('announcementsView').style.display = 'none';
+            document.getElementById('imagesView').style.display = 'none';
+            document.getElementById('pendingView').style.display = 'none';
+            document.getElementById('facultyView').style.display = 'none';
+            document.getElementById('labsView').style.display = 'none';
+            document.getElementById('downloadsView').style.display = 'none';
+            document.getElementById('admissionsView').style.display = 'none';
+            document.getElementById('magazinesView').style.display = 'block';
+            document.getElementById('pageTitle').textContent = 'E-Magazine Management';
+            document.getElementById('topbarBtn').style.display = 'none';
+            fetchMagazines();
+        }
+
+        async function fetchMagazines(dept = '') {
+            const tbody = document.getElementById('magazinesTableBody');
+            tbody.innerHTML = '<tr class="loading-row"><td colspan="4">Loading magazines...</td></tr>';
+            try {
+                const res = await fetch(`${API}/magazines${dept ? '?dept_slug='+dept : ''}`);
+                const json = await res.json();
+                magazinesData = json.data || [];
+                renderMagazinesTable();
+            } catch (e) {
+                tbody.innerHTML = '<tr><td colspan="4">Error loading magazines</td></tr>';
+            }
+        }
+
+        function renderMagazinesTable() {
+            const tbody = document.getElementById('magazinesTableBody');
+            if (!magazinesData.length) {
+                tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><div class="big">📭</div><p>No magazines found.</p></div></td></tr>`;
+                return;
+            }
+            tbody.innerHTML = magazinesData.map(m => `
+                <tr>
+                    <td><span class="badge badge-notice_dept_${m.dept_slug.replace('-','_')}">${m.dept_slug.toUpperCase()}</span></td>
+                    <td class="td-title">${escHtml(m.name)}</td>
+                    <td><a href="${m.file_url}" target="_blank" style="color:var(--gold); font-size:12px;">View PDF</a></td>
+                    <td>
+                        <div class="actions">
+                            <button class="act-btn act-edit" onclick="openMagazinesModal('${m.id}')">Edit</button>
+                            <button class="act-btn act-del"  onclick="deleteMagazine('${m.id}')">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openMagazinesModal(id = null) {
+            magazinesEditingId = id;
+            document.getElementById('magazinesModalTitle').textContent = id ? 'Edit Magazine' : 'Add Magazine';
+            document.getElementById('magazinesForm').reset();
+            if (id) {
+                const m = magazinesData.find(x => x.id === id);
+                if (m) {
+                    document.getElementById('mag_dept').value = m.dept_slug || '';
+                    document.getElementById('mag_name').value = m.name || '';
+                }
+            }
+            document.getElementById('magazinesOverlay').classList.add('open');
+        }
+
+        function closeMagazinesModal() {
+            document.getElementById('magazinesOverlay').classList.remove('open');
+            magazinesEditingId = null;
+        }
+
+        // Helper to extract first page of PDF as image Blob
+        async function generateMagazineThumbnail(file) {
+            const arrayBuffer = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            const page = await pdf.getPage(1);
+            
+            const viewport = page.getViewport({ scale: 1.0 });
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            
+            // Set dimensions to a reasonable thumbnail size (e.g., 400px wide)
+            const scale = 400 / viewport.width;
+            const scaledViewport = page.getViewport({ scale });
+            
+            canvas.width = scaledViewport.width;
+            canvas.height = scaledViewport.height;
+            
+            await page.render({ canvasContext: context, viewport: scaledViewport }).promise;
+            
+            return new Promise(resolve => {
+                canvas.toBlob(blob => resolve(blob), 'image/webp', 0.8);
+            });
+        }
+
+        async function saveMagazine(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btnMagazinesSave');
+            btn.disabled = true;
+            btn.textContent = 'Saving...';
+            
+            try {
+                const formData = new FormData();
+                formData.append('dept_slug', document.getElementById('mag_dept').value);
+                formData.append('name', document.getElementById('mag_name').value);
+                
+                const fileInput = document.getElementById('mag_file');
+                if (fileInput.files[0]) {
+                    const pdfFile = fileInput.files[0];
+                    formData.append('file', pdfFile);
+                    
+                    // Generate and append thumbnail
+                    try {
+                        btn.textContent = 'Generating Thumbnail...';
+                        const thumbBlob = await generateMagazineThumbnail(pdfFile);
+                        formData.append('thumbnail', thumbBlob, 'thumbnail.webp');
+                    } catch (thumbErr) {
+                        console.warn('Could not generate thumbnail:', thumbErr);
+                    }
+                } else if (!magazinesEditingId) {
+                    throw new Error('Please select a file to upload');
+                }
+                
+                btn.textContent = 'Uploading...';
+                const url = magazinesEditingId ? `${API}/magazines/${magazinesEditingId}` : `${API}/magazines`;
+                const method = magazinesEditingId ? 'PATCH' : 'POST';
+                
+                const res = await fetch(url, { method, body: formData });
+                if (!res.ok) throw new Error('Save failed');
+                
+                showToast(magazinesEditingId ? 'Magazine updated' : 'Magazine added');
+                closeMagazinesModal();
+                fetchMagazines(document.getElementById('magazinesDeptFilter').value);
+            } catch (err) {
+                showToast('Failed to save magazine: ' + err.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Save Magazine';
+            }
+        }
+
+        async function deleteMagazine(id) {
+            if (!confirm('Are you sure you want to delete this magazine?')) return;
+            try {
+                const res = await fetch(`${API}/magazines/${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    showToast('Magazine deleted');
+                    fetchMagazines(document.getElementById('magazinesDeptFilter').value);
+                }
+            } catch (e) {
+                showToast('Failed to delete', 'error');
+            }
+        }
+
+        // --- TPO CALENDAR MANAGEMENT ---
+        async function showCalendarView(el) {
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            if(el) el.classList.add('active');
+            
+            // Hide all known views
+            const existingViews = [
+                'announcementsView', 'imagesView', 'pendingView', 
+                'facultyView', 'labsView', 'downloadsView', 
+                'admissionsView', 'magazinesView'
+            ];
+            existingViews.forEach(v => {
+                const viewEl = document.getElementById(v);
+                if(viewEl) viewEl.style.display = 'none';
+            });
+            
+            document.getElementById('calendarView').style.display = 'block';
+
+            const titleEl = document.getElementById('pageTitle');
+            if(titleEl) titleEl.textContent = 'TPO Calendar Management';
+            const subTitleEl = document.getElementById('pageSub');
+            if(subTitleEl) subTitleEl.textContent = 'Manage upcoming events on the TPO Google Calendar';
+            const topBtn = document.getElementById('topbarBtn');
+            if(topBtn) topBtn.style.display = 'none';
+
+            await fetchCalendarId();
+        }
+
+        // Global patch: hide calendar view when any other view is clicked
+        setTimeout(() => {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const onclickAttr = this.getAttribute('onclick') || '';
+                    if (!onclickAttr.includes('showCalendarView')) {
+                        const cv = document.getElementById('calendarView');
+                        if (cv) cv.style.display = 'none';
+                    }
+                });
+            });
+        }, 1000);
+
+        async function fetchCalendarId() {
+            try {
+                const res = await fetch(`${API}/settings?key=tpo_calendar_id`);
+                const json = await res.json();
+                if (json.data && json.data.value) {
+                    document.getElementById('calendarIdInput').value = json.data.value;
+                    renderCalendarPreview(json.data.value);
+                } else {
+                    renderCalendarPreview('en.indian#holiday@group.v.calendar.google.com'); // default
+                }
+            } catch (e) {
+                console.error("Failed to fetch calendar ID:", e);
+            }
+        }
+
+        async function updateCalendarId() {
+            const id = document.getElementById('calendarIdInput').value.trim();
+            if (!id) return showToast('Please enter a Calendar ID', 'error');
+            
+            try {
+                const res = await fetch(`${API}/settings`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ key: 'tpo_calendar_id', value: id })
+                });
+                if (res.ok) {
+                    showToast('Calendar ID updated successfully');
+                    renderCalendarPreview(id);
+                } else {
+                    throw new Error('Update failed');
+                }
+            } catch (e) {
+                showToast('Failed to update: ' + e.message, 'error');
+            }
+        }
+
+        function renderCalendarPreview(id) {
+            const container = document.getElementById('calendarPreviewContainer');
+            // Basic sanitization/check for default holiday string
+            const encId = encodeURIComponent(id);
+            const src = `https://calendar.google.com/calendar/embed?src=${encId}&ctz=Asia/Kolkata`;
+            container.innerHTML = `<iframe src="${src}" style="border: 0" width="100%" height="100%" frameborder="0" scrolling="no"></iframe>`;
+            document.getElementById('calendarStatus').style.display = 'inline';
         }
 
     </script>

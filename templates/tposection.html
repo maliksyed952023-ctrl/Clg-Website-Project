@@ -1060,10 +1060,10 @@
       <!-- SCHEDULE -->
       <div id="schedule" class="section">
         <h2>Schedule</h2>
-        <div style="margin-top:20px; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; background: #fff;">
-          <iframe
-            src="https://calendar.google.com/calendar/embed?src=en.indian%23holiday%40group.v.calendar.google.com&ctz=Asia%2FKolkata"
-            style="border: 0" width="100%" height="600" frameborder="0" scrolling="no"></iframe>
+        <div id="calendarDisplayContainer" style="margin-top:20px; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; background: #fff; height: 600px;">
+          <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #666;">
+            Loading official calendar...
+          </div>
         </div>
       </div>
 
@@ -1125,6 +1125,9 @@
       if (id === "recruiters") {
         loadRecruiterLogos();
       }
+      if (id === "schedule") {
+        initializeCalendar();
+      }
     }
 
     // READ URL PARAM ON PAGE LOAD AND OPEN THE CORRECT SECTION
@@ -1141,10 +1144,26 @@
         showSection("placement", document.getElementById("placementbtn"));
       } else if (section === "schedule") {
         showSection("schedule", document.getElementById("schedulebtn"));
+        initializeCalendar();
       } else {
         showSection("tpo", document.getElementById("tpobtn"));
       }
     });
+
+    async function initializeCalendar() {
+      const container = document.getElementById('calendarDisplayContainer');
+      if (!container) return;
+      try {
+        const res = await fetch('/api/settings?key=tpo_calendar_id');
+        const json = await res.json();
+        const calId = (json.data && json.data.value) ? json.data.value : 'en.indian#holiday@group.v.calendar.google.com';
+        const encId = encodeURIComponent(calId);
+        container.innerHTML = `<iframe src="https://calendar.google.com/calendar/embed?src=${encId}&ctz=Asia/Kolkata" style="border: 0" width="100%" height="100%" frameborder="0" scrolling="no"></iframe>`;
+      } catch (e) {
+        console.error("Failed to load calendar:", e);
+        container.innerHTML = '<div style="display:flex; align-items:center; justify-content:center; height:100%;">Failed to load calendar.</div>';
+      }
+    }
 
     async function fetchTPONotices() {
       const noticeBody = document.getElementById("tpoNoticeBody");
