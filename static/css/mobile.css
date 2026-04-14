@@ -13,6 +13,8 @@ img {
 /* ─── PREVENT HORIZONTAL OVERFLOW ON BODY ─── */
 html, body {
   overflow-x: hidden;
+  width: 100%;
+  position: relative;
 }
 
 /* ─── TABLE OVERFLOW SAFETY NET ─── */
@@ -38,23 +40,50 @@ html, body {
 
   /* ─── MAIN CONTENT PADDING ─── */
   main {
-    padding: 12px !important;
+    padding: 10px !important;
   }
 
-  /* ─── SEARCH BOX FULL WIDTH ─── */
+  /* Increase content font-size for better visibility */
+  .section, .content, .main, .about-box, .rules-box {
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+  }
+
+  /* ─── UTILITY BAR REDUCTION ─── */
+  .utility-bar {
+    padding: 6px 10px !important;
+    gap: 8px !important;
+  }
+
+  .util-dropdown button, .icon-btn, .login-btn {
+    padding: 6px 10px !important;
+    font-size: 0.85rem !important;
+    border-radius: 8px !important;
+    min-height: 36px !important; /* Slightly smaller than global touch target for dense utility bar */
+  }
+
   .search-box {
-    width: 100%;
-    box-sizing: border-box;
+    padding: 4px 10px !important;
   }
 
-  .search-box input {
-    width: 100%;
-    min-width: 0;
-  }
-
-  /* ─── ANNOUNCEMENT BAR ─── */
+  /* ─── ANNOUNCEMENT BAR (news-bar) REDUCTION ─── */
   .news-bar {
-    margin: 8px !important;
+    height: 38px !important; /* Shrunk from 55px */
+    margin: 4px auto !important;
+  }
+
+  .announcement-box {
+    padding: 0 10px !important;
+    font-size: 0.85rem !important;
+  }
+
+  .announcement-box i {
+    font-size: 14px !important;
+  }
+
+  .marquee-track a, .marquee-track span {
+    font-size: 0.85rem !important;
+    padding: 0 25px !important;
   }
 }
 

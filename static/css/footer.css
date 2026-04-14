@@ -86,9 +86,15 @@
 @media (max-width: 992px) {
     .footer-container {
         flex-direction: column;
+        align-items: center; /* Key fix: center children when stacked */
         text-align: center;
         gap: 40px;
         padding: 0 15px;
+    }
+
+    .footer-left {
+        width: 100%;
+        text-align: center;
     }
 
     .footer-middle {
@@ -123,11 +129,11 @@
     }
 
     .footer-left img {
-        width: 110px;
+        width: 100px; /* Reduced from 110px */
     }
 
     .footer-map {
-        height: 180px;
+        height: 150px; /* Reduced from 180px/200px */
     }
 
     .footer-college-link {
