@@ -14,7 +14,7 @@ SYSTEM_PROMPT = """You are GPCS AI Assistant for Government Polytechnic, Chhatra
 def handle_chat_request():
     api_key = os.environ.get('GROQ_API_KEY')
     if not api_key:
-        return jsonify({'error': 'Chat service is unavailable. API key missing.'}), 500
+        return jsonify({'error': 'Chat service is unavailable. GROQ_API_KEY environment variable is missing. If this is a deployed site, please add the key to your deployment dashboard (e.g., Render or Vercel environment variables).'}), 500
 
     data = request.get_json()
     if not data or 'messages' not in data:
