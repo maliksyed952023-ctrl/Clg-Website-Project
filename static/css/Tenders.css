@@ -109,6 +109,28 @@
     .section-title {
         font-size: 1.1rem !important;
     }
+
+    /* Smooth scroll on mobile */
+    .tenders-ticker-wrapper {
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+@media (max-width: 480px) {
+    .info-table th, .info-table td {
+        font-size: 0.78rem;
+        padding: 10px 10px !important;
+    }
+
+    .pdf-btn {
+        padding: 4px 8px;
+        font-size: 0.72rem;
+    }
+
+    .more-btn {
+        width: 100%;
+        padding: 10px 0;
+    }
 }
 
 .info-table {

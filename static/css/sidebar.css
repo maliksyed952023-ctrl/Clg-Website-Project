@@ -218,3 +218,30 @@
     padding: 20px;
   }
 }
+
+@media (max-width: 576px) {
+  .container {
+    padding: 8px;
+  }
+
+  .content {
+    padding: 16px;
+  }
+
+  /* Touch-friendly sidebar buttons */
+  .main-btn {
+    min-height: 48px;
+    padding: 12px 16px;
+  }
+
+  .sub-btn {
+    min-height: 44px;
+    padding: 10px 14px 10px 20px;
+  }
+}
+
+@media (max-width: 400px) {
+  .content {
+    padding: 12px;
+  }
+}

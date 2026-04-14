@@ -98,6 +98,24 @@
         padding: 12px 15px !important;
         font-size: 0.85rem;
     }
+
+    /* Smooth scroll on mobile */
+    .news-ticker-wrapper {
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+@media (max-width: 480px) {
+    .news-ticker-wrapper table th,
+    .news-ticker-wrapper table td {
+        font-size: 0.78rem;
+        padding: 10px 10px !important;
+    }
+
+    .more-btn button {
+        width: 100%;
+        padding: 10px;
+    }
 }
 
 .box table {

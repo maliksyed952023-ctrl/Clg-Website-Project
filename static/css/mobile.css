@@ -1,0 +1,78 @@
+/* ============================================================
+   GLOBAL MOBILE RESPONSIVENESS — mobile.css
+   Applied globally via base.html. Only contains rules inside
+   max-width media queries; ZERO impact on desktop layouts.
+   ============================================================ */
+
+/* ─── FLUID IMAGES (global) ─── */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ─── PREVENT HORIZONTAL OVERFLOW ON BODY ─── */
+html, body {
+  overflow-x: hidden;
+}
+
+/* ─── TABLE OVERFLOW SAFETY NET ─── */
+/* Wraps any table that doesn't have an explicit scroll wrapper */
+.table-responsive-auto {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ─── GLOBAL TOUCH TARGETS ─── */
+/* Only applied on small screens to avoid desktop layout change */
+@media (max-width: 768px) {
+  button,
+  a.btn,
+  .login-btn,
+  .nav-link,
+  .main-btn,
+  .sub-btn,
+  .dropdown-item,
+  .view-toggle-btn {
+    min-height: 44px;
+  }
+
+  /* ─── MAIN CONTENT PADDING ─── */
+  main {
+    padding: 12px !important;
+  }
+
+  /* ─── SEARCH BOX FULL WIDTH ─── */
+  .search-box {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .search-box input {
+    width: 100%;
+    min-width: 0;
+  }
+
+  /* ─── ANNOUNCEMENT BAR ─── */
+  .news-bar {
+    margin: 8px !important;
+  }
+}
+
+/* ─── EXTRA SMALL SCREENS (≤480px) ─── */
+@media (max-width: 480px) {
+  /* Reduce base font slightly for very small viewports */
+  body {
+    font-size: 15px;
+  }
+
+  /* Section headings */
+  h1 { font-size: 1.5rem !important; }
+  h2 { font-size: 1.25rem !important; }
+  h3 { font-size: 1.1rem !important; }
+
+  /* ─── LOGIN BUTTON LABEL SHORTEN ─── */
+  .login-btn {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+  }
+}

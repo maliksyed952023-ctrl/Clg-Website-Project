@@ -459,6 +459,32 @@ body {
   .faculty-card { min-width: 240px; }
   .dept-slider { aspect-ratio: 16/9; max-height: 350px; }
 }
+
+@media (max-width: 480px) {
+  .section {
+    padding: 12px;
+  }
+
+  .data-table {
+    font-size: 0.8rem;
+  }
+
+  .data-table th, .data-table td {
+    padding: 8px 10px;
+  }
+
+  /* Force 1-col gallery on very small screens */
+  .gallery-style-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  /* Shrink department title */
+  .dept-title {
+    font-size: 1.1rem;
+    padding: 12px 10px 5px;
+  }
+}
 /* ─── GALLERY-STYLE IMAGE CARDS (Achievements & Magazines) ─── */
 .gallery-style-grid {
   display: grid;

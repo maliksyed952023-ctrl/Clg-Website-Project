@@ -111,6 +111,29 @@
         margin: 0 auto;
     }
 }
+
+@media (max-width: 480px) {
+    .college-footer {
+        padding: 20px 12px;
+    }
+
+    .footer-container {
+        gap: 24px;
+        padding: 0 8px;
+    }
+
+    .footer-left img {
+        width: 110px;
+    }
+
+    .footer-map {
+        height: 180px;
+    }
+
+    .footer-college-link {
+        font-size: 0.9rem;
+    }
+}
 /* ===== REMOVE UNWANTED BOXES IN FOOTER ===== */
 .college-footer a,
 .college-footer a:focus,

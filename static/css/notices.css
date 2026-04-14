@@ -242,6 +242,32 @@
         width: 100%;
         padding: 10px;
     }
+
+    /* Smooth native scroll on mobile */
+    .table-wrapper {
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+@media (max-width: 480px) {
+    .notice-table th {
+        font-size: 0.78rem;
+        padding: 10px 10px !important;
+    }
+
+    .notice-table td {
+        font-size: 0.78rem;
+        padding: 10px 10px !important;
+    }
+
+    .notice-table td:first-child {
+        width: 100px;
+    }
+
+    .download-btn {
+        padding: 4px 8px;
+        font-size: 0.72rem;
+    }
 }
 
 
