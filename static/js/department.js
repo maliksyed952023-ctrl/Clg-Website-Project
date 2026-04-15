@@ -459,7 +459,7 @@
       const response = await fetch(`/api/announcements?category=${deptCategory}`);
       const result = await response.json();
       const notices = result.data || [];
-      noticeBody.innerHTML = notices.length === 0 ? "<tr><td colspan='3'>No notices found.</td></tr>" : notices.map(n => `<tr><td>${new Date(n.published_at || n.date).toLocaleDateString("en-GB")}</td><td>${n.title}</td><td>${n.file_url ? `<a href="${n.file_url}" download>PDF</a>` : '-'}</td></tr>`).join("");
+      noticeBody.innerHTML = notices.length === 0 ? "<tr><td colspan='3'>No notices found.</td></tr>" : notices.map(n => `<tr><td>${new Date(n.published_at || n.date).toLocaleDateString("en-GB")}</td><td>${n.title}</td><td>${n.file_url ? `<a href="${n.file_url}" download class="dept-pdf-btn"><i class="fas fa-file-pdf"></i> PDF</a>` : '-'}</td></tr>`).join("");
     } catch (e) { noticeBody.innerHTML = "<tr><td colspan='3'>Error.</td></tr>"; }
   }
 

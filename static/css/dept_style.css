@@ -712,7 +712,8 @@ body.dark .gallery-style-text {
     color: #333;
     font-weight: 500;
 }
-.notice-table .download-btn {
+.notice-table .download-btn,
+.data-table .dept-pdf-btn {
     display: inline-block;
     padding: 6px 12px;
     background: #c1121f;
@@ -723,7 +724,8 @@ body.dark .gallery-style-text {
     font-weight: 600;
     transition: background 0.3s;
 }
-.notice-table .download-btn:hover {
+.notice-table .download-btn:hover,
+.data-table .dept-pdf-btn:hover {
     background: #a00e18;
 }
 

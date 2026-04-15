@@ -551,31 +551,46 @@
       }
 
       .news-bar {
-        height: auto;
-        flex-direction: column;
-        margin: 10px;
+        height: 42px;
+        flex-direction: row;
+        margin: 8px 10px;
       }
 
       .announcement-box {
-        width: 100%;
-        justify-content: center;
-        padding: 8px;
-        height: 40px;
+        padding: 0 10px;
+        height: 100%;
       }
 
       .marquee-wrapper {
-        padding-right: 40px;
-        height: 40px;
-        width: 100%;
+        padding-right: 36px;
+        height: 100%;
       }
 
       .pause-btn {
-        width: 40px;
+        width: 36px;
       }
 
       .marquee-track a {
-        padding: 0 25px;
-        font-size: 14px;
+        padding: 0 20px;
+        font-size: 13px;
+      }
+
+      /* Fix dropdown panels for mobile to act like centered modals to prevent edge overflow */
+      .util-dropdown .dropdown-panel,
+      .util-dropdown #lang.dropdown-panel {
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        right: auto !important;
+        bottom: auto !important;
+        min-width: 280px !important;
+        width: 85vw !important;
+        max-width: 400px !important;
+        max-height: 80vh !important;
+        overflow-y: auto !important;
+        z-index: 100000 !important;
+        margin: 0 !important;
       }
 
       .search-form {
@@ -705,7 +720,7 @@
             </div>
           </div>
           <div class="dropdown-list">
-            <a href="#" class="premium-item">
+            <a href="https://www.facebook.com/gpabad56" target="_blank" class="premium-item">
               <div class="social-icon-wrap social-icon-fb"><i class="fab fa-facebook-f"></i></div>
               <div class="item-text"><span class="item-main-text">Facebook</span></div>
               <i class="fa-solid fa-chevron-right arrow-icon"></i>
@@ -720,12 +735,12 @@
               <div class="item-text"><span class="item-main-text">YouTube</span></div>
               <i class="fa-solid fa-chevron-right arrow-icon"></i>
             </a>
-            <a href="#" class="premium-item">
+            <a href="https://x.com/gpabad56" target="_blank" class="premium-item">
               <div class="social-icon-wrap social-icon-tw"><i class="fab fa-x-twitter"></i></div>
               <div class="item-text"><span class="item-main-text">X (Twitter)</span></div>
               <i class="fa-solid fa-chevron-right arrow-icon"></i>
             </a>
-            <a href="#" class="premium-item">
+            <a href="https://www.linkedin.com/company/government-polytechnic-ch-sambhajinagar/" target="_blank" class="premium-item">
               <div class="social-icon-wrap social-icon-li"><i class="fab fa-linkedin-in"></i></div>
               <div class="item-text"><span class="item-main-text">LinkedIn</span></div>
               <i class="fa-solid fa-chevron-right arrow-icon"></i>
