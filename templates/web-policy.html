@@ -15,54 +15,7 @@
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/favicon.ico') }}">
 
 
-<style>
-body {
-    margin: 0;
-    font-family: 'Source Sans 3', 'Segoe UI', Arial, sans-serif;
-    background-color: #f4f7fb;
-    color: #333;
-}
-
-/* Top blue heading bar */
-.header {
-    background-color: #0b4f8a;
-    padding: 25px 40px;
-}
-
-.header h1 {
-    margin: 0;
-    color: #ffffff;
-    font-size: 30px;
-    font-weight: 700;
-}
-
-/* Main content box */
-.content-box {
-    max-width: 900px;
-    margin: 40px auto;
-    background: #ffffff;
-    padding: 35px 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-}
-
-.content-box p {
-    font-size: 15px;
-    line-height: 1.8;
-    text-align: justify;
-    margin-bottom: 18px;
-}
-</style>
-
-<style>
-/* ===== GOOGLE TRANSLATE CSS TO HIDE DEFAULT BAR ===== */
-body { top: 0px !important; }
-.goog-te-banner-frame { display: none !important; }
-.skiptranslate { display: none !important; }
-.goog-tooltip { display: none !important; }
-.goog-tooltip:hover { display: none !important; }
-.goog-text-highlight { background-color: transparent !important; border: none !important; box-shadow: none !important; }
-</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/policy.css') }}">
 
 <!-- FOOTER & POLICY CSS -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
@@ -792,29 +745,49 @@ main{
 
 
 <!-- Content -->
-<div class="content-box">
-    <p>
-    Content needs to be contributed by Government Polytechnic Aurangabad in a consistent
-    fashion to maintain uniformity and up-to-date information.
-    </p>
+<div class="page-header">
+    Web Policy
+</div>
 
-    <p>
-    In order that all contents posted on the website are authentic, up-to-date and latest,
-    officers contributing the contents must check them thoroughly for authenticity and
-    accuracy before sending the content to the Web Information Manager (WIM) for posting
-    on the website.
-    </p>
+<div class="container">
+    <!-- LEFT MENU -->
+    <div class="sidebar">
+        <h3>WEBSITE POLICY MENU</h3>
+        <a href="{{ url_for('privacy') }}">Website Privacy Policy</a>
+        <a href="{{ url_for('privacy_payment') }}">Privacy Policy For Online Payment</a>
+        <a href="{{ url_for('terms') }}">Terms And Conditions</a>
+        <a href="{{ url_for('hyperlinking') }}">Hyperlinking Policy</a>
+        <a href="{{ url_for('copyright') }}">Copyright Policy</a>
+        <a href="{{ url_for('web_policy') }}" class="active">Web Policy</a>
+    </div>
 
-    <p>
-    The general content links of the website are given below. Before sending new or revised
-    contents to the Web Information Manager (WIM) for posting on the website, all officers
-    should adopt the procedure as indicated in the table below relating to content
-    contribution, moderation and approval.
-    </p>
+    <!-- RIGHT CONTENT -->
+    <div class="content">
+        <h2>Content Contribution and Management</h2>
 
-    <p>
-    The content on the portal goes through the entire life cycle process.
-    </p>
+        <p>
+        Content needs to be contributed by Government Polytechnic Aurangabad in a consistent
+        fashion to maintain uniformity and up-to-date information.
+        </p>
+
+        <p>
+        In order that all contents posted on the website are authentic, up-to-date and latest,
+        officers contributing the contents must check them thoroughly for authenticity and
+        accuracy before sending the content to the Web Information Manager (WIM) for posting
+        on the website.
+        </p>
+
+        <p>
+        The general content links of the website are given below. Before sending new or revised
+        contents to the Web Information Manager (WIM) for posting on the website, all officers
+        should adopt the procedure as indicated in the table below relating to content
+        contribution, moderation and approval.
+        </p>
+
+        <p>
+        The content on the portal goes through the entire life cycle process.
+        </p>
+    </div>
 </div>
 
 

@@ -15,50 +15,7 @@
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/favicon.ico') }}">
 
 
-<style>
-
-
-
-.sidebar h3 {
-    color: #fff;
-    font-size: 18px;
-    margin-bottom: 20px;
-}
-
-.sidebar a {
-    display: block;
-    padding: 12px 15px;
-    margin-bottom: 10px;
-    background: #5e58b8;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 14px;
-}
-
-.sidebar a:hover {
-    background: #6f6ad0;
-}
-
-.sidebar a.active {
-    background: #ffd166;
-    color: #000;
-    font-weight: bold;
-}
-
-/* ===== CONTENT AREA ===== */
-
-
-.content h2 {
-    color: #0b4f8a;
-    margin-bottom: 20px;
-}
-
-.content p {
-    margin-bottom: 15px;
-    text-align: justify;
-}
-</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/policy.css') }}">
 
 <style>
 /* ===== GOOGLE TRANSLATE CSS TO HIDE DEFAULT BAR ===== */
@@ -801,11 +758,12 @@ main{
     <!-- LEFT MENU -->
     <div class="sidebar">
         <h3>WEBSITE POLICY MENU</h3>
+        <a href="{{ url_for('privacy') }}" class="active">Website Privacy Policy</a>
         <a href="{{ url_for('privacy_payment') }}">Privacy Policy For Online Payment</a>
         <a href="{{ url_for('terms') }}">Terms And Conditions</a>
         <a href="{{ url_for('hyperlinking') }}">Hyperlinking Policy</a>
         <a href="{{ url_for('copyright') }}">Copyright Policy</a>
-               <a href="{{ url_for('web_policy') }}">Web Policy</a>
+        <a href="{{ url_for('web_policy') }}">Web Policy</a>
     </div>
 
     <!-- RIGHT CONTENT -->

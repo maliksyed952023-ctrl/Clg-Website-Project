@@ -112,23 +112,331 @@
     height: 5px;
     background-color: #d4af37;
 }
-/* Navbar base */
-.navbar {
-    background: #1f3c88;
-    padding: 0;
+/* ===== UTILITY BAR ===== */
+.utility-bar {
+  background: linear-gradient(135deg, #0b3c5d, #f4f6f9);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .35);
+  position: relative;
+  z-index: 1005 !important;
 }
 
-.navbar {
+.util-left,
+.util-right {
   display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ===== DROPDOWN ===== */
+.util-dropdown {
+  position: relative;
+}
+
+.util-dropdown button {
+  background: rgba(255, 255, 255, .35);
+  border: none;
+  padding: 6px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.dropdown-panel {
+  position: absolute;
+  top: 65px;                     /* Increased to clear utility bar and prevent "mixing" */
+  left: 0;                       /* Aligned to button left for cleaner look */
+  right: auto;
+  min-width: 300px;              /* Slightly narrower to reduce overlap */
+  padding: 0;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 1) !important;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.25);
+  display: none;
+  z-index: 9999 !important;      /* Extremely high to stay above everything */
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.08);
+  font-family: 'Source Sans 3', sans-serif;
+}
+
+/* Right-side dropdowns open leftward so they don't overflow the screen */
+.util-right .dropdown-panel {
+  left: auto !important;
+  right: 0 !important;
+}
+
+/* Header Area for Quick Links */
+.dropdown-header {
+  background: linear-gradient(135deg, #0b3c5d, #1b5f8a) !important;
+  color: #fff !important;
+  padding: 18px 20px !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 15px !important;
+  border-bottom: 3px solid #f5c842 !important;
+}
+
+.header-info-wrap {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+}
+
+.header-title {
+  font-weight: 700 !important;
+  font-size: 15px !important;
+  letter-spacing: 0.8px !important;
+  text-transform: uppercase !important;
+}
+
+.header-subtitle {
+  font-weight: 400 !important;
+  font-size: 12px !important;
+  opacity: 0.85 !important;
+  letter-spacing: 0.3px !important;
+}
+
+/* Premium Items */
+.premium-item {
+  display: flex !important;
+  flex-direction: row !important; /* Force horizontal alignment */
+  align-items: center !important;
+  justify-content: flex-start !important;
+  padding: 12px 18px;
+  color: #333 !important;
+  text-decoration: none !important;
+  transition: all 0.25s ease;
+  border-bottom: 1px solid #f0f0f0;
+  width: 100% !important;
+}
+
+.premium-item:last-child {
+  border-bottom: none;
+}
+
+.premium-item:hover {
+  background: #f4f8fb !important;
+  transform: translateX(5px);
+}
+
+.icon-wrap {
+  width: 38px !important;
+  height: 38px !important;
+  background: #edf4f9 !important;
+  border-radius: 10px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #0b3c5d !important;
+  font-size: 16px !important;
+  flex-shrink: 0 !important;
+}
+
+.item-text {
+  flex: 1 !important;
+  margin-left: 15px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  text-align: left !important;
+}
+
+.item-main-text {
+  font-weight: 700 !important;
+  font-size: 15px !important;
+  color: #0b3c5d !important;
+  margin-bottom: 2px !important;
+}
+
+.item-sub-text {
+  font-weight: 500 !important;
+  font-size: 13px !important;
+  color: #666 !important;
+}
+
+.arrow-icon {
+  color: #cbd5e0 !important;
+  font-size: 12px !important;
+  margin-left: auto !important; /* Push arrow to the far right */
+  transition: transform 0.2s;
+}
+
+.premium-item:hover .arrow-icon {
+  color: #0b3c5d;
+  transform: translateX(3px);
+}
+
+/* ===== BRANDED SOCIAL ICONS ===== */
+.social-icon-wrap {
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 18px !important;
+  color: #fff !important;
+  flex-shrink: 0 !important;
+}
+.social-icon-fb   { background: #1877F2 !important; }
+.social-icon-ig   { background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%) !important; }
+.social-icon-yt   { background: #FF0000 !important; }
+.social-icon-tw   { background: #000000 !important; }
+.social-icon-li   { background: #0A66C2 !important; }
+
+/* ===== STAY CONNECTED FOOTER BANNER ===== */
+.dropdown-footer-banner {
+  background: #fff8ee !important;
+  border-top: 1px solid #f0e0c0 !important;
+  padding: 14px 18px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+.dropdown-footer-banner .footer-icon {
+  color: #c8960f !important;
+  font-size: 22px !important;
+  flex-shrink: 0 !important;
+}
+
+.dropdown-footer-banner .footer-text {
+  flex: 1 !important;
+}
+
+.dropdown-footer-banner .footer-text strong {
+  display: block !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: #333 !important;
+  margin-bottom: 2px !important;
+}
+
+.dropdown-footer-banner .footer-text span {
+  font-size: 12px !important;
+  color: #777 !important;
+}
+
+.dropdown-footer-banner .footer-action-btn {
+  width: 38px !important;
+  height: 38px !important;
+  background: #f5c842 !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #333 !important;
+  font-size: 15px !important;
+  text-decoration: none !important;
+  flex-shrink: 0 !important;
+  transition: background 0.2s !important;
+}
+
+.dropdown-footer-banner .footer-action-btn:hover {
+  background: #e5b830 !important;
+}
+
+/* ===== LANGUAGE ICON BOXES ===== */
+.lang-icon-wrap {
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 20px !important;
+  font-weight: 800 !important;
+  color: #fff !important;
+  flex-shrink: 0 !important;
+  letter-spacing: 0 !important;
+}
+.lang-icon-en { background: linear-gradient(135deg, #1a56db, #0e3fa8) !important; }
+.lang-icon-mr { background: linear-gradient(135deg, #e8650a, #c05200) !important; }
+
+
+/* Original panel behavior for other buttons (Codes, Lang, etc.) */
+.dropdown-panel p,
+.dropdown-panel a:not(.premium-item) {
+  display: block;
+  padding: 12px 18px;
+  color: #333;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.dropdown-panel p:hover,
+.dropdown-panel a:not(.premium-item):hover {
+  background: #f4f8fb;
+}
+
+/* ===== ACCESSIBILITY ===== */
+.accessibility {
+  display: flex;
+  gap: 5px;
+}
+.accessibility span {
+  font-weight: 700;
+  cursor: pointer;
+  padding: 6px 9px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, .2);
+}
+
+.accessibility span:hover {
+  background: #fff;
+}
+
+/* ===== ICON BUTTON ===== */
+.icon-btn {
+  background: rgba(255, 255, 255, .35);
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
   justify-content: center;
 }
-.header-info a,
-.header-info p {
-  background: none !important;
-  border: none !important;
-  padding: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
+
+/* ===== SEARCH ===== */
+.search-box {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  padding: 8px 14px;
+  border-radius: 30px;
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  margin-left: 6px;
+  width: 150px;
+}
+
+/* ===== LOGIN ===== */
+.login-btn {
+  background: #c1121f;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 24px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.login-btn:hover {
+  background: #a00f19;
 }
 
 /* ===== RESPONSIVE HEADER ===== */

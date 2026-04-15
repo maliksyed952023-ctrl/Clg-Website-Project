@@ -137,6 +137,10 @@ def web_policy():
 def copyright():
     return render_template('copyright.html')
 
+@app.route('/hyperlinking')
+def hyperlinking():
+    return render_template('hyperlinking.html')
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404

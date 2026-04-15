@@ -15,54 +15,7 @@
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/favicon.ico') }}">
 
 
-<style>
-body {
-    margin: 0;
-    font-family: 'Source Sans 3', 'Segoe UI', Arial, sans-serif;
-    background-color: #f4f7fb;
-    color: #333;
-}
-
-/* Top blue heading bar */
-.header {
-    background-color: #0b4f8a;
-    padding: 25px 40px;
-}
-
-.header h1 {
-    margin: 0;
-    color: #ffffff;
-    font-size: 30px;
-    font-weight: 700;
-}
-
-/* Main content box */
-.content-box {
-    max-width: 900px;
-    margin: 40px auto;
-    background: #ffffff;
-    padding: 35px 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-}
-
-.content-box p {
-    font-size: 15px;
-    line-height: 1.8;
-    text-align: justify;
-    margin-bottom: 18px;
-}
-</style>
-
-<style>
-/* ===== GOOGLE TRANSLATE CSS TO HIDE DEFAULT BAR ===== */
-body { top: 0px !important; }
-.goog-te-banner-frame { display: none !important; }
-.skiptranslate { display: none !important; }
-.goog-tooltip { display: none !important; }
-.goog-tooltip:hover { display: none !important; }
-.goog-text-highlight { background-color: transparent !important; border: none !important; box-shadow: none !important; }
-</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/policy.css') }}">
 
 <!-- FOOTER & POLICY CSS -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
@@ -792,24 +745,44 @@ main{
 
 
 <!-- Content -->
-<div class="content-box">
-    <p>
-    Material featured on this portal may be reproduced free of charge in any format or
-    media without requiring specific permission. This is subject to the material being
-    reproduced accurately and not being used in a derogatory or misleading context.
-    </p>
+<div class="page-header">
+    Copyright Policy
+</div>
 
-    <p>
-    Where the material is being published or issued to others, the source must be
-    prominently acknowledged. However, the permission to reproduce this material does
-    not extend to any material on this site which is identified as being the copyright
-    of a third party.
-    </p>
+<div class="container">
+    <!-- LEFT MENU -->
+    <div class="sidebar">
+        <h3>WEBSITE POLICY MENU</h3>
+        <a href="{{ url_for('privacy') }}">Website Privacy Policy</a>
+        <a href="{{ url_for('privacy_payment') }}">Privacy Policy For Online Payment</a>
+        <a href="{{ url_for('terms') }}">Terms And Conditions</a>
+        <a href="{{ url_for('hyperlinking') }}">Hyperlinking Policy</a>
+        <a href="{{ url_for('copyright') }}" class="active">Copyright Policy</a>
+        <a href="{{ url_for('web_policy') }}">Web Policy</a>
+    </div>
 
-    <p>
-    Authorization to reproduce such material must be obtained from the copyright holders
-    concerned.
-    </p>
+    <!-- RIGHT CONTENT -->
+    <div class="content">
+        <h2>Copyright Policy</h2>
+
+        <p>
+        Material featured on this portal may be reproduced free of charge in any format or
+        media without requiring specific permission. This is subject to the material being
+        reproduced accurately and not being used in a derogatory or misleading context.
+        </p>
+
+        <p>
+        Where the material is being published or issued to others, the source must be
+        prominently acknowledged. However, the permission to reproduce this material does
+        not extend to any material on this site which is identified as being the copyright
+        of a third party.
+        </p>
+
+        <p>
+        Authorization to reproduce such material must be obtained from the copyright holders
+        concerned.
+        </p>
+    </div>
 </div>
 
 

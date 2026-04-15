@@ -3,25 +3,23 @@
    ========================================================= */
 
 /* ─── PAGE LAYOUT CONTAINER ─── */
-/* Ensure sidebar + content sit side by side without overlap */
 .container {
   display: flex !important;
   align-items: flex-start !important;
-  gap: 24px;
-  padding: 20px;
-  max-width: 1300px;
-  margin: 0 auto;
-  width: 100%;
+  gap: 16px;
+  padding: 16px 24px !important;
+  max-width: 100% !important;   /* Forced full width */
+  margin: 0 !important;         /* Forced flush left */
+  width: 100% !important;
   box-sizing: border-box;
 }
 
 /* ─── SIDEBAR ─── */
 .sidebar {
-  width: 300px !important;
-  min-width: 260px;
-  max-width: 320px;
+  width: 230px !important;    /* Slimmer sidebar = more room for content */
+  min-width: 200px;
+  max-width: 250px;
   flex-shrink: 0;
-  /* NO overflow: hidden — it clips nested submenus */
   background: transparent;
   font-family: 'Source Sans 3', 'Segoe UI', Arial, sans-serif;
   font-size: 14px;
@@ -32,14 +30,14 @@
 .main-btn {
   background-color: #1A545D;
   color: #ffffff !important;
-  padding: 13px 18px;
-  font-size: 15px;
+  padding: 12px 16px;
+  font-size: 14px;
   font-weight: 600;
   display: flex !important;
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  margin-top: 2px; /* small gap between each main-btn row */
+  margin-top: 2px;
   border-bottom: 1px solid rgba(255,255,255,0.15);
   transition: background 0.2s ease;
   user-select: none;
@@ -69,7 +67,7 @@
 /* ─── SUBMENU CONTAINER ─── */
 .sidebar .submenu,
 .submenu {
-  display: none; /* Controlled by JS — do NOT use overflow:hidden on parent */
+  display: none;
   background-color: #ffffff;
   border-left: 3px solid #1A545D;
   border-right: 1px solid #e2e8f0;
@@ -81,8 +79,8 @@
 .sub-btn {
   background-color: #ffffff;
   color: #333333 !important;
-  padding: 10px 14px 10px 22px;
-  font-size: 14px;
+  padding: 9px 12px 9px 18px;
+  font-size: 13px;
   font-weight: 500;
   border-bottom: 1px solid #f0f0f0;
   display: flex !important;
@@ -111,7 +109,7 @@
   color: #1A545D !important;
   font-weight: 600;
   border-left: 3px solid #1A545D;
-  padding-left: 19px;
+  padding-left: 15px;
 }
 
 /* ─── ARROWS ─── */
@@ -128,16 +126,28 @@
   color: #666;
 }
 
-/* ─── CONTENT AREA ─── */
+/* ─── PREMIUM CONTENT AREA ─── */
 .content {
   flex: 1;
   background: #ffffff;
-  padding: 28px 32px;
-  border-radius: 8px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-  border: 1px solid #f0f0f0;
-  min-width: 0; /* prevents overflow past container */
+  padding: 40px;
+  border-radius: 20px;
+  position: relative;
+  background-clip: padding-box;
+  border: 2px solid transparent;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+  min-width: 0;
   box-sizing: border-box;
+  margin-bottom: 24px;
+}
+
+.content::before {
+  content: "";
+  position: absolute;
+  top: -2px; left: -2px; right: -2px; bottom: -2px;
+  background: linear-gradient(135deg, #00d2ff, #7a2ff7, #fb00ff);
+  z-index: -1;
+  border-radius: 22px;
 }
 
 .section {
@@ -148,20 +158,51 @@
   display: block;
 }
 
-/* ─── CONTENT HEADINGS (match departments page style) ─── */
+/* ─── PREMIUM CONTENT HEADINGS ─── */
 .content h2 {
+  display: flex;
+  align-items: center;
+  gap: 16px;
   font-family: 'Playfair Display', Georgia, serif;
-  font-size: 22px;
+  font-size: 28px;
   color: #1A545D;
-  margin-bottom: 12px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid #e8a530;
-  display: inline-block;
+  margin-bottom: 24px;
+  padding-bottom: 15px;
+  border-bottom: none !important;
+  position: relative;
   font-weight: 700;
 }
 
+.content h2::before {
+  content: "\f02d"; /* Default Book Icon */
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  width: 48px;
+  height: 48px;
+  background: #e0f7fa;
+  color: #00838f;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(0,131,143,0.15);
+}
+
+.content h2::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 64px; 
+  width: 120px;
+  height: 4px;
+  background: linear-gradient(to right, #00d2ff, #fb00ff);
+  border-radius: 2px;
+}
+
 .content h3 {
-  font-size: 17px;
+  font-size: 18px;
   color: #1A545D;
   margin-top: 22px;
   margin-bottom: 10px;
@@ -169,10 +210,10 @@
 }
 
 .content p {
-  font-size: 15px;
-  color: #444;
-  line-height: 1.7;
-  margin-bottom: 10px;
+  font-size: 16px;           /* Slightly bigger body text */
+  color: #333;               /* Darker for better readability and filled look */
+  line-height: 1.75;
+  margin-bottom: 12px;
 }
 
 .content ul, .content ol {
@@ -181,16 +222,21 @@
 }
 
 .content li {
-  font-size: 15px;
-  color: #444;
-  line-height: 1.8;
+  font-size: 16px;           /* Match paragraph size */
+  color: #333;
+  line-height: 1.85;
   margin-bottom: 6px;
+}
+
+/* Table fixes */
+.content table {
+  font-size: 15px;
 }
 
 /* ─── BREADCRUMB ─── */
 .breadcrumb {
   background: #ffffff;
-  padding: 10px 20px;
+  padding: 8px 24px;         /* Reduced vertical padding for compactness */
   font-size: 14px;
   color: #666;
   border-bottom: 1px solid #e2e8f0;
@@ -215,7 +261,7 @@
   }
 
   .content {
-    padding: 20px;
+    padding: 16px 20px;
   }
 }
 
@@ -225,10 +271,9 @@
   }
 
   .content {
-    padding: 16px;
+    padding: 14px 16px;
   }
 
-  /* Touch-friendly sidebar buttons */
   .main-btn {
     min-height: 48px;
     padding: 12px 16px;
@@ -236,7 +281,7 @@
 
   .sub-btn {
     min-height: 44px;
-    padding: 10px 14px 10px 20px;
+    padding: 10px 14px 10px 18px;
   }
 }
 
@@ -245,3 +290,4 @@
     padding: 12px;
   }
 }
+
