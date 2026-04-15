@@ -193,6 +193,13 @@ main {
     line-height: 1.35;
 }
 
+/* Wrap title text and underline vertically */
+.about-card-title-wrap {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 18px;
+}
+
 .about-card-body {
     text-align: left;
     margin-bottom: 28px;
@@ -566,7 +573,7 @@ footer {
         position: relative;
         left: 0;
         top: 0;
-        background: rgba(10, 30, 60, 0.98); 
+        background: rgba(10, 30, 60, 0.98);
         box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         z-index: 2;
     }
