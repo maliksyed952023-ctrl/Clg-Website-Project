@@ -17,16 +17,33 @@ function initHeroSlider(containerId, images) {
   const slides = slider.querySelectorAll(".slide");
   const dots = slider.querySelectorAll(".dot");
 
+  function updateHeight() {
+    const activeSlide = slides[slideIndex];
+    if (activeSlide && activeSlide.complete) {
+      slider.style.height = activeSlide.clientHeight + "px";
+    } else if (activeSlide) {
+      activeSlide.onload = () => {
+        slider.style.height = activeSlide.clientHeight + "px";
+      };
+    }
+  }
+
   function showSlide(n) {
     slides.forEach(s => s.classList.remove("active"));
     dots.forEach(d => d.classList.remove("active"));
     slides[n].classList.add("active");
     dots[n].classList.add("active");
+    updateHeight();
   }
+
+  // Initial height setting
+  window.addEventListener('load', updateHeight);
+  window.addEventListener('resize', updateHeight);
 
   slider.querySelector(".next").onclick = () => { slideIndex = (slideIndex + 1) % slides.length; showSlide(slideIndex); };
   slider.querySelector(".prev").onclick = () => { slideIndex = (slideIndex - 1 + slides.length) % slides.length; showSlide(slideIndex); };
   dots.forEach((dot, i) => dot.onclick = () => { slideIndex = i; showSlide(i); });
+  updateHeight(); // Try setting height immediately
   setInterval(() => { slideIndex = (slideIndex + 1) % slides.length; showSlide(slideIndex); }, 4000);
 }
 

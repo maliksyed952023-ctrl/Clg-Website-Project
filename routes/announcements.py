@@ -51,8 +51,18 @@ ALL_DEPT_CATEGORIES = [
 def get_announcements():
     category = request.args.get('category')
 
-    response = supabase.table('announcements').select('*').eq('is_active', True).order('published_at', desc=True).execute()
-    all_data = response.data or []
+    try:
+        # Restoration of sorting using 'desc' which is compatible with the local SDK version.
+        response = supabase.table('announcements').select('*').eq('is_active', True).order('created_at', desc=True).execute()
+        all_data = response.data or []
+    except Exception as e:
+        print(f"Error fetching announcements: {e}")
+        try:
+             # Fallback if created_at fails
+             response = supabase.table('announcements').select('*').eq('is_active', True).execute()
+             all_data = response.data or []
+        except Exception as e2:
+             return jsonify({ 'error': str(e), 'details': str(e2) }), 500
 
     if category:
         # If filtering by a specific dept category, also include notice_department records

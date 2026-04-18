@@ -170,8 +170,11 @@ def get_images():
         return jsonify({'data': res.data or []}), 200
     except Exception as e:
         print(f"[ERROR] get_images reached outer fallback: {str(e)}")
-        res_safe = supabase.table('managed_images').select('*').execute()
-        return jsonify({'data': res_safe.data or []}), 200
+        try:
+            res_safe = supabase.table('managed_images').select('*').execute()
+            return jsonify({'data': res_safe.data or []}), 200
+        except Exception as e2:
+            return jsonify({'error': str(e), 'details': str(e2)}), 500
 
 # ─── MAINTENANCE: SUBMIT IMAGE REQUEST ────────────────────────────────────────
 @images_bp.route('/images/request', methods=['POST'])
