@@ -101,6 +101,10 @@ def contactus():
 def downloads():
     return render_template('downloads.html')
 
+@app.route('/photo-gallery')
+def photo_gallery():
+    return render_template('photo_gallery.html')
+
 @app.route('/student-section')
 def student_section():
     return render_template('student_section.html')

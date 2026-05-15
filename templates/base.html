@@ -1081,6 +1081,11 @@
             <a class="nav-link" href="{{ url_for('downloads') }}">Downloads</a>
           </li>
 
+          <!-- Photo Gallery -->
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('photo_gallery') }}">Photo Gallery</a>
+          </li>
+
           <!-- Contact -->
           <li class="nav-item dropdown">
             <a class="nav-link" href="{{ url_for('contact') }}">Contact Us</a>
@@ -1104,9 +1109,10 @@
 
         <!-- SLIDE 1: About Institute — reference-style full bg + floating card -->
         <div class="slide slide-active slide-about">
-          <img src="{{ url_for('static', filename='images/background.jpeg') }}" data-slug="home_hero_1"
-            data-fallback="{{ url_for('static', filename='images/background.jpeg') }}"
-            alt="Government Polytechnic Campus" class="slide-bg">
+          <video autoplay loop muted playsinline class="slide-bg" poster="{{ url_for('static', filename='images/background.jpeg') }}">
+            <source src="{{ url_for('static', filename='aniamtion/Gen-4 Turbo - Create mp4 video of Slow to fast cinematic zoom-in to this government polytechnic coll_processed.mp4') }}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
           <div class="about-card">
             <h2 class="about-card-title">About Government Polytechnic</h2>
             <div class="about-card-body">

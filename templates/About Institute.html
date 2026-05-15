@@ -55,71 +55,6 @@
 
     /* PHOTO GALLERY */
 
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-      margin-top: 20px;
-    }
-
-    .gallery-card {
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      position: relative;
-    }
-
-    .gallery-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    .gallery-img {
-      height: 180px;
-      background: #eee;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .gallery-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      position: absolute;
-      top: 0;
-      left: 0;
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
-    }
-
-    .gallery-img img.active {
-      opacity: 1;
-    }
-
-    .gallery-text {
-      padding: 12px;
-      text-align: center;
-      font-weight: 600;
-      color: #0b3c5d;
-      background: #f8f9fa;
-      border-top: 1px solid #eee;
-    }
-
-    /* DARK MODE OVERRIDES FOR GALLERY */
-    body.dark .gallery-card {
-      background: #1e1e1e;
-      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5);
-    }
-
-    body.dark .gallery-text {
-      background: #2a2a2a;
-      color: #f4c430;
-      border-top-color: #333;
-    }
-
     /* ORGANIZATIONAL CHART */
 
     .chart-box {
@@ -1128,6 +1063,11 @@
             <a class="nav-link" href="{{ url_for('downloads') }}">Downloads</a>
           </li>
 
+          <!-- Photo Gallery -->
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('photo_gallery') }}">Photo Gallery</a>
+          </li>
+
           <!-- Contact -->
           <li class="nav-item dropdown">
             <a class="nav-link" href="{{ url_for('contact') }}">Contact Us</a>
@@ -1215,12 +1155,7 @@
         <div class="sub-btn" onclick="showSection('office', this)">Office Administration</div>
       </div>
 
-      <div class="main-btn" onclick="showSection('gallery', this)">
-        Photo Gallery
-        <span class="arrow">▶</span>
       </div>
-
-    </div>
 
     <div class="content">
 
@@ -1337,72 +1272,6 @@
       <div id="owner" class="section">
         <h2>Honours</h2>
         <p>Institute management details.</p>
-      </div>
-
-      <div id="gallery" class="section">
-
-        <h2>Photo Gallery</h2>
-
-        <div class="gallery">
-
-          <div class="gallery-card" onclick="openLightbox('Campus View')">
-            <div class="gallery-img" data-category="Campus View">
-              <img src="/static/images/campus1.jpg.jpeg" class="active">
-            </div>
-            <div class="gallery-text">Campus View</div>
-          </div>
-
-          <div class="gallery-card" onclick="openLightbox('College Event')">
-            <div class="gallery-img" data-category="College Event">
-              <img src="/static/images/college_event1.jpeg" class="active">
-            </div>
-            <div class="gallery-text">College Event</div>
-          </div>
-
-          <div class="gallery-card" onclick="openLightbox('Workshop')">
-            <div class="gallery-img" data-category="Workshop">
-              <img src="/static/images/campus3.jpg.jpeg" class="active">
-            </div>
-            <div class="gallery-text">Workshop</div>
-          </div>
-
-          <div class="gallery-card" onclick="openLightbox('Laboratory')">
-            <div class="gallery-img" data-category="Laboratory">
-              <img src="/static/images/lab1.jpg.jpeg" class="active">
-            </div>
-            <div class="gallery-text">Laboratory</div>
-          </div>
-
-          <div class="gallery-card" onclick="openLightbox('Library')">
-            <div class="gallery-img" data-category="Library">
-              <img src="/static/images/campus1.jpg.jpeg" class="active">
-            </div>
-            <div class="gallery-text">Library</div>
-          </div>
-
-          <div class="gallery-card" onclick="openLightbox('Seminar Hall')">
-            <div class="gallery-img" data-category="Seminar Hall">
-              <img src="/static/images/seminar_hall1.jpg.jpeg" class="active">
-            </div>
-            <div class="gallery-text">Seminar Hall</div>
-          </div>
-
-          <div class="gallery-card" onclick="openLightbox('Sports Activity')">
-            <div class="gallery-img" data-category="Sports Activity">
-              <img src="/static/images/campus3.jpg.jpeg" class="active">
-            </div>
-            <div class="gallery-text">Sports Activity</div>
-          </div>
-
-          <div class="gallery-card" onclick="openLightbox('Annual Function')">
-            <div class="gallery-img" data-category="Annual Function">
-              <img src="/static/images/annual_event.jpeg" class="active">
-            </div>
-            <div class="gallery-text">Annual Function</div>
-          </div>
-
-        </div>
-
       </div>
 
       <div id="disclosure" class="section">
@@ -1572,97 +1441,8 @@
   <script src="{{ url_for('static', filename='js/search_index.js') }}"></script>
   <script src="{{ url_for('static', filename='js/search.js') }}"></script>
 
-  <!-- PHOTO GALLERY LOGIC -->
-  <script>
-    let dynamicGalleryData = {};
-
-    async function fetchGalleryData() {
-      try {
-        const res = await fetch('/api/images?category=about');
-        const json = await res.json();
-        const data = json.data || [];
-        
-        // Group by subcategory name (normalized to lowercase)
-        const grouped = {};
-        data.forEach(img => {
-          const sub = (img.subcategory || "").toLowerCase().trim();
-          if (!grouped[sub]) grouped[sub] = [];
-          grouped[sub].push(img.url);
-        });
-        dynamicGalleryData = grouped;
-        return grouped;
-      } catch (e) {
-        console.error("Error fetching gallery data:", e);
-        return {};
-      }
-    }
-
-    // Initialize gallery images in cards
-    async function initGallery() {
-      await fetchGalleryData();
-      const containers = document.querySelectorAll('.gallery-img');
-      containers.forEach(container => {
-        const category = (container.getAttribute('data-category') || "").toLowerCase().trim();
-        const images = dynamicGalleryData[category] || [];
-
-        if (images.length === 0) {
-            // Leave hardcoded images alone if no dynamic results
-            return;
-        }
-
-        container.innerHTML = '';
-        images.forEach((src, index) => {
-          const img = document.createElement('img');
-          img.src = src;
-          if (index === 0) img.classList.add('active');
-          container.appendChild(img);
-        });
-
-        // Start cycling for this container
-        let currentIndex = 0;
-        setInterval(() => {
-          const imgs = container.querySelectorAll('img');
-          if (imgs.length <= 1) return;
-
-          imgs[currentIndex].classList.remove('active');
-          currentIndex = (currentIndex + 1) % imgs.length;
-          imgs[currentIndex].classList.add('active');
-        }, 5000);
-      });
-    }
-
-    // Lightbox functions
-    function openLightbox(category) {
-      if (!window.GlobalLightbox) {
-          console.error('GlobalLightbox not loaded');
-          return;
-      }
-      
-      const images = dynamicGalleryData[category.toLowerCase().trim()] || [];
-
-      if (images.length === 0) {
-        alert('No photos available for this card.');
-        return;
-      }
-
-      // Map to formatted objects (this file uses plain URL strings in dynamicGalleryData)
-      const formatted = images.map(url => ({
-        url: url,
-        label: category
-      }));
-
-      window.GlobalLightbox.open(formatted, category);
-    }
-
-    function closeLightbox() {
-      if (window.GlobalLightbox) window.GlobalLightbox.close();
-    }
-
-    // Initialize on load
-    window.addEventListener('DOMContentLoaded', () => {
-      initGallery();
-    });
   </script>
+
   <!-- FOOTER -->
   {% include 'footer_content.html' %}
 </body>
