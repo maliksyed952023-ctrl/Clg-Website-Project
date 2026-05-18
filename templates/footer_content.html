@@ -1,49 +1,93 @@
-<footer class="college-footer">
-  <div class="footer-container">
+<!-- FOOTER STARTS HERE -->
+  <footer class="college-footer">
+    <div class="footer-main-container">
+      <!-- LEFT SECTION -->
+      <div class="footer-left">
+        <div class="footer-logo-wrap">
+          <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="College Logo">
+          <h3 class="footer-college-name">Government Polytechnic,<br>Chhatrapati Sambhajinagar</h3>
+        </div>
+        
+        <div class="footer-contact-info">
+          <p><i class="fa-solid fa-location-dot footer-icon"></i> Osmanpura, Chh. Sambhajinagar – 431005,<br>Maharashtra State, India</p>
+          <p><i class="fa-solid fa-phone footer-icon"></i> +91-240-2353644 (Principal)<br><i class="fa-solid fa-phone footer-icon" style="opacity:0;"></i> +91-240-2334724</p>
+          <p><i class="fa-solid fa-envelope footer-icon"></i> <a href="mailto:principal.gpaurangabad@dtemaharashtra.gov.in">principal.gpaurangabad@dtemaharashtra.gov.in</a></p>
+        </div>
 
-    <!-- LEFT -->
-    <div class="footer-left">
-      <a href="{{ url_for('home') }}">
-        <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="College Logo">
-      </a>
+        <div class="footer-policy-links">
+          <a href="{{ url_for('privacy') }}">Website Privacy Policy</a> <span class="divider">|</span>
+          <a href="{{ url_for('contact') }}">Contact Us</a>
+        </div>
+
+        <div class="footer-social-links">
+          <a href="https://www.facebook.com/gpabad56" target="_blank" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.linkedin.com/company/government-polytechnic-ch-sambhajinagar/" target="_blank" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="https://youtube.com" target="_blank" class="social-btn"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+
+      <!-- RIGHT SECTION: GOOGLE MAP -->
+      <div class="footer-right">
+        <div class="footer-map-wrapper">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3752.663185368305!2d75.31505367503463!3d19.854041181518177!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bdba28b9d99fb35%3A0x6b09a5ebfb7324aa!2sGovernment%20Polytechnic%20Aurangabad!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
     </div>
 
-    <!-- MIDDLE -->
-    <div class="footer-middle">
-
-      <p class="footer-address">
-        Government Polytechnic, Osmanpura,<br>
-        Chh. Sambhajinagar – 431005,<br>
-        Maharashtra State, India
-      </p>
-
-      <p class="footer-contact">
-        📞 +91-240-2353644 (Principal)<br>
-        📞 +91-240-2334724
-      </p>
-
-      <p class="footer-email">
-        ✉️ principal.gpaurangabad@dtemaharashtra.gov.in
-      </p>
-
-      <p class="footer-links">
-        <a href="{{ url_for('privacy') }}">Website Privacy Policy</a><br>
-        <a href="{{ url_for('contact') }}">Contact Us</a>
-      </p>
-
+    <!-- BOTTOM BAR -->
+    <div class="footer-bottom-bar">
+      <div class="bottom-left">
+        <p>&copy; 2023 Government Polytechnic, Chhatrapati Sambhajinagar. All rights reserved.<br>Designed and Developed by <strong>Diginovators</strong></p>
+      </div>
+      <div class="bottom-center">
+        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="back-to-top-btn">
+          <i class="fa-solid fa-chevron-up"></i> BACK TO TOP
+        </button>
+      </div>
+      <div class="bottom-right">
+        <div class="visitor-count">
+          <i class="fa-solid fa-users"></i>
+          <div class="visitor-text">
+            <span id="live-visitor-count">156947</span>
+            <span>Visitors</span>
+          </div>
+        </div>
+      </div>
     </div>
+  </footer>
+  <!-- FOOTER ENDS HERE -->
 
-    <!-- RIGHT -->
-    <div class="footer-map">
-      <iframe src="https://www.google.com/maps?q=Government+Polytechnic+Aurangabad&output=embed" allowfullscreen></iframe>
-    </div>
-
-  </div>
-
-  <p style="text-align:center; font-size:14px; margin-top:20px;">
-    &copy; 2024 Government Polytechnic, Chhatrapati Sambhajinagar. All Rights Reserved.
-  </p>
-</footer>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Check if we already incremented for this session
+      const hasVisited = sessionStorage.getItem('hasVisited');
+      const countEl = document.getElementById("live-visitor-count");
+      
+      if (!hasVisited) {
+        // Increment real counter
+        fetch('/api/visitors/increment', { method: 'POST' })
+          .then(response => response.json())
+          .then(data => {
+            if (data.count) {
+              if (countEl) countEl.textContent = data.count.toLocaleString();
+              sessionStorage.setItem('hasVisited', 'true');
+            }
+          })
+          .catch(err => console.error("Visitor count error:", err));
+      } else {
+        // Just fetch current count
+        fetch('/api/visitors')
+          .then(response => response.json())
+          .then(data => {
+            if (data.count && countEl) {
+              countEl.textContent = data.count.toLocaleString();
+            }
+          })
+          .catch(err => console.error("Visitor count error:", err));
+      }
+    });
+  </script>
 
 <script src="{{ url_for('static', filename='js/image-loader.js') }}"></script>
 

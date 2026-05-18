@@ -642,6 +642,9 @@ body { top: 0px !important; }
 
 <!-- NAVBAR STARTS HERE -->
 
+<!-- SIDEBAR BACKDROP -->
+<div class="sidebar-backdrop d-lg-none" id="sidebarBackdrop"></div>
+
 <nav class="navbar navbar-expand-lg">
   <div class="container-fluid">
 
@@ -841,29 +844,13 @@ body { top: 0px !important; }
 
       </ul>
 
-      <!-- MOBILE MENU SEARCH -->
-      <div class="mobile-menu-search d-lg-none p-3">
-        <div class="search-wrap-mobile">
-          <input type="text" placeholder="Search..." class="mobile-search-input">
-          <i class="fas fa-search search-icon-mobile"></i>
-        </div>
-      </div>
-
     </div>
   </div>
 </nav>
 
 <!-- NAVBAR ENDS HERE -->
- <!-- ===  <!-- FOOTER -->
+<!-- FOOTER ENDS HERE -->
   {% include 'footer_content.html' %}
-</div>
-
-  </div>
-
-  <p style="text-align:center; font-size:14px; margin-top:20px;">
-    © 2026 Government Polytechnic Chh. Sambhajinagar
-
-</footer>
 
 <script src="{{ url_for('static', filename='js/utility-bar.js') }}"></script>
 <script src="{{ url_for('static', filename='js/') }}College-slider.js"></script>

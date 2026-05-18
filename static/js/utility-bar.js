@@ -100,3 +100,93 @@ document.addEventListener("click", function (event) {
         });
     }
 });
+
+// --- 6. GLOBAL MOBILE SIDEBAR & ACCORDION LOGIC ---
+document.addEventListener('DOMContentLoaded', function() {
+    const navbarCollapse = document.getElementById('navbarSupportedContent');
+    const backdrop = document.getElementById('sidebarBackdrop');
+    
+    // Backdrop toggling
+    function toggleBackdrop(show) {
+        if (!backdrop) return;
+        if (show) {
+            backdrop.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        } else {
+            backdrop.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+    }
+
+    if (navbarCollapse) {
+        navbarCollapse.addEventListener('show.bs.collapse', () => toggleBackdrop(true));
+        navbarCollapse.addEventListener('hide.bs.collapse', () => toggleBackdrop(false));
+    }
+
+    if (backdrop) {
+        backdrop.addEventListener('click', () => {
+            if (window.bootstrap && bootstrap.Collapse) {
+                const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
+                if (bsCollapse) bsCollapse.hide();
+            }
+        });
+    }
+
+    // Accordion Logic
+    if (navbarCollapse) {
+        const dropdownToggles = navbarCollapse.querySelectorAll('.nav-item.dropdown > .nav-link');
+        dropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', function(e) {
+                if (window.innerWidth < 992) {
+                    e.preventDefault();
+                    const parent = this.parentElement;
+                    const menu = parent.querySelector('.dropdown-menu');
+                    
+                    const wasActive = parent.classList.contains('active-mobile-dropdown');
+                    
+                    // Close others
+                    navbarCollapse.querySelectorAll('.nav-item.dropdown').forEach(item => {
+                        if (item !== parent) {
+                            item.classList.remove('active-mobile-dropdown');
+                            const m = item.querySelector('.dropdown-menu');
+                            if (m) m.style.maxHeight = null;
+                        }
+                    });
+
+                    // Toggle current
+                    if (!wasActive) {
+                        parent.classList.add('active-mobile-dropdown');
+                        if (menu) menu.style.maxHeight = menu.scrollHeight + 100 + "px";
+                    } else {
+                        parent.classList.remove('active-mobile-dropdown');
+                        if (menu) menu.style.maxHeight = null;
+                    }
+                }
+            });
+        });
+
+        // Nested toggles
+        const nestedToggles = navbarCollapse.querySelectorAll('.dropend > .dropdown-item');
+        nestedToggles.forEach(toggle => {
+            toggle.addEventListener('click', function(e) {
+                if (window.innerWidth < 992) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const parent = this.parentElement;
+                    const menu = parent.querySelector('.dropdown-menu');
+                    
+                    parent.classList.toggle('active-nested-dropdown');
+                    if (menu) {
+                        const isOpen = parent.classList.contains('active-nested-dropdown');
+                        menu.style.maxHeight = isOpen ? menu.scrollHeight + "px" : null;
+                        
+                        const rootMenu = parent.closest('.nav-item.dropdown').querySelector('.dropdown-menu');
+                        if (isOpen && rootMenu) {
+                            rootMenu.style.maxHeight = (rootMenu.scrollHeight + menu.scrollHeight) + "px";
+                        }
+                    }
+                }
+            });
+        });
+    }
+});

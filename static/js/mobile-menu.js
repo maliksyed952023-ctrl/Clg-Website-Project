@@ -1,13 +1,38 @@
 /**
- * Mobile Menu Enhancements
- * Handles accordion submenus and sidebar transitions
+ * Structural Mobile Sidebar Enhancements
+ * Handles backdrop, drawer transitions, and premium accordion logic
  */
 
 document.addEventListener('DOMContentLoaded', function() {
     const navbarCollapse = document.getElementById('navbarSupportedContent');
-    if (!navbarCollapse) return;
+    const backdrop = document.getElementById('sidebarBackdrop');
+    if (!navbarCollapse || !backdrop) return;
 
-    // Handle Dropdown Accordion on Mobile
+    // --- 1. BACKDROP & SIDEBAR SYNC ---
+    
+    // Function to toggle backdrop
+    function toggleBackdrop(show) {
+        if (show) {
+            backdrop.classList.add('show');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        } else {
+            backdrop.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+    }
+
+    // Listen for Bootstrap collapse events
+    navbarCollapse.addEventListener('show.bs.collapse', () => toggleBackdrop(true));
+    navbarCollapse.addEventListener('hide.bs.collapse', () => toggleBackdrop(false));
+
+    // Close menu when clicking backdrop
+    backdrop.addEventListener('click', () => {
+        const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
+        if (bsCollapse) bsCollapse.hide();
+    });
+
+    // --- 2. PREMIUM ACCORDION LOGIC ---
+    
     const dropdownToggles = navbarCollapse.querySelectorAll('.nav-item.dropdown > .nav-link');
     
     dropdownToggles.forEach(toggle => {
@@ -17,7 +42,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 const parent = this.parentElement;
                 const menu = parent.querySelector('.dropdown-menu');
                 
-                // Close other open menus
+                // Toggle active class for the indicator
+                const wasActive = parent.classList.contains('active-mobile-dropdown');
+                
+                // Close other open menus for a clean look
                 navbarCollapse.querySelectorAll('.nav-item.dropdown').forEach(item => {
                     if (item !== parent) {
                         item.classList.remove('active-mobile-dropdown');
@@ -26,20 +54,20 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
 
-                // Toggle current menu
-                parent.classList.toggle('active-mobile-dropdown');
-                if (menu) {
-                    if (parent.classList.contains('active-mobile-dropdown')) {
-                        menu.style.maxHeight = menu.scrollHeight + "px";
-                    } else {
-                        menu.style.maxHeight = null;
-                    }
+                // Toggle current
+                if (!wasActive) {
+                    parent.classList.add('active-mobile-dropdown');
+                    if (menu) menu.style.maxHeight = menu.scrollHeight + 100 + "px"; // Extra padding for safety
+                } else {
+                    parent.classList.remove('active-mobile-dropdown');
+                    if (menu) menu.style.maxHeight = null;
                 }
             }
         });
     });
 
-    // Handle nested dropdowns (Departments)
+    // --- 3. SUB-LEVEL TOGGLES ---
+    
     const nestedToggles = navbarCollapse.querySelectorAll('.dropend > .dropdown-item');
     nestedToggles.forEach(toggle => {
         toggle.addEventListener('click', function(e) {
@@ -51,26 +79,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 parent.classList.toggle('active-nested-dropdown');
                 if (menu) {
-                    if (parent.classList.contains('active-nested-dropdown')) {
-                        menu.style.maxHeight = menu.scrollHeight + "px";
-                        // Update parent menu height to accommodate nested menu
-                        const rootMenu = parent.closest('.nav-item.dropdown').querySelector('.dropdown-menu');
+                    const isOpen = parent.classList.contains('active-nested-dropdown');
+                    menu.style.maxHeight = isOpen ? menu.scrollHeight + "px" : null;
+                    
+                    // Update parent height
+                    const rootMenu = parent.closest('.nav-item.dropdown').querySelector('.dropdown-menu');
+                    if (isOpen) {
                         rootMenu.style.maxHeight = (rootMenu.scrollHeight + menu.scrollHeight) + "px";
-                    } else {
-                        menu.style.maxHeight = null;
                     }
                 }
-            }
-        });
-    });
-
-    // Close menu when clicking links (not dropdown toggles)
-    const navLinks = navbarCollapse.querySelectorAll('.nav-link:not(.dropdown-toggle), .dropdown-item:not(.dropdown-toggle)');
-    navLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            if (window.innerWidth < 992 && !this.classList.contains('dropdown-toggle')) {
-                const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
-                if (bsCollapse) bsCollapse.hide();
             }
         });
     });

@@ -616,22 +616,49 @@ main{
 
   <!-- NAVBAR STARTS HERE -->
 
+  <!-- SIDEBAR BACKDROP -->
+  <div class="sidebar-backdrop d-lg-none" id="sidebarBackdrop"></div>
+
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
 
       <a class="navbar-brand" href="{{ url_for('home') }}">Home</a>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
-        <i class="fas fa-bars"></i>
+        <div class="toggler-icon-wrap">
+          <i class="fas fa-bars"></i>
+        </div>
       </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <!-- MOBILE MENU HEADER -->
+        <div class="mobile-menu-header d-lg-none">
+          <div class="d-flex justify-content-between align-items-center p-3">
+            <div class="d-flex align-items-center">
+              <div class="mobile-logo-circle">
+                <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="Logo">
+              </div>
+              <div class="mobile-brand-info ms-3">
+                <h6 class="mb-0 text-white fw-bold">GOVERNMENT POLYTECHNIC,</h6>
+                <p class="mb-0 text-white-50 small text-uppercase" style="font-size: 10px; letter-spacing: 1px;">Chhatrapati Sambhajinagar</p>
+              </div>
+            </div>
+            <button type="button" class="btn-close-custom" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
 
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
           <!-- About Institute -->
           <li class="nav-item dropdown">
-            <a class="nav-link" href="{{ url_for('about') }}">About Institute</a>
+            <a class="nav-link" href="{{ url_for('about') }}">
+              <i class="fas fa-building-columns d-lg-none me-2"></i>
+              About Institute
+              <i class="fas fa-chevron-right d-lg-none ms-auto accordion-icon"></i>
+            </a>
             <ul class="dropdown-menu">
               <li>
                 <a class="dropdown-item" href="{{ url_for('about') }}"
@@ -639,7 +666,7 @@ main{
                   Vision &amp; Mission
                 </a>
               </li>
-              
+
               <li>
                 <a class="dropdown-item" href="{{ url_for('about') }}"
                   onclick="sessionStorage.setItem('section','milestone')">
@@ -675,48 +702,78 @@ main{
 
           <!-- Examination Cell / CDC -->
           <li class="nav-item dropdown">
-            <a class="nav-link" href="{{ url_for('exam_cell') }}">Examination Cell / CDC</a>
+            <a class="nav-link" href="{{ url_for('exam_cell', section='notices') }}">
+              <i class="fas fa-clipboard-check d-lg-none me-2"></i>
+              Examination Cell / CDC
+              <i class="fas fa-chevron-right d-lg-none ms-auto accordion-icon"></i>
+            </a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="#">Curriculum Development Cell</a>
               </li>
-              <li><a class="dropdown-item" href="{{ url_for('exam_cell') }}">Examination Cell</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('exam_cell', section='notices') }}">Examination Cell</a>
+              </li>
             </ul>
           </li>
 
-                    <!-- Admission -->
+          <!-- Admission -->
           <li class="nav-item dropdown">
-            <a class="nav-link" href="#">Admission</a>
+            <a class="nav-link" href="#">
+              <i class="fas fa-graduation-cap d-lg-none me-2"></i>
+              Admission
+              <i class="fas fa-chevron-right d-lg-none ms-auto accordion-icon"></i>
+            </a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="{{ url_for('first_year_admission') }}">First Year Admission</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('direct_second_year_admission') }}">Direct Second Year Admission</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('higher_classes_admission') }}">Higher Classes Admission</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('direct_second_year_admission') }}">Direct Second Year
+                  Admission</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('higher_classes_admission') }}">Higher Classes Admission</a>
+              </li>
             </ul>
           </li>
 
           <!-- Departments -->
           <li class="nav-item dropdown">
-            <a class="nav-link" href="{{ url_for('departments') }}">Departments</a>
+            <a class="nav-link" href="{{ url_for('departments') }}?section=notices">
+              <i class="fas fa-table-cells-large d-lg-none me-2"></i>
+              Departments
+              <i class="fas fa-chevron-right d-lg-none ms-auto accordion-icon"></i>
+            </a>
             <ul class="dropdown-menu">
 
               <li class="dropend">
                 <a class="dropdown-item dropdown-toggle" href="404.html">Diploma
                   Programmes</a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="{{ url_for('department', name='aiml') }}">Artificial Intelligence &amp;
+                  <li><a class="dropdown-item"
+                      href="{{ url_for('department', name='aiml') }}?section=notices">Artificial Intelligence
+                      &amp;
                       Machine Learning</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('department', name='auto') }}">Automobile Engineering</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('department', name='civil') }}">Civil Engineering</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('department', name='computer') }}">Computer Engineering</a>
+                  <li><a class="dropdown-item"
+                      href="{{ url_for('department', name='auto') }}?section=notices">Automobile
+                      Engineering</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='civil') }}?section=notices">Civil
+                      Engineering</a>
                   </li>
-                  <li><a class="dropdown-item" href="{{ url_for('department', name='ddgm') }}">Dress Designing &amp; Garment
+                  <li><a class="dropdown-item"
+                      href="{{ url_for('department', name='computer') }}?section=notices">Computer
+                      Engineering</a>
+                  </li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='ddgm') }}?section=notices">Dress
+                      Designing &amp;
+                      Garment
                       Management</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('department', name='electrical') }}">Electrical
+                  <li><a class="dropdown-item"
+                      href="{{ url_for('department', name='electrical') }}?section=notices">Electrical
                       Engineering</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('department', name='entc') }}">Electronics &amp; Telecommunication
+                  <li><a class="dropdown-item"
+                      href="{{ url_for('department', name='entc') }}?section=notices">Electronics &amp;
+                      Telecommunication
                       Engineering</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('department', name='it') }}">Information Technology
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='it') }}?section=notices">Information
+                      Technology
                       Engineering</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('department', name='mechanical') }}">Mechanical
+                  <li><a class="dropdown-item"
+                      href="{{ url_for('department', name='mechanical') }}?section=notices">Mechanical
                       Engineering</a></li>
                 </ul>
               </li>
@@ -734,10 +791,10 @@ main{
               </li>
 
               <li class="dropend">
-                <a class="dropdown-item dropdown-toggle"
-                  href="404.html">Advanced Diploma Programmes</a>
+                <a class="dropdown-item dropdown-toggle" href="404.html">Advanced Diploma Programmes</a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="{{ url_for('department', name='mercedes-benz') }}">Mercedes Benz</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='mercedes-benz') }}">Mercedes
+                      Benz</a></li>
                 </ul>
               </li>
 
@@ -746,51 +803,79 @@ main{
 
           <!-- Student Section -->
           <li class="nav-item dropdown">
-            <a class="nav-link" href="{{ url_for('student_section') }}">Student Section</a>
+            <a class="nav-link" href="{{ url_for('student_section', section='welfare') }}">
+              <i class="fas fa-users-gear d-lg-none me-2"></i>
+              Student Section
+              <i class="fas fa-chevron-right d-lg-none ms-auto accordion-icon"></i>
+            </a>
             <ul class="dropdown-menu">
-              
-              <li><a class="dropdown-item" href="{{ url_for('student_section', section='scholarship') }}">Scholarships</a></li>
+              <li><a class="dropdown-item"
+                  href="{{ url_for('student_section', section='scholarship') }}">Scholarships</a></li>
             </ul>
           </li>
 
           <!-- TPO -->
           <!-- CHANGED: href updated to use ?section= query params instead of #hash -->
           <li class="nav-item dropdown">
-            <a class="nav-link" href="{{ url_for('tposection') }}">TPO</a>
+            <a class="nav-link" href="{{ url_for('tposection', section='tpo') }}">
+              <i class="fas fa-briefcase d-lg-none me-2"></i>
+              TPO
+              <i class="fas fa-chevron-right d-lg-none ms-auto accordion-icon"></i>
+            </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="{{ url_for('tposection', section='profile') }}">Profile</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('tposection', section='recruiters') }}">Our Recruiters</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('tposection', section='placement') }}">Placement Records</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('tposection', section='recruiters') }}">Our Recruiters</a>
+              </li>
+              <li><a class="dropdown-item" href="{{ url_for('tposection', section='profile') }}">Activities</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('tposection', section='schedule') }}">Schedule</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('tposection', section='placement') }}">Placement Records</a>
+              </li>
             </ul>
           </li>
 
           <!-- Facilities -->
           <li class="nav-item dropdown">
-            <a class="nav-link" href="{{ url_for('facility') }}">Facilities</a>
+            <a class="nav-link" href="{{ url_for('facility') }}">
+              <i class="fas fa-hotel d-lg-none me-2"></i>
+              Facilities
+              <i class="fas fa-chevron-right d-lg-none ms-auto accordion-icon"></i>
+            </a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="{{ url_for('facility', section='gymkhana') }}">Gymkhana</a></li>
               <li><a class="dropdown-item" href="{{ url_for('facility', section='library') }}">Library</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('facility', section='other-facilities') }}">Other Facilities</a>
+              <li><a class="dropdown-item" href="{{ url_for('facility', section='other-facilities') }}">Other
+                  Facilities</a>
               </li>
             </ul>
           </li>
 
           <!-- Downloads -->
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('downloads') }}">Downloads</a>
+            <a class="nav-link" href="{{ url_for('downloads') }}">
+              <i class="fas fa-download d-lg-none me-2"></i>
+              Downloads
+            </a>
           </li>
 
           <!-- Photo Gallery -->
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('photo_gallery') }}">Photo Gallery</a>
+            <a class="nav-link" href="{{ url_for('photo_gallery') }}">
+              <i class="fas fa-images d-lg-none me-2"></i>
+              Photo Gallery
+            </a>
           </li>
 
           <!-- Contact -->
           <li class="nav-item dropdown">
-            <a class="nav-link" href="{{ url_for('contact') }}">Contact Us</a>
+            <a class="nav-link" href="{{ url_for('contact') }}">
+              <i class="fas fa-phone-volume d-lg-none me-2"></i>
+              Contact Us
+              <i class="fas fa-chevron-right d-lg-none ms-auto accordion-icon"></i>
+            </a>
+
           </li>
 
         </ul>
+
       </div>
     </div>
   </nav>

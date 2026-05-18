@@ -18,6 +18,7 @@ from routes.fees import fees_bp
 from routes.magazines import magazines_bp
 from routes.settings import settings_bp
 from routes.chat import chat_bp
+from routes.visitors import visitors_bp
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100 MB max upload
 CORS(app)
@@ -34,6 +35,7 @@ app.register_blueprint(fees_bp, url_prefix='/api')
 app.register_blueprint(magazines_bp, url_prefix='/api')
 app.register_blueprint(settings_bp, url_prefix='/api')
 app.register_blueprint(chat_bp, url_prefix='/api')
+app.register_blueprint(visitors_bp, url_prefix='/api')
 
 # Routes
 @app.route('/')
