@@ -1,0 +1,1714 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- HEADER & NAVBAR REQUIRED CSS - MUST BE FIRST -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <meta charset="UTF-8">
+  <title>Facilities</title>
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='favicon/apple-touch-icon.png') }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon/favicon-32x32.png') }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon/favicon-16x16.png') }}">
+  <link rel="manifest" href="{{ url_for('static', filename='favicon/site.webmanifest') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/favicon.ico') }}">
+
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Source Sans 3', 'Segoe UI', Arial, sans-serif;
+      background: #f2f4f5;
+    }
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    /* CONTENT */
+
+    
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .content h2 {
+      color: #0e5a61;
+    }
+
+    /* PHOTO GALLERY */
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .gallery-card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+    }
+
+    .gallery-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .event-card {
+      cursor: pointer;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .event-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .gallery-img {
+      height: 180px;
+      background: #eee;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gallery-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .gallery-img img.active {
+      opacity: 1;
+    }
+
+    .gallery-text {
+      padding: 12px;
+      text-align: center;
+      font-weight: 600;
+      color: #0b3c5d;
+      background: #f8f9fa;
+      border-top: 1px solid #eee;
+    }
+
+    /* DARK MODE OVERRIDES FOR GALLERY/LIGHTBOX */
+    body.dark .gallery-card, body.dark .event-card {
+      background: #1e1e1e;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    body.dark .gallery-text {
+      background: #2a2a2a;
+      color: #f4c430;
+      border-top-color: #333;
+    }
+
+    /* GYMKHANA SECTION OVERRIDES */
+    #gymkhana .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      margin-top: 35px;
+      margin-bottom: 40px;
+    }
+
+    #gymkhana .gallery-card {
+      width: 520px;
+      max-width: 100%;
+      border-radius: 15px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    #gymkhana .gallery-img {
+      height: 380px;
+    }
+
+    #gymkhana .gallery-text {
+      font-size: 18px;
+      padding: 18px;
+      background: #fff;
+      color: #0b3c5d;
+      font-weight: 700;
+    }
+
+    body.dark #gymkhana .gallery-text {
+      background: #2a2a2a;
+      color: #f4c430;
+    }
+
+    /* ORGANIZATIONAL CHART */
+
+    .chart-box {
+      width: 100%;
+      max-width: 900px;
+      height: 420px;
+      border: 2px dashed #999;
+      background: #fafafa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: auto;
+      font-size: 18px;
+      color: #666;
+    }
+  </style>
+
+
+  <style>
+    /* ===== GOOGLE TRANSLATE CSS TO HIDE DEFAULT BAR ===== */
+    body {
+      top: 0px !important;
+    }
+
+    .goog-te-banner-frame {
+      display: none !important;
+    }
+
+    .skiptranslate {
+      display: none !important;
+    }
+
+    .goog-tooltip {
+      display: none !important;
+    }
+
+    .goog-tooltip:hover {
+      display: none !important;
+    }
+
+    .goog-text-highlight {
+      background-color: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+  </style>
+
+  <!-- FOOTER & POLICY CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+  <style>
+    /* ===== GOOGLE TRANSLATE CSS TO HIDE DEFAULT BAR ===== */
+    body {
+      top: 0px !important;
+    }
+
+    .goog-te-banner-frame {
+      display: none !important;
+    }
+
+    .skiptranslate {
+      display: none !important;
+    }
+
+    .goog-tooltip {
+      display: none !important;
+    }
+
+    .goog-tooltip:hover {
+      display: none !important;
+    }
+
+    .goog-text-highlight {
+      background-color: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+
+    /* ===== GLOBAL ===== */
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      font-family: 'Source Sans 3', 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      background: #ffffff;
+      color: #000;
+      transition: .3s;
+    }
+
+    /* ===== HEADER / FOOTER ===== */
+    /* Removed legacy header/footer override */
+    main {
+      padding: 30px;
+      min-height: 300px;
+    }
+
+    /* ===== UTILITY BAR ===== */
+    .utility-bar {
+      background: linear-gradient(135deg, #0b3c5d, #f4f6f9);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 24px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, .35);
+    }
+
+    .util-left,
+    .util-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* ===== DROPDOWN ===== */
+    .util-dropdown {
+      position: relative;
+    }
+
+    .util-dropdown button {
+      background: rgba(255, 255, 255, .35);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .dropdown-panel {
+      position: absolute;
+      top: 65px;
+      left: 0;
+      right: auto;
+      min-width: 300px;
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 1) !important;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, .3);
+      display: none;
+    }
+
+    .dropdown-panel p,
+    .dropdown-panel a {
+      display: block;
+      padding: 10px 14px;
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+
+    .dropdown-panel p:hover,
+    .dropdown-panel a:hover {
+      background: #888;
+      color: #000;
+      cursor: pointer;
+    }
+
+    .dropdown-panel p:active,
+    .dropdown-panel a:active {
+      background: #c1121f;
+      color: #fff;
+    }
+
+    .dropdown-panel a:active,
+    .dropdown-panel p:active {
+      background: #c1121f;
+      color: #fff;
+    }
+
+    /* ===== ACCESSIBILITY ===== */
+    .accessibility span {
+      font-weight: 700;
+      cursor: pointer;
+      padding: 6px 9px;
+      border-radius: 6px;
+    }
+
+    .accessibility span:hover {
+      background: #fff
+    }
+
+    /* ===== ICON BUTTON ===== */
+    .icon-btn {
+      background: rgba(255, 255, 255, .35);
+      border: none;
+      padding: 10px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    /* ===== SEARCH ===== */
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      padding: 8px 14px;
+      border-radius: 30px;
+    }
+
+    .search-box input {
+      border: none;
+      outline: none;
+      margin-left: 6px;
+    }
+
+    /* ===== LOGIN ===== */
+    .login-btn {
+      background: #c1121f;
+      color: #fff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 24px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* ===== ANNOUNCEMENT BAR (Refined) ===== */
+    .news-bar {
+      display: flex;
+      align-items: center;
+      height: 55px;
+      background: #fff;
+      border: 1px solid #c1121f;
+      margin: 20px auto;
+      max-width: 1400px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+
+    /* LEFT RED BOX */
+    .announcement-box {
+      background-color: #c1121f;
+      height: 100%;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ffffff;
+      font-weight: 700;
+      text-transform: capitalize;
+      flex-shrink: 0;
+      z-index: 1005;
+    }
+
+    .announcement-box i {
+      font-size: 18px;
+    }
+
+    .announcement-box span {
+      font-size: 16px;
+      letter-spacing: 0.5px;
+    }
+
+    /* MARQUEE AREA */
+    .marquee-wrapper {
+      position: relative;
+      overflow: hidden;
+      flex: 1;
+      height: 100%;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      padding-right: 50px; /* Space for pause button */
+    }
+
+    /* TRACK */
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marquee 25s linear infinite;
+      align-items: center;
+    }
+
+    /* NEWS ITEM */
+    .marquee-track a, .marquee-track span {
+      color: #333;
+      font-size: 15px;
+      text-decoration: none;
+      padding: 0 50px;
+      white-space: nowrap;
+      position: relative;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .marquee-track a:hover, .marquee-track span:hover {
+      color: #c1121f;
+    }
+
+    /* SEPARATOR LINE */
+    .marquee-track a::after, .marquee-track span::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 20px;
+      width: 1.5px;
+      background-color: #ddd;
+    }
+
+    /* PAUSE BUTTON */
+    .pause-btn {
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+      width: 50px;
+      background: #fff;
+      border: none;
+      border-left: 1px solid #eee;
+      color: #c1121f;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
+      transition: background 0.2s;
+    }
+
+    .pause-btn:hover {
+      background: #fdf2f2;
+    }
+
+    .news-bar.paused .marquee-track {
+      animation-play-state: paused;
+    }
+
+    /* CONTINUOUS LOOP */
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+  </style>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/lightbox.css') }}">
+  
+
+  <!-- ================= COMPREHENSIVE DARK MODE ================= -->
+  <style id="global-dark-mode">
+    /* Base Backgrounds and Text */
+    body.dark {
+      background: #121212 !important;
+      color: #e0e0e0 !important;
+    }
+
+    /* Navbar, Header, Footer overrides */
+    body.dark .top-header,
+    body.dark .navbar,
+    body.dark .college-footer,
+    body.dark header,
+    body.dark footer,
+    body.dark .news-bar {
+      background: #2a2a2a !important;
+      border-color: #444 !important;
+    }
+
+    body.dark .announcement-box {
+      background: #8b0c15 !important;
+    }
+
+    body.dark .marquee-wrapper,
+    body.dark .pause-btn {
+      background: #2a2a2a !important;
+      border-left-color: #444 !important;
+    }
+
+    body.dark .marquee-track a, body.dark .marquee-track span {
+      color: #e0e0e0 !important;
+    }
+    
+    body.dark .marquee-track a::after, body.dark .marquee-track span::after {
+      background-color: #444 !important;
+    }
+
+    /* Utility Bar */
+    body.dark .utility-bar {
+      background: #1f1f1f !important;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8) !important;
+    }
+
+    body.dark .util-dropdown button,
+    body.dark .icon-btn {
+      background: #333 !important;
+      color: #fff !important;
+    }
+
+    body.dark .dropdown-panel {
+      background: #252525 !important;
+      border: 1px solid #444 !important;
+      color: #e0e0e0 !important;
+    }
+
+    body.dark .dropdown-panel a:hover,
+    body.dark .dropdown-panel p:hover {
+      background: #333 !important;
+      color: #fff !important;
+    }
+
+    /* Search Box */
+    body.dark .search-box {
+      background: #333 !important;
+    }
+
+    body.dark .search-box input {
+      background: #333 !important;
+      color: #fff !important;
+    }
+
+    /* Main Navigation Dropdowns (Bootstrap) */
+    body.dark .dropdown-menu {
+      background-color: #2a2a2a !important;
+      border: 1px solid #444 !important;
+    }
+
+    body.dark .dropdown-item {
+      color: #e0e0e0 !important;
+    }
+
+    body.dark .dropdown-item:hover {
+      background-color: #3b3b3b !important;
+      color: #fff !important;
+    }
+
+    /* Main content areas, cards, sidebars */
+    body.dark .content,
+    body.dark .sidebar,
+    body.dark .section,
+    body.dark .card-inner,
+    body.dark .faculty-card .card-inner,
+    body.dark .submenu {
+      background: #1e1e1e !important;
+      color: #e0e0e0 !important;
+      border-color: #333 !important;
+      box-shadow: none !important;
+    }
+
+    body.dark .main-btn {
+      background: #2a2a2a !important;
+      color: #e0e0e0 !important;
+      border-color: #444 !important;
+    }
+
+    body.dark .main-btn:hover,
+    body.dark .main-btn.active {
+      background: #3b3b3b !important;
+    }
+
+    body.dark .sub-btn {
+      background: #1e1e1e !important;
+      color: #e0e0e0 !important;
+      border-left-color: #555 !important;
+      border-bottom-color: #333 !important;
+    }
+
+    body.dark .sub-btn.active,
+    body.dark .sub-btn.active-item {
+      background: #2a2a2a !important;
+      color: #fff !important;
+      border-left-color: #f4c430 !important;
+    }
+
+    body.dark .sub-btn:hover {
+      background: #2a2a2a !important;
+    }
+
+    /* Tables */
+    body.dark table,
+    body.dark th,
+    body.dark td {
+      border-color: #444 !important;
+    }
+
+    body.dark th {
+      background: #2a2a2a !important;
+      color: #e0e0e0 !important;
+    }
+
+    body.dark tr:nth-child(even) td {
+      background: #222 !important;
+    }
+
+    body.dark tr:hover td {
+      background: #333 !important;
+    }
+
+    /* Titles / Breadcrumbs */
+    body.dark .title,
+    body.dark .dept-title,
+    body.dark .breadcrumb {
+      background: transparent !important;
+      color: #f5c842 !important;
+      border-color: #333 !important;
+    }
+
+    body.dark h1,
+    body.dark h2,
+    body.dark h3,
+    body.dark h4,
+    body.dark p,
+    body.dark span,
+    body.dark a {
+      color: unset;
+      /* Let it inherit unless specifically overridden */
+    }
+
+    /* Cards specific */
+    body.dark .card {
+      background: #2a2a2a !important;
+      border: 1px solid #444 !important;
+    }
+  </style>
+  <!-- ======================================================= -->
+
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/facility_style.css') }}">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<!-- ===== UTILITY BAR ===== -->
+<div class="utility-bar">
+<div class="util-left">
+  <!-- Institute Codes -->
+  <div class="util-dropdown">
+    <button onclick="toggleDrop('codes')">
+      <i class="fa-solid fa-building-columns"></i> Institute Codes <i class="fa fa-chevron-down"></i>
+    </button>
+    <div class="dropdown-panel" id="codes" style="min-width: 320px;">
+      <div class="dropdown-header">
+        <div class="icon-wrap" style="background: rgba(245,200,66,0.2) !important; color: #f5c842 !important; width:44px !important; height:44px !important;">
+          <i class="fa-solid fa-building-columns" style="font-size:20px;"></i>
+        </div>
+        <div class="header-info-wrap">
+          <span class="header-title">Institute Codes</span>
+          <span class="header-subtitle">Important Academic &amp; Institute Codes</span>
+        </div>
+      </div>
+      <div class="dropdown-list">
+        <a href="#" class="premium-item">
+          <div class="icon-wrap"><i class="fa-solid fa-building-columns"></i></div>
+          <div class="item-text">
+            <span class="item-main-text">DTE Code</span>
+            <span class="item-sub-text">2010</span>
+          </div>
+          <i class="fa-solid fa-chevron-right arrow-icon"></i>
+        </a>
+        <a href="#" class="premium-item">
+          <div class="icon-wrap"><i class="fa-solid fa-graduation-cap"></i></div>
+          <div class="item-text">
+            <span class="item-main-text">MSBTE</span>
+            <span class="item-sub-text">0019 (1st Shift)</span>
+          </div>
+          <i class="fa-solid fa-chevron-right arrow-icon"></i>
+        </a>
+        <a href="#" class="premium-item">
+          <div class="icon-wrap"><i class="fa-solid fa-graduation-cap"></i></div>
+          <div class="item-text">
+            <span class="item-main-text">MSBTE</span>
+            <span class="item-sub-text">9019 (2nd Shift)</span>
+          </div>
+          <i class="fa-solid fa-chevron-right arrow-icon"></i>
+        </a>
+        <a href="#" class="premium-item">
+          <div class="icon-wrap"><i class="fa-solid fa-id-card"></i></div>
+          <div class="item-text">
+            <span class="item-main-text">AICTE ID</span>
+            <span class="item-sub-text">1-493166031</span>
+          </div>
+          <i class="fa-solid fa-chevron-right arrow-icon"></i>
+        </a>
+        <a href="#" class="premium-item">
+          <div class="icon-wrap"><i class="fa-solid fa-book-open"></i></div>
+          <div class="item-text">
+            <span class="item-main-text">AISHE</span>
+            <span class="item-sub-text">S-1785</span>
+          </div>
+          <i class="fa-solid fa-chevron-right arrow-icon"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Social Media -->
+  <div class="util-dropdown">
+    <button onclick="toggleDrop('social')">
+      <i class="fa-solid fa-share-nodes"></i> Social Media <i class="fa fa-chevron-down"></i>
+    </button>
+    <div class="dropdown-panel" id="social" style="min-width: 320px;">
+      <div class="dropdown-header">
+        <div class="icon-wrap" style="background: rgba(245,200,66,0.2) !important; color: #f5c842 !important; width:44px !important; height:44px !important;">
+          <i class="fa-solid fa-share-nodes" style="font-size:20px;"></i>
+        </div>
+        <div class="header-info-wrap">
+          <span class="header-title">Follow &amp; Connect</span>
+          <span class="header-subtitle">Stay Updated with Us</span>
+        </div>
+      </div>
+      <div class="dropdown-list">
+        <a href="https://www.facebook.com/gpabad56" target="_blank" class="premium-item">
+          <div class="social-icon-wrap social-icon-fb"><i class="fab fa-facebook-f"></i></div>
+          <div class="item-text"><span class="item-main-text">Facebook</span></div>
+          <i class="fa-solid fa-chevron-right arrow-icon"></i>
+        </a>
+        <a href="#" class="premium-item">
+          <div class="social-icon-wrap social-icon-ig"><i class="fab fa-instagram"></i></div>
+          <div class="item-text"><span class="item-main-text">Instagram</span></div>
+          <i class="fa-solid fa-chevron-right arrow-icon"></i>
+        </a>
+        <a href="#" class="premium-item">
+          <div class="social-icon-wrap social-icon-yt"><i class="fab fa-youtube"></i></div>
+          <div class="item-text"><span class="item-main-text">YouTube</span></div>
+          <i class="fa-solid fa-chevron-right arrow-icon"></i>
+        </a>
+        <a href="https://x.com/gpabad56" target="_blank" class="premium-item">
+          <div class="social-icon-wrap social-icon-tw"><i class="fab fa-x-twitter"></i></div>
+          <div class="item-text"><span class="item-main-text">X (Twitter)</span></div>
+          <i class="fa-solid fa-chevron-right arrow-icon"></i>
+        </a>
+        <a href="https://www.linkedin.com/company/government-polytechnic-ch-sambhajinagar/" target="_blank" class="premium-item">
+          <div class="social-icon-wrap social-icon-li"><i class="fab fa-linkedin-in"></i></div>
+          <div class="item-text"><span class="item-main-text">LinkedIn</span></div>
+          <i class="fa-solid fa-chevron-right arrow-icon"></i>
+        </a>
+      </div>
+      <div class="dropdown-footer-banner">
+        <i class="fa-solid fa-users footer-icon"></i>
+        <div class="footer-text">
+          <strong>Stay Connected!</strong>
+          <span>Join us on social media for updates, events &amp; more.</span>
+        </div>
+        <a href="#" class="footer-action-btn"><i class="fa-solid fa-paper-plane"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accessibility -->
+  <div class="accessibility">
+    <span onclick="setFont('decrease')">A-</span>
+    <span onclick="setFont('reset')">A</span>
+    <span onclick="setFont('increase')">A+</span>
+  </div>
+
+  <!-- Dark Mode -->
+  <button class="icon-btn" onclick="toggleTheme()">
+    <i class="fa fa-circle-half-stroke"></i>
+  </button>
+
+  <!-- Quick Links -->
+  <div class="util-dropdown">
+    <button onclick="toggleDrop('links')">
+      <i class="fa-solid fa-link"></i> Quick Links <i class="fa fa-chevron-down"></i>
+    </button>
+    <div class="dropdown-panel" id="links">
+      <div class="dropdown-header">
+        <i class="fa-solid fa-link"></i> QUICK LINKS
+      </div>
+      <div class="dropdown-list">
+        <a href="https://msbte.ac.in/" target="_blank" class="premium-item">
+          <div class="icon-wrap"><i class="fa-solid fa-book"></i></div>
+          <div class="item-text">MSBTE</div>
+          <i class="fa-solid fa-chevron-right arrow-icon"></i>
+        </a>
+        <a href="https://www.aicte-india.org/" target="_blank" class="premium-item">
+          <div class="icon-wrap"><i class="fa-solid fa-graduation-cap"></i></div>
+          <div class="item-text">AICTE</div>
+          <i class="fa-solid fa-chevron-right arrow-icon"></i>
+        </a>
+        <a href="https://gpabadmis.in/gpabad_mis/" target="_blank" class="premium-item">
+          <div class="icon-wrap"><i class="fa-solid fa-desktop"></i></div>
+          <div class="item-text">MIS Portal</div>
+          <i class="fa-solid fa-chevron-right arrow-icon"></i>
+        </a>
+        <a href="https://dte.maharashtra.gov.in/" target="_blank" class="premium-item">
+          <div class="icon-wrap"><i class="fa-solid fa-building-columns"></i></div>
+          <div class="item-text">DTE Maharashtra</div>
+          <i class="fa-solid fa-chevron-right arrow-icon"></i>
+        </a>
+        <a href="https://nptel.ac.in/" target="_blank" class="premium-item">
+          <div class="icon-wrap"><i class="fa-solid fa-play"></i></div>
+          <div class="item-text">NPTEL</div>
+          <i class="fa-solid fa-chevron-right arrow-icon"></i>
+        </a>
+        <a href="https://betacloud.ncs.gov.in/" target="_blank" class="premium-item">
+          <div class="icon-wrap"><i class="fa-solid fa-briefcase"></i></div>
+          <div class="item-text">National Career Service</div>
+          <i class="fa-solid fa-chevron-right arrow-icon"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="util-right">
+  <div class="search-box">
+    <i class="fa fa-search"></i>
+    <input data-key="search" placeholder="Search..." type="text"/>
+  </div>
+  <!-- Language Tab -->
+  <div class="util-dropdown">
+    <button data-key="languageBtn" onclick="toggleDrop('lang')">
+      <i class="fa-solid fa-globe"></i> Language <i class="fa fa-chevron-down"></i>
+    </button>
+    <div class="dropdown-panel" id="lang" style="min-width: 320px;">
+      <div class="dropdown-header">
+        <div class="icon-wrap" style="background: rgba(245,200,66,0.2) !important; color: #f5c842 !important; width:44px !important; height:44px !important;">
+          <i class="fa-solid fa-globe" style="font-size:20px;"></i>
+        </div>
+        <div class="header-info-wrap">
+          <span class="header-title">Choose Language</span>
+          <span class="header-subtitle">Select your preferred language</span>
+        </div>
+      </div>
+      <div class="dropdown-list">
+        <a href="#" onclick="setLanguage('en')" class="premium-item">
+          <div class="lang-icon-wrap lang-icon-en">A</div>
+          <div class="item-text">
+            <span class="item-main-text">English</span>
+            <span class="item-sub-text">Default Language</span>
+          </div>
+          <i class="fa-solid fa-chevron-right arrow-icon"></i>
+        </a>
+        <a href="#" onclick="setLanguage('mr')" class="premium-item">
+          <div class="lang-icon-wrap lang-icon-mr">अ</div>
+          <div class="item-text">
+            <span class="item-main-text">मराठी</span>
+            <span class="item-sub-text">स्थानिक भाषा</span>
+          </div>
+          <i class="fa-solid fa-chevron-right arrow-icon"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  <button class="login-btn" data-key="login" onclick="window.location.href='/login'">
+    <i class="fa fa-right-to-bracket"></i> Login
+  </button>
+</div>
+</div>
+<header class="top-header">
+<div class="header-logo">
+<img alt="College Logo" src="{{ url_for('static', filename='images/logo.jpeg') }}"/>
+</div>
+<div class="header-title">
+<h1>Government Polytechnic, Chhatrapati Sambhajinagar</h1>
+<h2>शासकीय तंत्रनिकेतन, छत्रपती संभाजीनगर</h2>
+<p>(An Autonomous Institute of Govt. of Maharashtra – Estd. 1955)</p>
+<p>AICTE Approved – NBA Accredited</p>
+</div>
+<div class="header-info">
+<p class="header-email">
+        📧
+        <a href="mailto:principal.gpaurangabad@dtemaharashtra.gov.in">
+          principal.gpaurangabad@dtemaharashtra.gov.in
+        </a>
+</p>
+<p>📞 +91-240-2353644 (Principal)</p>
+<p><a href="#">Online GPA</a></p>
+<p><a href="#">Admission – 2025-26</a></p>
+</div>
+</header>
+<div class="gold-strip"></div>
+<!-- NAVBAR STARTS HERE -->
+
+  <!-- SIDEBAR BACKDROP -->
+  <div class="sidebar-backdrop d-lg-none" id="sidebarBackdrop"></div>
+
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+
+      <a class="navbar-brand" href="{{ url_for('home') }}">Home</a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+        <div class="toggler-icon-wrap">
+          <i class="fas fa-bars"></i>
+        </div>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <!-- MOBILE MENU HEADER -->
+        <div class="mobile-menu-header d-lg-none">
+          <div class="d-flex justify-content-between align-items-center p-3">
+            <div class="d-flex align-items-center">
+              <div class="mobile-logo-circle">
+                <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="Logo">
+              </div>
+              <div class="mobile-brand-info ms-3">
+                <h6 class="mb-0 text-white fw-bold">GOVERNMENT POLYTECHNIC,</h6>
+                <p class="mb-0 text-white-50 small text-uppercase" style="font-size: 10px; letter-spacing: 1px;">Chhatrapati Sambhajinagar</p>
+              </div>
+            </div>
+            <button type="button" class="btn-close-custom" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+          <!-- About Institute -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="{{ url_for('about') }}">
+              <i class="fas fa-building-columns d-lg-none me-2"></i>
+              About Institute
+              <i class="fas fa-chevron-right d-lg-none ms-auto accordion-icon"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item" href="{{ url_for('about') }}"
+                  onclick="sessionStorage.setItem('section','visionmission')">
+                  Vision &amp; Mission
+                </a>
+              </li>
+
+              <li>
+                <a class="dropdown-item" href="{{ url_for('about') }}"
+                  onclick="sessionStorage.setItem('section','milestone')">
+                  Milestones &amp; Honours
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('about') }}"
+                  onclick="sessionStorage.setItem('section','disclosure')">
+                  Rights &amp; Acts
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('about') }}"
+                  onclick="sessionStorage.setItem('section','governance')">
+                  Governance / Committee
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('about') }}"
+                  onclick="sessionStorage.setItem('section','orgchart')">
+                  Organizational Chart
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('about') }}"
+                  onclick="sessionStorage.setItem('section','office')">
+                  Office Administration
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <!-- Examination Cell / CDC -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="{{ url_for('exam_cell', section='notices') }}">
+              <i class="fas fa-clipboard-check d-lg-none me-2"></i>
+              Examination Cell / CDC
+              <i class="fas fa-chevron-right d-lg-none ms-auto accordion-icon"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Curriculum Development Cell</a>
+              </li>
+              <li><a class="dropdown-item" href="{{ url_for('exam_cell', section='notices') }}">Examination Cell</a>
+              </li>
+            </ul>
+          </li>
+
+          <!-- Admission -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="#">
+              <i class="fas fa-graduation-cap d-lg-none me-2"></i>
+              Admission
+              <i class="fas fa-chevron-right d-lg-none ms-auto accordion-icon"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ url_for('first_year_admission') }}">First Year Admission</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('direct_second_year_admission') }}">Direct Second Year
+                  Admission</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('higher_classes_admission') }}">Higher Classes Admission</a>
+              </li>
+            </ul>
+          </li>
+
+          <!-- Departments -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="{{ url_for('departments') }}?section=notices">
+              <i class="fas fa-table-cells-large d-lg-none me-2"></i>
+              Departments
+              <i class="fas fa-chevron-right d-lg-none ms-auto accordion-icon"></i>
+            </a>
+            <ul class="dropdown-menu">
+
+              <li class="dropend">
+                <a class="dropdown-item dropdown-toggle" href="404.html">Diploma
+                  Programmes</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item"
+                      href="{{ url_for('department', name='aiml') }}?section=notices">Artificial Intelligence
+                      &amp;
+                      Machine Learning</a></li>
+                  <li><a class="dropdown-item"
+                      href="{{ url_for('department', name='auto') }}?section=notices">Automobile
+                      Engineering</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='civil') }}?section=notices">Civil
+                      Engineering</a>
+                  </li>
+                  <li><a class="dropdown-item"
+                      href="{{ url_for('department', name='computer') }}?section=notices">Computer
+                      Engineering</a>
+                  </li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='ddgm') }}?section=notices">Dress
+                      Designing &amp;
+                      Garment
+                      Management</a></li>
+                  <li><a class="dropdown-item"
+                      href="{{ url_for('department', name='electrical') }}?section=notices">Electrical
+                      Engineering</a></li>
+                  <li><a class="dropdown-item"
+                      href="{{ url_for('department', name='entc') }}?section=notices">Electronics &amp;
+                      Telecommunication
+                      Engineering</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='it') }}?section=notices">Information
+                      Technology
+                      Engineering</a></li>
+                  <li><a class="dropdown-item"
+                      href="{{ url_for('department', name='mechanical') }}?section=notices">Mechanical
+                      Engineering</a></li>
+                </ul>
+              </li>
+
+              <li class="dropend">
+                <a class="dropdown-item dropdown-toggle" href="404.html">Allied
+                  Departments</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='science-humanities') }}">Science and
+                      Humanities</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='applied-mechanics') }}">Applied
+                      Mechanics</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='workshop') }}">Workshop</a></li>
+                </ul>
+              </li>
+
+              <li class="dropend">
+                <a class="dropdown-item dropdown-toggle" href="404.html">Advanced Diploma Programmes</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='mercedes-benz') }}">Mercedes
+                      Benz</a></li>
+                </ul>
+              </li>
+
+            </ul>
+          </li>
+
+          <!-- Student Section -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="{{ url_for('student_section', section='welfare') }}">
+              <i class="fas fa-users-gear d-lg-none me-2"></i>
+              Student Section
+              <i class="fas fa-chevron-right d-lg-none ms-auto accordion-icon"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item"
+                  href="{{ url_for('student_section', section='scholarship') }}">Scholarships</a></li>
+            </ul>
+          </li>
+
+          <!-- TPO -->
+          <!-- CHANGED: href updated to use ?section= query params instead of #hash -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="{{ url_for('tposection', section='tpo') }}">
+              <i class="fas fa-briefcase d-lg-none me-2"></i>
+              TPO
+              <i class="fas fa-chevron-right d-lg-none ms-auto accordion-icon"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ url_for('tposection', section='recruiters') }}">Our Recruiters</a>
+              </li>
+              <li><a class="dropdown-item" href="{{ url_for('tposection', section='profile') }}">Activities</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('tposection', section='schedule') }}">Schedule</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('tposection', section='placement') }}">Placement Records</a>
+              </li>
+            </ul>
+          </li>
+
+          <!-- Facilities -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="{{ url_for('facility') }}">
+              <i class="fas fa-hotel d-lg-none me-2"></i>
+              Facilities
+              <i class="fas fa-chevron-right d-lg-none ms-auto accordion-icon"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ url_for('facility', section='gymkhana') }}">Gymkhana</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('facility', section='library') }}">Library</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('facility', section='other-facilities') }}">Other
+                  Facilities</a>
+              </li>
+            </ul>
+          </li>
+
+          <!-- Downloads -->
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('downloads') }}">
+              <i class="fas fa-download d-lg-none me-2"></i>
+              Downloads
+            </a>
+          </li>
+
+          <!-- Photo Gallery -->
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('photo_gallery') }}">
+              <i class="fas fa-images d-lg-none me-2"></i>
+              Photo Gallery
+            </a>
+          </li>
+
+          <!-- Contact -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="{{ url_for('contact') }}">
+              <i class="fas fa-phone-volume d-lg-none me-2"></i>
+              Contact Us
+              <i class="fas fa-chevron-right d-lg-none ms-auto accordion-icon"></i>
+            </a>
+
+          </li>
+
+        </ul>
+
+      </div>
+    </div>
+  </nav>
+
+  <!-- NAVBAR ENDS HERE -->
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  <div class="breadcrumb">
+    Home > Facilities > Gymkhana
+  </div>
+
+  <div class="container"><div class="sidebar">
+
+<div class="main-btn" onclick="showSection('library', this)">
+Library <span class="arrow">▶</span>
+</div>
+
+<div class="main-btn" onclick="showSection('gymkhana', this)">
+Gymkhana <span class="arrow">▶</span>
+</div>
+
+<div class="main-btn" onclick="toggleMenu('menu4',this)">
+Hostel <span class="arrow">▶</span>
+</div>
+
+<div class="submenu" id="menu4">
+<div class="sub-btn" onclick="showSection('boysHostel', this)">Boys Hostel</div>
+<div class="sub-btn" onclick="showSection('girlsHostel', this)">Girls Hostel</div>
+</div>
+
+<div class="main-btn" onclick="showSection('otherfacilities', this)">
+Other Facilities <span class="arrow">▶</span>
+</div>
+
+</div>
+
+
+<div class="content">
+
+<!-- LIBRARY -->
+
+<div id="library" class="section active">
+
+<h2>Library</h2>
+
+<div class="gallery">
+
+<div class="gallery-card" onclick="openLightbox('Institute Library')">
+<div class="gallery-img" data-category="Institute Library">
+    <img src="/static/images/campus1.jpg.jpeg" class="active" alt="Institute Library">
+</div>
+<div class="gallery-text">Institute Library</div>
+</div>
+
+<div class="gallery-card" onclick="openLightbox('Girls study section')">
+<div class="gallery-img" data-category="Girls study section">
+    <img src="/static/images/campus2.jpg.jpeg" class="active" alt="Girls study section">
+</div>
+<div class="gallery-text">Girls study section</div>
+</div>
+
+<div class="gallery-card" onclick="openLightbox('Boys study section')">
+<div class="gallery-img" data-category="Boys study section">
+    <img src="/static/images/campus3.jpg.jpeg" class="active" alt="Boys study section">
+</div>
+<div class="gallery-text">Boys study section</div>
+</div>
+
+</div>
+
+<p>
+The library of Government Polytechnic, Aurangabad provides a wide collection of technical books, reference materials, journals and digital resources to support the academic needs of students and faculty.
+</p>
+
+<p>
+The library environment is calm and suitable for study and research. Students from all departments can access books related to engineering, technology, general knowledge and competitive examinations.
+</p>
+
+<p>
+The library also provides reading facilities, newspaper access and reference materials that help students in academic as well as personal development.
+</p>
+
+</div>
+
+
+<!-- BOYS HOSTEL -->
+
+<div id="boysHostel" class="section">
+
+<h2>Boys Hostel</h2>
+
+<div class="gallery">
+
+<div class="gallery-card" onclick="openLightbox('Boys Hostel')">
+<div class="gallery-img" data-category="Boys Hostel">
+    <img src="/static/images/campus4.jpg.jpeg" class="active" alt="Boys Hostel">
+</div>
+<div class="gallery-text">Boys Hostel</div>
+</div>
+
+<div class="gallery-card" onclick="openLightbox('Boys Hostel Campus')">
+<div class="gallery-img" data-category="Boys Hostel Campus">
+    <img src="/static/images/campus1.jpg.jpeg" class="active" alt="Boys Hostel Campus">
+</div>
+<div class="gallery-text">Boys Hostel Campus</div>
+</div>
+
+<div class="gallery-card" onclick="openLightbox('Rector Office')">
+<div class="gallery-img" data-category="Rector Office">
+    <img src="/static/images/campus3.jpg.jpeg" class="active" alt="Rector Office">
+</div>
+<div class="gallery-text">Rector Office</div>
+</div>
+
+<div class="gallery-card" onclick="openLightbox('Room')">
+<div class="gallery-img" data-category="Room">
+    <img src="/static/images/campus2.jpg.jpeg" class="active" alt="Room">
+</div>
+<div class="gallery-text">Room</div>
+</div>
+
+</div>
+
+<p>
+Government Polytechnic Aurangabad provides hostel facilities for boys with comfortable accommodation and basic amenities.
+</p>
+
+<p>
+The hostel ensures a safe and disciplined environment for students coming from different regions. Facilities include clean rooms, study environment, water supply and common areas for students.
+</p>
+
+<p>
+The hostel administration maintains proper rules and regulations to ensure safety, discipline and a healthy living atmosphere for students.
+</p>
+
+
+
+</div>
+
+
+<!-- GIRLS HOSTEL -->
+
+<div id="girlsHostel" class="section">
+
+<h2>Girls Hostel</h2>
+
+<div class="gallery">
+
+<div class="gallery-card" onclick="openLightbox('Girls Hostel')">
+<div class="gallery-img" data-category="Girls Hostel">
+    <img src="/static/images/campus1.jpg.jpeg" class="active" alt="Girls Hostel">
+</div>
+<div class="gallery-text">Girls Hostel</div>
+</div>
+
+<div class="gallery-card" onclick="openLightbox('Girls Hostel Campus')">
+<div class="gallery-img" data-category="Girls Hostel Campus">
+    <img src="/static/images/campus2.jpg.jpeg" class="active" alt="Girls Hostel Campus">
+</div>
+<div class="gallery-text">Girls Hostel Campus</div>
+</div>
+
+<div class="gallery-card" onclick="openLightbox('Rector Office')">
+<div class="gallery-img" data-category="Rector Office">
+    <img src="/static/images/campus3.jpg.jpeg" class="active" alt="Rector Office">
+</div>
+<div class="gallery-text">Rector Office</div>
+</div>
+
+<div class="gallery-card" onclick="openLightbox('Room')">
+<div class="gallery-img" data-category="Room">
+    <img src="/static/images/campus4.jpg.jpeg" class="active" alt="Room">
+</div>
+<div class="gallery-text"> Room</div>
+</div>
+
+</div>
+
+<p>
+The institute also provides hostel facilities for girl students with proper security and comfortable living arrangements.
+</p>
+
+<p>
+The girls hostel provides safe accommodation, hygienic facilities, study areas and supervision to ensure a secure environment for students.
+</p>
+
+<p>
+The hostel management focuses on safety, discipline and providing a supportive atmosphere for academic growth of students.
+</p>
+
+
+</div>
+
+
+<!-- GYMKHANA -->
+
+<div id="gymkhana" class="section">
+
+<h2>Gymkhana</h2>
+
+<p>
+Government Polytechnic, Aurangabad (famous as GPA) was established in 1955 with genuine intention to provide quality education to all the 
+classes of society. To keep pace with the academic development of the students, institute strives for the all round development of them 
+through various curricular and extra-curricular activities. Gymkhana is the regulatory body governing all sports, cultural and extra-
+curricular activities at GPA. Gymkhana plays pivotal role in overall development of students. It gives platform students to showcase 
+their talent in sports and cultural event. Gymkhana activities help to improve skills like dedication, involvement, balance and leadership.
+Students of all departments take active participation in various activities conducted through Gymkhana.
+</p>
+
+<h2>Events</h2>
+
+<div class="gallery">
+
+<div class="gallery-card" onclick="openLightbox('Gymkhana Activities')">
+<div class="gallery-img" data-category="Gymkhana Activities">
+    <img src="/static/images/default_event.jpg" class="active" alt="Gymkhana Activities">
+</div>
+<div id="gymkhana_caption" class="gallery-text">Gymkhana Activities</div>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- OTHER FACILITIES -->
+
+<div id="otherfacilities" class="section">
+
+<h2>Other Facilities</h2>
+
+<div class="gallery">
+
+<div class="gallery-card" onclick="openLightbox('Canteen')">
+<div class="gallery-img" data-category="Canteen"><img src="/static/images/default_facility.jpg" class="active" alt="Canteen"></div>
+<div class="gallery-text">Canteen</div>
+</div>
+
+<div class="gallery-card" onclick="openLightbox('Workshop')">
+<div class="gallery-img" data-category="Workshop"><img src="/static/images/default_facility.jpg" class="active" alt="Workshop"></div>
+<div class="gallery-text">Workshop</div>
+</div>
+
+<div class="gallery-card" onclick="openLightbox('Student Stationary Store')">
+<div class="gallery-img" data-category="Student Stationary Store"><img src="/static/images/default_stationary.jpg" class="active" alt="Student Stationary Store"></div>
+<div class="gallery-text">Student Stationary Store</div>
+</div>
+
+<div class="gallery-card" onclick="openLightbox('Auditorium')">
+<div class="gallery-img" data-category="Auditorium"><img src="/static/images/default_auditorium.jpg" class="active" alt="Auditorium"></div>
+<div class="gallery-text">Auditorium</div>
+</div>
+
+<div class="gallery-card" onclick="openLightbox('Parking Area')">
+<div class="gallery-img" data-category="Parking Area"><img src="/static/images/default_parking.jpg" class="active" alt="Parking Area"></div>
+<div class="gallery-text">Parking Area</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+</div>
+</div>
+  
+  
+
+  <div id="google_translate_element" style="display:none;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'en,mr', autoDisplay: false }, 'google_translate_element');
+    }
+  </script>
+  <script type="text/javascript"
+    src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+
+  <!-- HEADER & NAVBAR REQUIRED JS -->
+  <script src="{{ url_for('static', filename='js/utility-bar.js') }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- ============================================================== -->
+
+
+  <script src="{{ url_for('static', filename='js/search_index.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/search.js') }}"></script>
+
+<script src="{{ url_for('static', filename='js/image-loader.js') }}"></script>
+<script src="{{ url_for('static', filename='js/facility_script.js') }}"></script>
+<script src="{{ url_for('static', filename='js/lightbox.js') }}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        let section = urlParams.get('section');
+        if(section) {
+            // Find function handling sections. Usually showSection()
+            if(typeof showSection === 'function') {
+                showSection(section);
+            }
+        }
+    });
+</script>
+
+  <script>
+    let dynamicGalleryData = {};
+
+    async function fetchGalleryData() {
+      try {
+        const res = await fetch('/api/images?category=facility');
+        const json = await res.json();
+        const data = json.data || [];
+        
+        const grouped = {};
+        data.forEach(img => {
+          // Store objects with URL and Label
+          const item = { url: img.url, label: img.subcategory };
+          
+          // Group by Slug Base (e.g. facility_gymkhana_activities_1::123 -> facility_gymkhana_activities)
+          // Matches technical IDs defined in getBackendCategory()
+          let slugBase = (img.slug || "").split('::')[0]; // Remove timestamp
+          slugBase = slugBase.replace(/_\d+$/, "").toLowerCase().trim(); // Remove slot number
+          
+          // Legacy Compatibility Mapping
+          if (slugBase === "facility_gymkhana") {
+            slugBase = "facility_gymkhana_activities";
+            if (item.label === "facility_gymkhana") item.label = "Gymkhana Activity";
+          }
+          if (slugBase === "facility_library") slugBase = "facility_lib_institute";
+
+          if (slugBase) {
+            if (!grouped[slugBase]) grouped[slugBase] = [];
+            grouped[slugBase].push(item);
+          }
+          
+          // Also group by Subcategory label for fallback/legacy compatibility
+          const sub = (img.subcategory || "").toLowerCase().trim();
+          if (sub && sub !== slugBase) {
+            if (!grouped[sub]) grouped[sub] = [];
+            grouped[sub].push(item);
+          }
+        });
+        dynamicGalleryData = grouped;
+        return grouped;
+      } catch (e) {
+        console.error("Error fetching gallery data:", e);
+        return {};
+      }
+    }
+
+    // Map exact frontend titles to the backend subcategories defined in dashboard.html
+    function getBackendCategory(category, container = null) {
+      const cat = category.toLowerCase().trim();
+      // Other Facilities
+      if (cat === "canteen") return "facility_canteen";
+      if (cat === "workshop") return "facility_workshop";
+      if (cat === "student stationary store") return "facility_stationary";
+      if (cat === "auditorium") return "facility_auditorium";
+      if (cat === "computer center") return "facility_computer_center";
+      if (cat === "wi-fi campus") return "facility_wifi";
+      if (cat === "parking area") return "facility_parking";
+      
+      // Gymkhana
+      if (cat === "gymkhana activities") {
+        return "facility_gymkhana_activities";
+      }
+      
+      // Hostels
+      if (cat === "boys hostel") return "facility_hostel_boys_main";
+      if (cat === "boys hostel campus") return "facility_hostel_boys_campus";
+      if (cat === "girls hostel") return "facility_hostel_girls_main";
+      if (cat === "girls hostel campus") return "facility_hostel_girls_campus";
+      
+      if (cat === "rector office" || cat === "room") {
+          const suffix = (cat === "rector office") ? "rector" : "room";
+          // Check DOM to differentiate Boys vs Girls hostel if element is passed
+          if (container && container.closest('#boysHostel')) return `facility_hostel_boys_${suffix}`;
+          if (container && container.closest('#girlsHostel')) return `facility_hostel_girls_${suffix}`;
+          return `facility_hostel_boys_${suffix}`; // fallback
+      }
+      
+      // Library
+      if (cat === "institute library") return "facility_lib_institute";
+      if (cat === "boys study section") return "facility_lib_boys";
+      if (cat === "girls study section") return "facility_lib_girls";
+
+      return cat; // fallback directly to title
+    }
+
+    // Initialize gallery images in cards
+    async function initGallery() {
+      await fetchGalleryData();
+      const containers = document.querySelectorAll('.gallery-img');
+      containers.forEach(container => {
+        const category = container.getAttribute('data-category') || "";
+        const backendCat = getBackendCategory(category, container);
+        const images = dynamicGalleryData[backendCat] || dynamicGalleryData[category.toLowerCase().trim()] || [];
+
+        if (images.length === 0) {
+            // Leave hardcoded images alone if no dynamic results
+            return;
+        }
+
+        container.innerHTML = '';
+        images.forEach((imgObj, index) => {
+          const img = document.createElement('img');
+          img.src = imgObj.url;
+          img.dataset.label = imgObj.label;
+          if (index === 0) img.classList.add('active');
+          container.appendChild(img);
+        });
+
+        // Start cycling for this container
+        let currentIndex = 0;
+        setInterval(() => {
+          const imgs = container.querySelectorAll('img');
+          if (imgs.length <= 1) return;
+
+          imgs[currentIndex].classList.remove('active');
+          currentIndex = (currentIndex + 1) % imgs.length;
+          imgs[currentIndex].classList.add('active');
+          
+          // Special update for gymkhana caption
+          if (category.toLowerCase() === 'gymkhana activities') {
+              const caption = document.getElementById('gymkhana_caption');
+              if (caption) caption.textContent = imgs[currentIndex].dataset.label || 'Gymkhana Activities';
+          }
+        }, 5000);
+        
+        // Initial caption if gymkhana
+        if (category.toLowerCase() === 'gymkhana activities') {
+            const caption = document.getElementById('gymkhana_caption');
+            if (caption) caption.textContent = images[0].label || 'Gymkhana Activities';
+        }
+      });
+    }
+
+    // Lightbox functions
+    // Need to pass the context optionally if title is ambiguous like "Room"
+    window.lastClickedContainer = null;
+    document.addEventListener('click', e => {
+      const card = e.target.closest('.gallery-card, .event-card');
+      if(card) window.lastClickedContainer = card;
+    }, true);
+
+    function openLightbox(category) {
+      if (!window.GlobalLightbox) {
+          console.error('GlobalLightbox not loaded');
+          return;
+      }
+
+      const backendCat = getBackendCategory(category, window.lastClickedContainer);
+      const images = dynamicGalleryData[backendCat] || dynamicGalleryData[category.toLowerCase().trim()] || [];
+
+      if (images.length === 0) {
+        alert('No photos available for this card.');
+        return;
+      }
+
+      // Map to formatted objects for GlobalLightbox
+      const formatted = images.map(imgObj => ({
+        url: imgObj.url, 
+        label: imgObj.label || category
+      }));
+
+      window.GlobalLightbox.open(formatted, category);
+    }
+
+    function closeLightbox() {
+      if (window.GlobalLightbox) window.GlobalLightbox.close();
+    }
+
+    // Close lightbox on outside click
+    window.onclick = function (event) {
+      const lightbox = document.getElementById('galleryLightbox');
+      if (event.target == lightbox) {
+        closeLightbox();
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initGallery();
+    });
+  </script>
+
+  <!-- FOOTER -->
+  {% include 'footer_content.html' %}
+</body>
+
+</html>
+
+
+
+
+

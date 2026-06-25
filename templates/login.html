@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — College Portal</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --navy: #0b1120;
+            --navy2: #131d30;
+            --navy3: #1a2640;
+            --gold: #e8b84b;
+            --gold2: #f5d07a;
+            --white: #f0ece3;
+            --muted: #8a93a8;
+            --danger: #e05c5c;
+            --radius: 12px;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--navy);
+            color: var(--white);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(232, 184, 75, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(232, 184, 75, 0.04) 1px, transparent 1px);
+            background-size: 48px 48px;
+            animation: gridDrift 20s linear infinite;
+        }
+
+        @keyframes gridDrift {
+            to {
+                background-position: 48px 48px;
+            }
+        }
+
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.18;
+            pointer-events: none;
+        }
+
+        .orb1 {
+            width: 400px;
+            height: 400px;
+            background: var(--gold);
+            top: -100px;
+            right: -100px;
+            animation: float1 12s ease-in-out infinite;
+        }
+
+        .orb2 {
+            width: 300px;
+            height: 300px;
+            background: #4b7fe8;
+            bottom: -80px;
+            left: -80px;
+            animation: float2 15s ease-in-out infinite;
+        }
+
+        @keyframes float1 {
+
+            0%,
+            100% {
+                transform: translate(0, 0)
+            }
+
+            50% {
+                transform: translate(-40px, 40px)
+            }
+        }
+
+        @keyframes float2 {
+
+            0%,
+            100% {
+                transform: translate(0, 0)
+            }
+
+            50% {
+                transform: translate(40px, -30px)
+            }
+        }
+
+        .login-wrap {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 440px;
+            padding: 20px;
+            animation: fadeUp 0.7s ease both;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(28px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .card {
+            background: var(--navy2);
+            border: 1px solid rgba(232, 184, 75, 0.15);
+            border-radius: 20px;
+            padding: 44px 40px 40px;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--gold), var(--gold2));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 18px;
+            line-height: 1.1;
+        }
+
+        .logo-text span {
+            display: block;
+            font-size: 11px;
+            font-weight: 400;
+            color: var(--muted);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 32px;
+        }
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            background: var(--navy3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius);
+            padding: 13px 16px;
+            color: var(--white);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: rgba(232, 184, 75, 0.5);
+            box-shadow: 0 0 0 3px rgba(232, 184, 75, 0.08);
+        }
+
+        input::placeholder {
+            color: #4a5568;
+        }
+
+        .btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--gold), #d4a438);
+            color: var(--navy);
+            border: none;
+            border-radius: var(--radius);
+            padding: 14px;
+            font-family: 'Syne', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+            letter-spacing: 0.03em;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(232, 184, 75, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .error-msg {
+            background: rgba(224, 92, 92, 0.12);
+            border: 1px solid rgba(224, 92, 92, 0.3);
+            color: #f08080;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 13px;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .error-msg.show {
+            display: block;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(11, 17, 32, 0.3);
+            border-top-color: var(--navy);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            margin: 28px 0;
+        }
+
+        .hint {
+            text-align: center;
+            font-size: 12px;
+            color: var(--muted);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+
+    <div class="login-wrap">
+        <div class="card">
+            <div class="logo-row">
+                <div class="logo-icon">🎓</div>
+                <div class="logo-text">
+                    College Portal
+                    <span>Staff Access</span>
+                </div>
+            </div>
+
+            <h1>Welcome back</h1>
+            <p class="subtitle">Sign in to manage your college website content</p>
+
+            <div class="error-msg" id="errorMsg"></div>
+
+            <div class="field">
+                <label>Email Address</label>
+                <input type="email" id="email" placeholder="admin@college.edu" autocomplete="email">
+            </div>
+
+            <div class="field">
+                <label>Password</label>
+                <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
+            </div>
+
+            <button class="btn" id="loginBtn" onclick="handleLogin()">Sign In</button>
+
+            <hr class="divider">
+            <p class="hint">Access restricted to authorized staff only</p>
+        </div>
+    </div>
+
+    <script>
+        const FLASK_API = '/api';
+
+        // Redirect if already logged in
+        const existingToken = localStorage.getItem('admin_token');
+        const existingRole = localStorage.getItem('admin_role');
+        if (existingToken) {
+            window.location.href = existingRole === 'maintenance' ? '/maintenance' : '/dashboard';
+        }
+
+        document.addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
+
+        async function handleLogin() {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const btn = document.getElementById('loginBtn');
+            const errEl = document.getElementById('errorMsg');
+
+            errEl.classList.remove('show');
+
+            if (!email || !password) { showError('Please enter your email and password.'); return; }
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span>Signing in…';
+
+            try {
+                const res = await fetch(`${FLASK_API}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+
+                if (!res.ok) throw new Error(data.error || 'Login failed');
+
+                localStorage.setItem('admin_token', data.access_token);
+                localStorage.setItem('admin_email', email);
+                localStorage.setItem('admin_role', data.user.role);
+
+                // Redirect based on email — maintenance user goes to /maintenance
+                const MAINTENANCE_EMAIL = 'coordinator@college.edu';
+                if (email.toLowerCase() === MAINTENANCE_EMAIL.toLowerCase()) {
+                    localStorage.setItem('admin_role', 'maintenance');
+                    window.location.href = '/maintenance';
+                } else {
+                    localStorage.setItem('admin_role', 'admin');
+                    window.location.href = '/dashboard';
+                }
+
+            } catch (err) {
+                showError(err.message || 'Invalid credentials. Please try again.');
+                btn.disabled = false;
+                btn.innerHTML = 'Sign In';
+            }
+        }
+
+        function showError(msg) {
+            const el = document.getElementById('errorMsg');
+            el.textContent = msg;
+            el.classList.add('show');
+        }
+    </script>
+</body>
+
+</html>

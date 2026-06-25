@@ -1,0 +1,397 @@
+/* ===== BOOTSTRAP COLLEGE NAVBAR – CLEAN & SPACED ===== */
+
+.navbar {
+  background: linear-gradient(to right, #0b3c5d, #1b5f8a);
+  min-height: 64px;
+  padding: 0;
+  border-bottom: 2px solid #d4af37;
+  position: relative;
+  z-index: 1060;
+}
+
+.navbar .container-fluid {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+/* HOME BRAND */
+.navbar-brand {
+  color: #ffffff !important;
+  font-weight: 600;
+  font-size: 1.05rem;
+  padding: 18px 20px;
+}
+
+/* MAIN TABS */
+.navbar-nav {
+  gap: 28px;                 /* ✅ SPACING BETWEEN TABS */
+}
+
+.navbar-nav .nav-link {
+  color: #ffffff !important;
+  font-size: 1.02rem;
+  font-weight: 500;
+  padding: 18px 4px;
+  background: none !important;
+  border: none !important;
+  position: relative;
+}
+
+/* GOLD UNDERLINE HOVER */
+.navbar-nav .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 10px;
+  width: 0;
+  height: 2px;
+  background: #ffd166;
+  transition: 0.3s;
+}
+
+.navbar-nav .nav-link:hover::after {
+  width: 100%;
+}
+
+/* REMOVE BOX / CLICK EFFECT */
+.navbar-nav .nav-link:focus,
+.navbar-nav .nav-link:active {
+  background: none !important;
+  box-shadow: none !important;
+}
+
+/* ===== DROPDOWNS ===== */
+
+.dropdown-menu {
+  border: none;
+  border-radius: 4px;
+  min-width: 260px;
+  padding: 8px 0;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  z-index: 9999 !important;
+  position: absolute !important;
+}
+
+.dropdown-item {
+  font-size: 14.5px;
+  padding: 10px 20px;
+  background: transparent !important;
+}
+
+.dropdown-item:hover {
+  background: #e9eef6 !important;
+}
+
+/* SHOW DROPDOWN ON HOVER */
+.dropdown:hover > .dropdown-menu {
+  display: block;
+  margin-top: 0;
+}
+
+/* SECOND LEVEL (RIGHT SIDE) */
+.dropend:hover > .dropdown-menu {
+  display: block;
+  top: 0;
+  left: 100%;
+}
+
+/* REMOVE ARROWS */
+.dropdown-toggle::after {
+  display: none !important;
+}
+
+/* ===== UTILITY BAR DROPDOWN PANEL ===== */
+.dropdown-panel {
+  z-index: 9999 !important;
+  position: absolute !important;
+}
+
+/* ===== MOBILE ===== */
+/* ===== MOBILE SIDEBAR REDESIGN (STRUCTURAL OVERHAUL) ===== */
+
+@media (max-width: 991px) {
+  
+  /* Fix container padding for mobile to prevent overlap */
+  .navbar .container-fluid {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  /* 1. SIDEBAR BACKDROP */
+  .sidebar-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: transparent;
+    z-index: 1040;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s ease;
+  }
+
+  .sidebar-backdrop.show {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* 2. HAMBURGER TOGGLE (PREMIUM REFINEMENT) */
+  .navbar-toggler {
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    padding: 0;
+    width: 44px;
+    height: 44px;
+    background: transparent !important;
+    border-radius: 8px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: none !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .navbar-toggler:active {
+    transform: scale(0.9);
+  }
+
+  .navbar-toggler .fa-bars {
+    color: white !important;
+    font-size: 1.2rem;
+  }
+
+  /* 3. SIDEBAR CONTAINER (FLOATING DRAWER) */
+  .navbar-collapse {
+    position: fixed !important;
+    top: 0;
+    right: -105% !important; /* Start off-screen */
+    width: 85vw !important;
+    max-width: 380px !important;
+    height: 100vh !important;
+    background: linear-gradient(165deg, #0b3c5d 0%, #051d2e 100%) !important;
+    z-index: 1050 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    box-shadow: -20px 0 50px rgba(0, 0, 0, 0.6) !important;
+    border-left: 1px solid rgba(255, 255, 255, 0.1) !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  .navbar-collapse.show {
+    right: 0 !important;
+  }
+
+  /* 4. MOBILE HEADER & BRANDING */
+  .mobile-menu-header {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 20px 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .mobile-logo-circle {
+    width: 50px;
+    height: 50px;
+    background: #fff;
+    border-radius: 15px;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+  }
+
+  .mobile-logo-circle img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .mobile-brand-info h6 {
+    font-size: 0.85rem;
+    letter-spacing: 0.8px;
+    color: #ffd166 !important;
+    margin-bottom: 2px;
+  }
+
+  .btn-close-custom {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    transition: all 0.2s;
+  }
+
+  .btn-close-custom:active {
+    transform: rotate(90deg) scale(0.9);
+  }
+
+  /* 5. MENU CARD SYSTEM */
+  .navbar-nav {
+    padding: 25px 15px !important;
+    width: 100% !important;
+    gap: 12px !important; /* Explicit gap between cards */
+  }
+
+  .nav-item {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .navbar-nav .nav-link {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 16px !important;
+    padding: 12px 16px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    color: rgba(255, 255, 255, 0.95) !important;
+    font-weight: 500 !important;
+  }
+
+  /* Icon Box within Card */
+  .navbar-nav .nav-link i:first-child {
+    width: 38px;
+    height: 38px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffd166;
+    margin-right: 15px;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    box-shadow: inset 0 0 10px rgba(255, 209, 102, 0.1);
+  }
+
+  /* Yellow Indicator for Active Group */
+  .active-mobile-dropdown > .nav-link {
+    background: rgba(255, 255, 255, 0.12) !important;
+    border-left: 5px solid #f5c842 !important;
+    border-top-left-radius: 4px !important;
+    border-bottom-left-radius: 4px !important;
+    color: #fff !important;
+  }
+
+  .accordion-icon {
+    font-size: 0.8rem;
+    opacity: 0.5;
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  .active-mobile-dropdown > .nav-link .accordion-icon {
+    transform: rotate(90deg);
+    opacity: 1;
+    color: #ffd166;
+  }
+
+  /* 6. ACCORDION SUBMENU REFINEMENT */
+  .navbar-nav .nav-item.dropdown .dropdown-menu {
+    display: block !important;
+    position: static !important;
+    background: rgba(0, 0, 0, 0.2) !important;
+    border: none !important;
+    border-radius: 0 0 16px 16px !important;
+    padding: 0 !important;
+    margin: -8px 0 10px 30px !important; /* Nested indentation */
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    border-left: 2px solid rgba(245, 200, 66, 0.3) !important;
+  }
+
+  .active-mobile-dropdown .dropdown-menu {
+    padding: 10px 0 !important;
+    margin-bottom: 15px !important;
+  }
+
+  .dropdown-item {
+    color: rgba(255, 255, 255, 0.8) !important;
+    padding: 10px 20px !important;
+    font-size: 0.9rem !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    white-space: normal;
+    background: transparent !important;
+  }
+
+  .dropdown-item:hover,
+  .dropdown-item:focus,
+  .dropdown-item:active {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+  }
+
+  .dropdown-item::before {
+    content: '';
+    width: 8px;
+    height: 1px;
+    background: rgba(245, 200, 66, 0.4);
+    margin-right: 12px;
+  }
+
+  .dropdown-item:last-child {
+    border-bottom: none;
+  }
+
+  /* 7. SEARCH BAR REFINEMENT */
+  .mobile-menu-search {
+    margin-top: auto;
+    padding: 25px 15px !important;
+    background: rgba(0, 0, 0, 0.4);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .search-wrap-mobile {
+    position: relative;
+    width: 100%;
+  }
+
+  .mobile-search-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 14px 15px 14px 48px;
+    color: white;
+    outline: none;
+    font-size: 0.95rem;
+    transition: border-color 0.3s;
+  }
+
+  .mobile-search-input:focus {
+    border-color: #ffd166;
+  }
+
+  .search-icon-mobile {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  /* Hide Gold Strip on Mobile when menu open */
+  body:has(.navbar-collapse.show) .gold-strip {
+    display: none;
+  }
+}
+
+@media (max-width: 576px) {
+  .navbar-collapse {
+    width: 88vw !important;
+  }
+}

@@ -1,0 +1,237 @@
+/* ==========================================
+   MINIMAL MODERN TENDERS
+   ========================================== */
+
+:root {
+  --theme-yellow: #f4b400;
+  --theme-yellow-dark: #cc9900;
+  --theme-gold: #d4af37;
+  --text-main: #333;
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  --radius: 12px;
+}
+
+.info-box {
+    width: 100% !important;
+    max-width: none !important; /* Override college-slider.css */
+    margin: 30px 0 !important;
+    background: #fff;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--glass-shadow);
+    transition: box-shadow 0.3s ease;
+}
+
+
+.info-box:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* HEADER BAR */
+.info-title {
+    background: linear-gradient(90deg, var(--theme-yellow), var(--theme-yellow-dark));
+    color: #000;
+    padding: 15px 25px;
+    height: auto;
+    min-height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid var(--theme-gold);
+}
+
+.section-title {
+    margin: 0;
+    font-size: 1.2rem !important;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* MINIMAL NEW BADGE */
+.new-tag {
+  background: #c1121f;
+  color: #ffffff !important;
+  font-size: 0.65rem !important;
+  padding: 2px 8px !important;
+  margin-left: 10px;
+  border-radius: 4px;
+  font-weight: 700;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  vertical-align: middle;
+}
+
+.view-box select {
+  padding: 5px 12px;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(255,255,255,0.7);
+  color: #000;
+  cursor: pointer;
+  outline: none;
+}
+
+/* TABLE */
+/* TABLE */
+.tenders-ticker-wrapper {
+    max-height: 350px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    position: relative;
+    border-radius: 0 0 var(--radius) var(--radius);
+}
+
+/* ===== RESPONSIVE TENDERS ===== */
+@media (max-width: 768px) {
+    .info-title {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+        padding: 15px;
+    }
+
+    .info-table th, .info-table td {
+        padding: 12px 15px !important;
+        font-size: 0.85rem;
+    }
+
+    .info-table td:first-child {
+        width: 100px;
+    }
+
+    .section-title {
+        font-size: 1.1rem !important;
+    }
+
+    /* Smooth scroll on mobile */
+    .tenders-ticker-wrapper {
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+@media (max-width: 480px) {
+    .info-table th, .info-table td {
+        font-size: 0.78rem;
+        padding: 10px 10px !important;
+    }
+
+    .pdf-btn {
+        padding: 4px 8px;
+        font-size: 0.72rem;
+    }
+
+    .more-btn {
+        width: 100%;
+        padding: 10px 0;
+    }
+}
+
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.info-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #f8f9fa;
+}
+
+.info-table th {
+    padding: 15px 25px;
+    text-align: left;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--theme-yellow-dark);
+    border-bottom: 2px solid #eee;
+    background: #f8f9fa;
+}
+
+.info-table td {
+    padding: 16px 25px !important;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 0.95rem;
+    color: var(--text-main);
+}
+
+.info-table td:first-child {
+    font-weight: 600;
+    color: #666;
+    width: 150px;
+    text-align: center;
+}
+
+/* PDF Button */
+.pdf-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: #f0f4f8;
+    color: var(--theme-yellow-dark) !important;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.pdf-btn:hover {
+    background: var(--theme-yellow-dark);
+    color: #fff !important;
+}
+
+/* Center Button Area */
+.center {
+    padding: 20px;
+    text-align: center;
+    background: #fff;
+    border-top: 1px solid #eee;
+    position: relative;
+    z-index: 20;
+}
+
+.more-btn {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 8px 25px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #666;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.more-btn:hover {
+    background: #f8f9fa;
+    border-color: var(--theme-yellow-dark);
+    color: var(--theme-yellow-dark);
+}
+
+/* Ticker Animation */
+@keyframes tendersTicker {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-50%); }
+}
+
+.tenders-ticker-active #tenderBody {
+    animation: tendersTicker 30s linear infinite;
+}
+
+/* Pause on hover */
+.info-box:hover #tenderBody {
+    animation-play-state: paused;
+}
+
+
+

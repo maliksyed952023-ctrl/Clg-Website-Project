@@ -1,0 +1,193 @@
+/* =========================================================
+   POLICY PAGES UNIFIED CSS
+   ========================================================= */
+
+:root {
+  --clr-primary: #1A545D;
+  --clr-primary-hover: #154248;
+  --clr-accent: #e8a530;
+  --clr-bg: #ffffff;
+  --clr-text: #333333;
+  --clr-border: #e2e8f0;
+}
+
+/* ─── PAGE HEADER ─── */
+.page-header {
+  background: linear-gradient(135deg, var(--clr-primary), #2d7a85);
+  color: #fff;
+  padding: 40px 24px;
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-bottom: 0;
+}
+
+/* ─── CONTAINER ─── */
+.container {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 30px;
+  padding: 40px 24px;
+  max-width: 100%;
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--clr-bg);
+}
+
+/* ─── SIDEBAR ─── */
+.sidebar {
+  width: 250px;
+  flex-shrink: 0;
+  background: #f8fafc;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--clr-border);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.sidebar h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--clr-primary);
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 2px solid var(--clr-accent);
+  padding-bottom: 10px;
+}
+
+.sidebar a {
+  display: block;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  background: #ffffff;
+  color: var(--clr-text);
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border: 1px solid var(--clr-border);
+  transition: all 0.2s ease;
+}
+
+.sidebar a:hover {
+  background: var(--clr-primary);
+  color: #ffffff;
+  border-color: var(--clr-primary);
+  transform: translateX(5px);
+}
+
+.sidebar a.active {
+  background: var(--clr-primary);
+  color: #ffffff;
+  border-color: var(--clr-primary);
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(26, 84, 93, 0.3);
+}
+
+/* ─── CONTENT AREA ─── */
+.content {
+  flex: 1;
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 20px;
+  position: relative;
+  background-clip: padding-box;
+  border: 2px solid transparent;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+  line-height: 1.8;
+  color: var(--clr-text);
+}
+
+.content::before {
+  content: "";
+  position: absolute;
+  top: -2px; left: -2px; right: -2px; bottom: -2px;
+  background: linear-gradient(135deg, #00d2ff, #7a2ff7, #fb00ff);
+  z-index: -1;
+  border-radius: 22px;
+}
+
+.content h2 {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: var(--clr-primary);
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  margin-bottom: 24px;
+  padding-bottom: 15px;
+  border-bottom: none !important;
+  position: relative;
+  font-weight: 700;
+}
+
+.content h2::before {
+  content: "\f02d"; /* Default Book Icon */
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  width: 48px;
+  height: 48px;
+  background: #e0f7fa;
+  color: #00838f;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(0,131,143,0.15);
+}
+
+.content h2::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 64px; 
+  width: 120px;
+  height: 4px;
+  background: linear-gradient(to right, #00d2ff, #fb00ff);
+  border-radius: 2px;
+}
+
+.content p {
+  margin-bottom: 20px;
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.content ul, .content ol {
+  margin-bottom: 20px;
+  padding-left: 24px;
+}
+
+.content li {
+  margin-bottom: 10px;
+}
+
+/* ─── MOBILE RESPONSIVENESS ─── */
+@media (max-width: 992px) {
+  .container {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 600px) {
+  .page-header {
+    font-size: 1.6rem;
+    padding: 30px 16px;
+  }
+  .content {
+    padding: 24px;
+  }
+  .content h2 {
+    font-size: 1.5rem;
+  }
+}

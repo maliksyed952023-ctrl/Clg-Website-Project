@@ -1,0 +1,293 @@
+/* =========================================================
+   GLOBAL SIDEBAR CSS - Uniform Design Based on Department Page
+   ========================================================= */
+
+/* ─── PAGE LAYOUT CONTAINER ─── */
+.container {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 16px;
+  padding: 16px 24px !important;
+  max-width: 100% !important;   /* Forced full width */
+  margin: 0 !important;         /* Forced flush left */
+  width: 100% !important;
+  box-sizing: border-box;
+}
+
+/* ─── SIDEBAR ─── */
+.sidebar {
+  width: 230px !important;    /* Slimmer sidebar = more room for content */
+  min-width: 200px;
+  max-width: 250px;
+  flex-shrink: 0;
+  background: transparent;
+  font-family: 'Source Sans 3', 'Segoe UI', Arial, sans-serif;
+  font-size: 14px;
+}
+
+/* ─── MAIN BUTTON ─── */
+.sidebar .main-btn,
+.main-btn {
+  background-color: #1A545D;
+  color: #ffffff !important;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  margin-top: 2px;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  transition: background 0.2s ease;
+  user-select: none;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  box-sizing: border-box;
+}
+
+.sidebar .main-btn:first-child,
+.sidebar > .main-btn:first-child {
+  margin-top: 0;
+  border-radius: 6px 6px 0 0;
+}
+
+.sidebar .main-btn.last-item,
+.sidebar > .main-btn:last-of-type {
+  border-bottom: none;
+  border-radius: 0 0 6px 6px;
+}
+
+.sidebar .main-btn:hover,
+.main-btn:hover {
+  background-color: #154248;
+}
+
+/* ─── SUBMENU CONTAINER ─── */
+.sidebar .submenu,
+.submenu {
+  display: none;
+  background-color: #ffffff;
+  border-left: 3px solid #1A545D;
+  border-right: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* ─── SUB BUTTON ─── */
+.sidebar .sub-btn,
+.sub-btn {
+  background-color: #ffffff;
+  color: #333333 !important;
+  padding: 9px 12px 9px 18px;
+  font-size: 13px;
+  font-weight: 500;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  user-select: none;
+  border-left: none;
+}
+
+.sidebar .sub-btn:last-child,
+.sub-btn:last-child {
+  border-bottom: none;
+}
+
+.sidebar .sub-btn:hover,
+.sub-btn:hover {
+  background-color: #f0f7f8;
+}
+
+/* ─── ACTIVE STATES ─── */
+.sidebar .sub-btn.active-item,
+.sub-btn.active-item {
+  background-color: #d8eef0 !important;
+  color: #1A545D !important;
+  font-weight: 600;
+  border-left: 3px solid #1A545D;
+  padding-left: 15px;
+}
+
+/* ─── ARROWS ─── */
+.sidebar .arrow,
+.arrow {
+  font-size: 11px;
+  margin-left: 8px;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+  color: rgba(255,255,255,0.85);
+}
+
+.sub-btn .arrow {
+  color: #666;
+}
+
+/* ─── PREMIUM CONTENT AREA ─── */
+.content {
+  flex: 1;
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 20px;
+  position: relative;
+  background-clip: padding-box;
+  border: 2px solid transparent;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+  min-width: 0;
+  box-sizing: border-box;
+  margin-bottom: 24px;
+}
+
+.content::before {
+  content: "";
+  position: absolute;
+  top: -2px; left: -2px; right: -2px; bottom: -2px;
+  background: #0b3c5d;
+  z-index: -1;
+  border-radius: 22px;
+}
+
+.section {
+  display: none;
+}
+
+.section.active {
+  display: block;
+}
+
+/* ─── PREMIUM CONTENT HEADINGS ─── */
+.content h2 {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 28px;
+  color: #1A545D;
+  margin-bottom: 24px;
+  padding-bottom: 15px;
+  border-bottom: none !important;
+  position: relative;
+  font-weight: 700;
+}
+
+.content h2::before {
+  content: "\f02d"; /* Default Book Icon */
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  width: 48px;
+  height: 48px;
+  background: rgba(11, 60, 93, 0.1);
+  color: #0b3c5d;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(11,60,93,0.12);
+}
+
+.content h2::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 64px;
+  width: 120px;
+  height: 4px;
+  background: #d4af37;
+  border-radius: 2px;
+}
+
+.content h3 {
+  font-size: 18px;
+  color: #1A545D;
+  margin-top: 22px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.content p {
+  font-size: 16px;           /* Slightly bigger body text */
+  color: #333;               /* Darker for better readability and filled look */
+  line-height: 1.75;
+  margin-bottom: 12px;
+}
+
+.content ul, .content ol {
+  padding-left: 22px;
+  margin-bottom: 14px;
+}
+
+.content li {
+  font-size: 16px;           /* Match paragraph size */
+  color: #333;
+  line-height: 1.85;
+  margin-bottom: 6px;
+}
+
+/* Table fixes */
+.content table {
+  font-size: 15px;
+}
+
+/* ─── BREADCRUMB ─── */
+.breadcrumb {
+  background: #ffffff;
+  padding: 8px 24px;         /* Reduced vertical padding for compactness */
+  font-size: 14px;
+  color: #666;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.breadcrumb a {
+  color: #1A545D;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column !important;
+    padding: 12px;
+  }
+
+  .sidebar {
+    width: 100% !important;
+    max-width: 100%;
+  }
+
+  .content {
+    padding: 16px 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 8px;
+  }
+
+  .content {
+    padding: 14px 16px;
+  }
+
+  .main-btn {
+    min-height: 48px;
+    padding: 12px 16px;
+  }
+
+  .sub-btn {
+    min-height: 44px;
+    padding: 10px 14px 10px 18px;
+  }
+}
+
+@media (max-width: 400px) {
+  .content {
+    padding: 12px;
+  }
+}
+

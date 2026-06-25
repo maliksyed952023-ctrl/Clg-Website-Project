@@ -1,0 +1,3990 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard — College Portal</title>
+    <link rel="apple-touch-icon" sizes="180x180"
+        href="{{ url_for('static', filename='favicon/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32"
+        href="{{ url_for('static', filename='favicon/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16"
+        href="{{ url_for('static', filename='favicon/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='favicon/site.webmanifest') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/favicon.ico') }}">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <!-- PDF.js for Thumbnail Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    </script>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --navy: #0b1120;
+            --navy2: #131d30;
+            --navy3: #1a2640;
+            --navy4: #1f2e47;
+            --gold: #e8b84b;
+            --gold2: #f5d07a;
+            --white: #f0ece3;
+            --muted: #8a93a8;
+            --border: rgba(255, 255, 255, 0.07);
+            --success: #4caf88;
+            --danger: #e05c5c;
+            --info: #4b7fe8;
+            --radius: 12px;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--navy);
+            color: var(--white);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* ── SIDEBAR ── */
+        .sidebar {
+            width: 240px;
+            height: 100vh;
+            /* fixed height = viewport */
+            background: var(--navy2);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            overflow: hidden;
+            /* outer never scrolls */
+        }
+
+        /* logo — fixed at top, never scrolls */
+        .sidebar-logo {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 24px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-logo .icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--gold), var(--gold2));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-logo .name {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 1.2;
+        }
+
+        .sidebar-logo .role {
+            font-size: 10px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        /* scrollable middle zone */
+        .sidebar-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 0 8px;
+        }
+
+        .sidebar-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        /* footer — fixed at bottom, never scrolls */
+        .sidebar-footer {
+            flex-shrink: 0;
+            padding: 12px;
+            border-top: 1px solid var(--border);
+            background: var(--navy2);
+        }
+
+        .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .admin-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--gold), #c89030);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--navy);
+            flex-shrink: 0;
+        }
+
+        .admin-name {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .admin-email {
+            font-size: 11px;
+            color: var(--muted);
+            word-break: break-all;
+        }
+
+        /* View Website button */
+        .view-web-btn {
+            width: 100%;
+            background: rgba(75, 127, 232, 0.12);
+            border: 1px solid rgba(75, 127, 232, 0.3);
+            color: #7aaaf5;
+            border-radius: 8px;
+            padding: 9px;
+            font-size: 13px;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            transition: background 0.15s;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .view-web-btn:hover {
+            background: rgba(75, 127, 232, 0.22);
+        }
+
+        /* Sign out button */
+        .logout-btn {
+            width: 100%;
+            background: rgba(224, 92, 92, 0.1);
+            border: 1px solid rgba(224, 92, 92, 0.2);
+            color: #f08080;
+            border-radius: 8px;
+            padding: 9px;
+            font-size: 13px;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            transition: background 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .logout-btn:hover {
+            background: rgba(224, 92, 92, 0.2);
+        }
+
+        .nav-section {
+            padding: 0 12px;
+            margin-bottom: 8px;
+        }
+
+        .nav-label {
+            font-size: 10px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 0 8px;
+            margin-bottom: 6px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--muted);
+            transition: background 0.15s, color 0.15s;
+            user-select: none;
+        }
+
+        .nav-item:hover {
+            background: var(--navy3);
+            color: var(--white);
+        }
+
+        .nav-item.active {
+            background: rgba(232, 184, 75, 0.12);
+            color: var(--gold);
+        }
+
+        .nav-item .nav-icon {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: var(--gold);
+            color: var(--navy);
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 7px;
+        }
+
+        /* ── MAIN ── */
+        .main {
+            margin-left: 240px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            background: var(--navy2);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .page-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .page-sub {
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 1px;
+        }
+
+        .add-btn {
+            background: linear-gradient(135deg, var(--gold), #d4a438);
+            color: var(--navy);
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-family: 'Syne', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .add-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(232, 184, 75, 0.3);
+        }
+
+        .content {
+            padding: 32px;
+            flex: 1;
+        }
+
+        /* ── STATS ── */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--navy2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .stat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .stat-icon.gold {
+            background: rgba(232, 184, 75, 0.12);
+        }
+
+        .stat-icon.blue {
+            background: rgba(75, 127, 232, 0.12);
+        }
+
+        .stat-icon.green {
+            background: rgba(76, 175, 136, 0.12);
+        }
+
+        .stat-num {
+            font-family: 'Syne', sans-serif;
+            font-size: 26px;
+            font-weight: 800;
+        }
+
+        .stat-lbl {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        /* ── FILTER TABS ── */
+        .filter-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 7px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            background: transparent;
+            transition: all 0.15s;
+        }
+
+        .filter-tab:hover {
+            color: var(--white);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .filter-tab.active {
+            background: rgba(232, 184, 75, 0.12);
+            color: var(--gold);
+            border-color: rgba(232, 184, 75, 0.3);
+        }
+
+        .search-input {
+            margin-left: auto;
+            background: var(--navy2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 7px 14px;
+            color: var(--white);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            outline: none;
+            width: 220px;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: rgba(232, 184, 75, 0.4);
+        }
+
+        .search-input::placeholder {
+            color: #4a5568;
+        }
+
+        /* ── TABLE ── */
+        .table-wrap {
+            background: var(--navy2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: var(--navy3);
+        }
+
+        th {
+            padding: 13px 20px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 14px 20px;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .td-title {
+            font-weight: 500;
+            max-width: 260px;
+        }
+
+        .td-title small {
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 2px;
+            font-weight: 400;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 260px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: capitalize;
+            margin: 2px 2px 2px 0;
+        }
+
+        .badge-notice {
+            background: rgba(76, 175, 136, 0.12);
+            color: #4caf88;
+            border: 1px solid rgba(76, 175, 136, 0.25);
+        }
+
+        .badge-tender {
+            background: rgba(75, 127, 232, 0.12);
+            color: #7aaaf5;
+            border: 1px solid rgba(75, 127, 232, 0.25);
+        }
+
+        .badge-news_event {
+            background: rgba(232, 184, 75, 0.12);
+            color: var(--gold);
+            border: 1px solid rgba(232, 184, 75, 0.25);
+        }
+
+        .badge-notice_tpo,
+        .badge-notice_admission,
+        .badge-notice_examination,
+        .badge-notice_department,
+        .badge-notice_student {
+            background: rgba(180, 120, 232, 0.12);
+            color: #c084f5;
+            border: 1px solid rgba(180, 120, 232, 0.25);
+        }
+
+        .badge-notice_dept_aiml,
+        .badge-notice_dept_auto,
+        .badge-notice_dept_civil,
+        .badge-notice_dept_computer,
+        .badge-notice_dept_ddgm,
+        .badge-notice_dept_electrical,
+        .badge-notice_dept_entc,
+        .badge-notice_dept_it,
+        .badge-notice_dept_mechanical,
+        .badge-notice_dept_science_humanities,
+        .badge-notice_dept_applied_mechanics,
+        .badge-notice_dept_workshop,
+        .badge-notice_dept_mercedes_benz {
+            background: rgba(75, 175, 136, 0.1);
+            color: #5bcfaa;
+            border: 1px solid rgba(75, 175, 136, 0.25);
+        }
+
+        .status-dot {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+        }
+
+        .status-dot::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .status-dot.active::before {
+            background: var(--success);
+            box-shadow: 0 0 6px var(--success);
+        }
+
+        .status-dot.inactive::before {
+            background: var(--muted);
+        }
+
+        .actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .act-btn {
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.15s;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .act-edit {
+            background: rgba(75, 127, 232, 0.1);
+            color: #7aaaf5;
+            border-color: rgba(75, 127, 232, 0.25);
+        }
+
+        .act-edit:hover {
+            background: rgba(75, 127, 232, 0.2);
+        }
+
+        .act-del {
+            background: rgba(224, 92, 92, 0.1);
+            color: #f08080;
+            border-color: rgba(224, 92, 92, 0.2);
+        }
+
+        .act-del:hover {
+            background: rgba(224, 92, 92, 0.2);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--muted);
+        }
+
+        .empty-state .big {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+        }
+
+        /* ── MODAL ── */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .overlay.open {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--navy2);
+            border: 1px solid rgba(232, 184, 75, 0.15);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 520px;
+            padding: 36px;
+            animation: modalIn 0.25s ease both;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.96)
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1)
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 28px;
+        }
+
+        .modal-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            background: var(--navy3);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.15s;
+        }
+
+        .close-btn:hover {
+            color: var(--white);
+        }
+
+        .form-field {
+            margin-bottom: 18px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 7px;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            background: var(--navy3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius);
+            padding: 11px 14px;
+            color: var(--white);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            border-color: rgba(232, 184, 75, 0.4);
+        }
+
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: #4a5568;
+        }
+
+        .form-select {
+            appearance: none;
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='rgba(255,255,255,0.4)'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+
+        .form-select:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background-color: var(--navy2);
+        }
+
+        .form-select option {
+            background: var(--navy2);
+            color: var(--white);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--navy3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius);
+            padding: 11px 14px;
+        }
+
+        .toggle-label {
+            font-size: 14px;
+        }
+
+        .toggle {
+            position: relative;
+            width: 40px;
+            height: 22px;
+            cursor: pointer;
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            inset: 0;
+            background: var(--navy4);
+            border-radius: 11px;
+            transition: background 0.2s;
+        }
+
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            left: 3px;
+            top: 3px;
+            background: var(--muted);
+            border-radius: 50%;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .toggle input:checked+.toggle-slider {
+            background: rgba(76, 175, 136, 0.25);
+        }
+
+        .toggle input:checked+.toggle-slider::before {
+            transform: translateX(18px);
+            background: var(--success);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 24px;
+        }
+
+        .btn-cancel {
+            background: var(--navy3);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            transition: color 0.15s;
+        }
+
+        .btn-cancel:hover {
+            color: var(--white);
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, var(--gold), #d4a438);
+            color: var(--navy);
+            border: none;
+            border-radius: 10px;
+            padding: 10px 24px;
+            font-family: 'Syne', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(232, 184, 75, 0.3);
+        }
+
+        .btn-save:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ── TOAST ── */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--navy2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 999;
+            transform: translateY(80px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            max-width: 320px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-left: 3px solid var(--success);
+        }
+
+        .toast.error {
+            border-left: 3px solid var(--danger);
+        }
+
+        /* ── DELETE CONFIRM ── */
+        .confirm-modal {
+            background: var(--navy2);
+            border: 1px solid rgba(224, 92, 92, 0.2);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 380px;
+            padding: 32px;
+            text-align: center;
+            animation: modalIn 0.25s ease both;
+        }
+
+        .confirm-icon {
+            font-size: 40px;
+            margin-bottom: 16px;
+        }
+
+        .confirm-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .confirm-sub {
+            font-size: 14px;
+            color: var(--muted);
+            margin-bottom: 24px;
+        }
+
+        .confirm-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .btn-confirm-del {
+            background: rgba(224, 92, 92, 0.15);
+            border: 1px solid rgba(224, 92, 92, 0.3);
+            color: #f08080;
+            border-radius: 10px;
+            padding: 10px 24px;
+            font-size: 14px;
+            font-family: 'Syne', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .btn-confirm-del:hover {
+            background: rgba(224, 92, 92, 0.25);
+        }
+
+        .loading-row td {
+            text-align: center;
+            padding: 40px;
+            color: var(--muted);
+        }
+
+        /* ── CATEGORY CHECKBOXES ── */
+        .cat-check {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 6px 8px;
+            border-radius: 6px;
+            transition: background 0.15s;
+        }
+
+        .cat-check:hover {
+            background: var(--navy4);
+        }
+
+        .cat-check input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--gold);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .cat-group-label {
+            font-size: 10px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 2px;
+            padding: 0 8px;
+        }
+
+        /* "All Dept" master checkbox highlight */
+        .cat-check.master-dept {
+            background: rgba(75, 175, 136, 0.06);
+            border: 1px solid rgba(75, 175, 136, 0.15);
+            border-radius: 6px;
+        }
+
+        .cat-check.master-dept:hover {
+            background: rgba(75, 175, 136, 0.12);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ── SIDEBAR ── -->
+    <aside class="sidebar">
+
+        <!-- LOGO — never scrolls -->
+        <div class="sidebar-logo">
+            <div class="icon">🎓</div>
+            <div>
+                <div class="name">College Portal</div>
+                <div class="role">Admin Panel</div>
+            </div>
+        </div>
+
+        <!-- SCROLLABLE NAV -->
+        <div class="sidebar-scroll">
+
+            <div class="nav-section">
+                <div class="nav-label">General</div>
+                <div class="nav-item active" onclick="switchTab('all', this)">
+                    <span class="nav-icon">📋</span> All
+                </div>
+                <div class="nav-item" onclick="switchTab('news_event', this)">
+                    <span class="nav-icon">📰</span> News & Events
+                    <span class="nav-badge" id="badge-news">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('tender', this)">
+                    <span class="nav-icon">📄</span> Tenders
+                    <span class="nav-badge" id="badge-tender">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice', this)">
+                    <span class="nav-icon">📢</span> General Notice
+                    <span class="nav-badge" id="badge-notice">0</span>
+                </div>
+            </div>
+
+            <div class="nav-section" style="margin-top:8px">
+                <div class="nav-label">Notice Boards</div>
+                <div class="nav-item" onclick="switchTab('notice_tpo', this)">
+                    <span class="nav-icon">🏢</span> TPO
+                    <span class="nav-badge" id="badge-tpo">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_admission', this)">
+                    <span class="nav-icon">🎓</span> Admission
+                    <span class="nav-badge" id="badge-admission">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_examination', this)">
+                    <span class="nav-icon">📝</span> Examination Cell
+                    <span class="nav-badge" id="badge-examination">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_student', this)">
+                    <span class="nav-icon">👨‍🎓</span> Student Section
+                    <span class="nav-badge" id="badge-student">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_department', this)">
+                    <span class="nav-icon">🏫</span> All Departments
+                    <span class="nav-badge" id="badge-department">0</span>
+                </div>
+            </div>
+
+            <div class="nav-section" style="margin-top:8px">
+                <div class="nav-label">Dept. Notice Boards</div>
+                <div class="nav-item" onclick="switchTab('notice_dept_aiml', this)">
+                    <span class="nav-icon">🤖</span> AIML
+                    <span class="nav-badge" id="badge-dept-aiml">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_dept_auto', this)">
+                    <span class="nav-icon">🚗</span> Automobile
+                    <span class="nav-badge" id="badge-dept-auto">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_dept_civil', this)">
+                    <span class="nav-icon">🏗️</span> Civil
+                    <span class="nav-badge" id="badge-dept-civil">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_dept_computer', this)">
+                    <span class="nav-icon">💻</span> Computer
+                    <span class="nav-badge" id="badge-dept-computer">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_dept_ddgm', this)">
+                    <span class="nav-icon">👗</span> DDGM
+                    <span class="nav-badge" id="badge-dept-ddgm">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_dept_electrical', this)">
+                    <span class="nav-icon">⚡</span> Electrical
+                    <span class="nav-badge" id="badge-dept-electrical">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_dept_entc', this)">
+                    <span class="nav-icon">📡</span> ENTC
+                    <span class="nav-badge" id="badge-dept-entc">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_dept_it', this)">
+                    <span class="nav-icon">🖥️</span> IT
+                    <span class="nav-badge" id="badge-dept-it">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_dept_mechanical', this)">
+                    <span class="nav-icon">⚙️</span> Mechanical
+                    <span class="nav-badge" id="badge-dept-mechanical">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_dept_science_humanities', this)">
+                    <span class="nav-icon">🔬</span> Science & Humanities
+                    <span class="nav-badge" id="badge-dept-sci">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_dept_applied_mechanics', this)">
+                    <span class="nav-icon">📐</span> Applied Mechanics
+                    <span class="nav-badge" id="badge-dept-apm">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_dept_workshop', this)">
+                    <span class="nav-icon">🔧</span> Workshop
+                    <span class="nav-badge" id="badge-dept-workshop">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('notice_dept_mercedes_benz', this)">
+                    <span class="nav-icon">🚘</span> Mercedes-Benz
+                    <span class="nav-badge" id="badge-dept-mb">0</span>
+                </div>
+            </div>
+
+            <div class="nav-section" style="margin-top:16px; border-top:1px solid var(--border); padding-top:16px;">
+                <div class="nav-label">Media & Assets</div>
+                <div class="nav-item" onclick="showImagesView(this)">
+                    <span class="nav-icon">🖼️</span> Image Management
+                    <span class="nav-badge" id="badge-image-pending">0</span>
+                </div>
+            </div>
+
+            <div class="nav-section" style="margin-top:16px; border-top:1px solid var(--border); padding-top:16px;">
+                <div class="nav-label">Academic Management</div>
+                <div class="nav-item" onclick="showFacultyView(this)">
+                    <span class="nav-icon">👨‍🏫</span> Faculty Management
+                </div>
+                <div class="nav-item" onclick="showLabsView(this)">
+                    <span class="nav-icon">🔬</span> Lab Management
+                </div>
+                <div class="nav-item" onclick="showDownloadsView(this)">
+                    <span class="nav-icon">⬇️</span> Downloads Management
+                </div>
+                <div class="nav-item" onclick="showMagazinesView(this)">
+                    <span class="nav-icon">📖</span> E-Magazines
+                </div>
+                <div class="nav-item" onclick="showCalendarView(this)">
+                    <span class="nav-icon">📅</span> TPO Calendar
+                </div>
+                <div class="nav-item" onclick="showAdmissionsView(this)">
+                    <span class="nav-icon">🎓</span> Admissions & Hostel
+                </div>
+            </div>
+
+            <div class="nav-section" style="margin-top:auto; padding-bottom:20px">
+                <div class="nav-label">System</div>
+                <div class="nav-item" onclick="showPendingView(this)">
+                    <span class="nav-icon">⏳</span> Pending Approvals
+                    <span class="nav-badge" id="badge-pending">0</span>
+                </div>
+                <div class="nav-item" onclick="logout()">
+                    <span class="nav-icon">🚪</span> Logout
+                </div>
+            </div>
+
+        </div><!-- end sidebar-scroll -->
+
+        <!-- FOOTER — always visible at bottom -->
+        <div class="sidebar-footer">
+            <div class="admin-info">
+                <div class="admin-avatar" id="avatarInitial">A</div>
+                <div>
+                    <div class="admin-name">Administrator</div>
+                    <div class="admin-email" id="adminEmailDisplay"><a href="/cdn-cgi/l/email-protection"
+                            class="__cf_email__"
+                            data-cfemail="2b4a4f4642456b484447474e4c4e054e4f5e">[email&#160;protected]</a></div>
+                </div>
+            </div>
+            <!-- View Website button -->
+            <button class="view-web-btn" onclick="window.open('/', '_blank')">
+                🌐 &nbsp;View Website
+            </button>
+            <!-- Sign Out button -->
+            <button class="logout-btn" onclick="handleLogout()">
+                ⎋ &nbsp;Sign Out
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- ── MAIN ── -->
+    <main class="main">
+        <div class="topbar">
+            <div>
+                <div class="page-title" id="pageTitle">All Announcements</div>
+                <div class="page-sub" id="pageSub">Manage notices, tenders and news</div>
+            </div>
+            <button class="add-btn" id="topbarBtn" onclick="openAddModal()">＋ &nbsp;Add New</button>
+        </div>
+
+        <div class="content" id="announcementsView">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon gold">📢</div>
+                    <div>
+                        <div class="stat-num" id="stat-notice">—</div>
+                        <div class="stat-lbl">Notices</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon blue">📄</div>
+                    <div>
+                        <div class="stat-num" id="stat-tender">—</div>
+                        <div class="stat-lbl">Tenders</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green">📰</div>
+                    <div>
+                        <div class="stat-num" id="stat-news">—</div>
+                        <div class="stat-lbl">News & Events</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter + Search -->
+            <div class="filter-row">
+                <button class="filter-tab active" onclick="filterData('all', this)">All</button>
+                <button class="filter-tab" onclick="filterData('notice', this)">Notices</button>
+                <button class="filter-tab" onclick="filterData('tender', this)">Tenders</button>
+                <button class="filter-tab" onclick="filterData('news_event', this)">News & Events</button>
+                <input class="search-input" type="text" placeholder="🔍  Search…" oninput="handleSearch(this.value)">
+            </div>
+
+            <!-- Table -->
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Categories</th>
+                            <th>Status</th>
+                            <th>Published</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr class="loading-row">
+                            <td colspan="5">Loading…</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ── IMAGES VIEW ── -->
+        <div class="content" id="imagesView" style="display:none">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h3 style="margin:0; font-family:'Syne',sans-serif;">Managed Image Slots</h3>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Location (Slug)</th>
+                            <th>Preview</th>
+                            <th>Category / Subcategory</th>
+                            <th>By / Role</th>
+                            <th>Last Updated</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="imagesTableBody">
+                        <tr class="loading-row"><td colspan="5">Loading images...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 style="margin-top:40px; margin-bottom:20px; font-family:'Syne',sans-serif;">Image Requests (from Maintenance)</h3>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Location</th>
+                            <th>Suggestion</th>
+                            <th>Submitted By</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="imageRequestsTableBody">
+                        <tr class="loading-row"><td colspan="5">No pending requests.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ── FACULTY VIEW ── -->
+        <div class="content" id="facultyView" style="display:none">
+            <div class="topbar" style="padding:0 0 16px 0; border:none; display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <div class="page-title">Faculty Management</div>
+                    <div class="page-sub">Manage faculty across all departments</div>
+                </div>
+                <button class="add-btn" onclick="openFacultyModal()">＋ &nbsp;Add Faculty</button>
+            </div>
+            
+            <div class="filter-row">
+                <select class="search-input" id="facultyDeptFilter" onchange="fetchFaculty(this.value)" style="width:250px;">
+                    <option value="">All Departments</option>
+                    <option value="aiml">Artificial Intelligence & Machine Learning</option>
+                    <option value="auto">Automobile Engineering</option>
+                    <option value="civil">Civil Engineering</option>
+                    <option value="computer">Computer Engineering</option>
+                    <option value="ddgm">Dress Designing (DDGM)</option>
+                    <option value="electrical">Electrical Engineering</option>
+                    <option value="entc">Electronics & Telecom</option>
+                    <option value="it">Information Technology</option>
+                    <option value="mechanical">Mechanical Engineering</option>
+                    <option value="science-humanities">Science & Humanities</option>
+                    <option value="applied-mechanics">Applied Mechanics</option>
+                    <option value="workshop">Workshop</option>
+                    <option value="mercedes-benz">Mercedes-Benz</option>
+                </select>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Photo</th>
+                            <th>Name & Designation</th>
+                            <th>Contact</th>
+                            <th>Department</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="facultyTableBody">
+                        <tr class="loading-row"><td colspan="5">Loading faculty...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ── LABS VIEW ── -->
+        <div class="content" id="labsView" style="display:none">
+            <div class="topbar" style="padding:0 0 16px 0; border:none; display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <div class="page-title">Lab Management</div>
+                    <div class="page-sub">Manage laboratory information across all departments</div>
+                </div>
+                <button class="add-btn" onclick="openLabsModal()">＋ &nbsp;Add Lab</button>
+            </div>
+            
+            <div class="filter-row">
+                <select class="search-input" id="labsDeptFilter" onchange="fetchLabs(this.value)" style="width:250px;">
+                    <option value="">All Departments</option>
+                    <option value="aiml">Artificial Intelligence & Machine Learning</option>
+                    <option value="auto">Automobile Engineering</option>
+                    <option value="civil">Civil Engineering</option>
+                    <option value="computer">Computer Engineering</option>
+                    <option value="ddgm">Dress Designing (DDGM)</option>
+                    <option value="electrical">Electrical Engineering</option>
+                    <option value="entc">Electronics & Telecom</option>
+                    <option value="it">Information Technology</option>
+                    <option value="mechanical">Mechanical Engineering</option>
+                    <option value="science-humanities">Science & Humanities</option>
+                    <option value="applied-mechanics">Applied Mechanics</option>
+                    <option value="workshop">Workshop</option>
+                    <option value="mercedes-benz">Mercedes-Benz</option>
+                </select>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Department</th>
+                            <th>Lab Name</th>
+                            <th>Major Equipments</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="labsTableBody">
+                        <tr class="loading-row"><td colspan="4">Loading labs...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ── DOWNLOADS VIEW ── -->
+        <div class="content" id="downloadsView" style="display:none">
+            <div class="topbar" style="padding:0 0 16px 0; border:none; display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <div class="page-title">Downloads Management</div>
+                    <div class="page-sub">Manage academic, admission, and examination forms</div>
+                </div>
+                <button class="add-btn" onclick="openDownloadsModal()">＋ &nbsp;Add Download</button>
+            </div>
+            
+            <div class="filter-row">
+                <select class="search-input" id="downloadsSectionFilter" onchange="fetchDownloads(this.value)" style="width:250px;">
+                    <option value="">All Sections</option>
+                    <option value="academic">Academic Downloads</option>
+                    <option value="admission">Admission Forms</option>
+                    <option value="exam">Examination Forms</option>
+                </select>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Section</th>
+                            <th>Document Name</th>
+                            <th>Link / File</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="downloadsTableBody">
+                        <tr class="loading-row"><td colspan="4">Loading downloads...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ── E-MAGAZINES VIEW ── -->
+        <div class="content" id="magazinesView" style="display:none">
+            <div class="topbar" style="padding:0 0 16px 0; border:none; display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <div class="page-title">E-Magazine Management</div>
+                    <div class="page-sub">Manage departmental e-magazines</div>
+                </div>
+                <button class="add-btn" onclick="openMagazinesModal()">＋ &nbsp;Add Magazine</button>
+            </div>
+            
+            <div class="filter-row">
+                <select class="search-input" id="magazinesDeptFilter" onchange="fetchMagazines(this.value)" style="width:250px;">
+                    <option value="">All Departments</option>
+                    <option value="aiml">Artificial Intelligence & Machine Learning</option>
+                    <option value="auto">Automobile Engineering</option>
+                    <option value="civil">Civil Engineering</option>
+                    <option value="computer">Computer Engineering</option>
+                    <option value="ddgm">Dress Designing (DDGM)</option>
+                    <option value="electrical">Electrical Engineering</option>
+                    <option value="entc">Electronics & Telecom</option>
+                    <option value="it">Information Technology</option>
+                    <option value="mechanical">Mechanical Engineering</option>
+                    <option value="science-humanities">Science & Humanities</option>
+                    <option value="applied-mechanics">Applied Mechanics</option>
+                    <option value="workshop">Workshop</option>
+                    <option value="mercedes-benz">Mercedes-Benz</option>
+                </select>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Department</th>
+                            <th>Magazine Name</th>
+                            <th>File</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="magazinesTableBody">
+                        <tr class="loading-row"><td colspan="4">Loading magazines...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ── ADMISSIONS VIEW ── -->
+        <div class="content" id="admissionsView" style="display:none">
+            <div class="topbar" style="padding:0 0 16px 0; border:none; display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <div class="page-title">Admissions & Hostel Management</div>
+                    <div class="page-sub">Manage Admission Details, Fees, and Hostel Documents</div>
+                </div>
+            </div>
+            
+            <div class="filter-row">
+                <button class="filter-tab active" onclick="switchAdmissionTab('details', this)">Admission Details</button>
+                <button class="filter-tab" onclick="switchAdmissionTab('fees', this)">Fees Structure</button>
+                <button class="filter-tab" onclick="switchAdmissionTab('girls', this)">Girls Hostel</button>
+                <button class="filter-tab" onclick="switchAdmissionTab('boys', this)">Boys Hostel</button>
+            </div>
+
+            <!-- ADMISSION DETAILS TABLE -->
+            <div id="admissionDetailsSection">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                    <div>
+                        <h4 style="margin:0;">Admission Documents</h4>
+                        <div style="font-size:12px; color:var(--muted); margin-top:4px;">Select admission year/category to manage specific documents</div>
+                    </div>
+                </div>
+
+                <div class="filter-row" style="background:var(--navy3); padding:12px; border-radius:10px; margin-bottom:16px; gap:20px;">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span style="font-size:13px; font-weight:500;">Filter by Category:</span>
+                        <select class="search-input" id="admissionSubFilter" onchange="fetchAdmissionDocs(this.value, 'admissionDetailsTableBody')" style="width:220px; margin:0;">
+                            <option value="admission_first_year">1st Year Admission</option>
+                            <option value="admission_direct_second_year">Direct 2nd Year (DSY)</option>
+                            <option value="admission_higher_classes">Higher Classes</option>
+                            <option value="admission_details">General Admission Info</option>
+                        </select>
+                    </div>
+                    <button class="add-btn" style="margin-left:auto;" onclick="openAdmissionDocWithSubFilter()">＋ Add Document to Selected</button>
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Document Name</th>
+                                <th>File URL</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admissionDetailsTableBody">
+                            <tr class="loading-row"><td colspan="3">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- FEES STRUCTURE TABLE -->
+            <div id="feesStructureSection" style="display:none;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <h4 style="margin:0;">Fees Structure</h4>
+                    <button class="add-btn" onclick="openFeesModal()">＋ Add Fee Record</button>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Govt Fees</th>
+                                <th>Non Govt Fees</th>
+                                <th>Total</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="feesTableBody">
+                            <tr class="loading-row"><td colspan="5">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- GIRLS HOSTEL TABLE -->
+            <div id="girlsHostelSection" style="display:none;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <h4 style="margin:0;">Girls Hostel Documents</h4>
+                    <button class="add-btn" onclick="openAdmissionDocModal('girls_hostel')">＋ Add Document</button>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Document Name</th>
+                                <th>File URL</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="girlsHostelTableBody">
+                            <tr class="loading-row"><td colspan="3">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- BOYS HOSTEL TABLE -->
+            <div id="boysHostelSection" style="display:none;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <h4 style="margin:0;">Boys Hostel Documents</h4>
+                    <button class="add-btn" onclick="openAdmissionDocModal('boys_hostel')">＋ Add Document</button>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Document Name</th>
+                                <th>File URL</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="boysHostelTableBody">
+                            <tr class="loading-row"><td colspan="3">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── PENDING VIEW ── -->
+        <div class="content" id="pendingView" style="display:none">
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Request Details</th>
+                            <th>Categories</th>
+                            <th>Submitted By</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pendingTableBody">
+                        <tr class="loading-row">
+                            <td colspan="5">Loading pending requests…</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Image Requests Section -->
+            <h3 style="margin-top:40px; margin-bottom:20px; font-family:'Syne',sans-serif;">Pending Image Updates</h3>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Location</th>
+                            <th>Suggestion</th>
+                            <th>Submitted By</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pendingImagesTableBody">
+                        <tr class="loading-row"><td colspan="5">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- ── TPO CALENDAR VIEW ── -->
+        <div class="content" id="calendarView" style="display:none">
+            <div class="stats-grid" style="grid-template-columns: 1fr; gap: 20px;">
+                <div class="stat-card" style="padding: 24px; background: var(--navy2); border: 1px solid var(--border);">
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="color: var(--gold); margin-bottom: 8px;">How to Manage Events</h3>
+                        <p style="font-size: 13.5px; color: var(--muted); line-height: 1.6;">
+                            1. Open <b>gpcs1955@gmail.com</b> on <a href="https://calendar.google.com" target="_blank" style="color:var(--info)">Google Calendar</a>.<br>
+                            2. Add, Edit, or Delete events directly on the Google platform.<br>
+                            3. Ensure your calendar is <b>Public</b>: Settings > Access permissions > "Make available to public".<br>
+                            4. If you create a new calendar, update the <b>Calendar ID</b> below.
+                        </p>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+                        <input type="text" id="calendarIdInput" class="search-input" placeholder="Calendar ID (e.g. gpcs1955@gmail.com)" style="flex: 1; border: 1px solid var(--navy4);">
+                        <button class="add-btn" onclick="updateCalendarId()" style="padding: 0 24px; height: 42px;">Update ID</button>
+                    </div>
+
+                    <button class="add-btn" onclick="window.open('https://calendar.google.com/calendar/u/0/r', '_blank')" style="width: 100%; background: var(--navy3); border: 1px solid var(--border); height: 48px; font-weight: 600;">
+                        📅 Open Google Calendar to Manage Events
+                    </button>
+                </div>
+            </div>
+
+            <div class="view-card" style="margin-top: 24px; background: var(--navy2); border-radius: 12px; overflow: hidden; border: 1px solid var(--border);">
+                <div style="padding: 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                    <h4 style="margin: 0; font-size: 15px;">Live Preview</h4>
+                    <span id="calendarStatus" style="font-size: 12px; color: var(--success); display: none;">● Connected</span>
+                </div>
+                <div id="calendarPreviewContainer" style="height: 600px; background: #fff;">
+                    <!-- Iframe will be injected here -->
+                    <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #333;">
+                        Loading preview...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ── FACULTY MODAL ── -->
+    <div class="overlay" id="facultyOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title" id="facultyModalTitle">Add Faculty</div>
+                <button class="close-btn" onclick="closeFacultyModal()">✕</button>
+            </div>
+            <form id="facultyForm" onsubmit="saveFaculty(event)">
+                <input type="hidden" id="fac_id">
+                
+                <div class="form-field">
+                    <label class="form-label">Department *</label>
+                    <select class="form-select" id="fac_dept" required>
+                        <option value="">Select Department</option>
+                        <option value="aiml">Artificial Intelligence & Machine Learning</option>
+                        <option value="auto">Automobile Engineering</option>
+                        <option value="civil">Civil Engineering</option>
+                        <option value="computer">Computer Engineering</option>
+                        <option value="ddgm">Dress Designing (DDGM)</option>
+                        <option value="electrical">Electrical Engineering</option>
+                        <option value="entc">Electronics & Telecom</option>
+                        <option value="it">Information Technology</option>
+                        <option value="mechanical">Mechanical Engineering</option>
+                        <option value="science-humanities">Science & Humanities</option>
+                        <option value="applied-mechanics">Applied Mechanics</option>
+                        <option value="workshop">Workshop</option>
+                        <option value="mercedes-benz">Mercedes-Benz</option>
+                    </select>
+                </div>
+                
+                <div class="form-field">
+                    <label class="form-label">Name *</label>
+                    <input class="form-input" type="text" id="fac_name" placeholder="e.g. Dr. John Doe" required>
+                </div>
+                
+                <div class="form-field">
+                    <label class="form-label">Designation *</label>
+                    <input class="form-input" type="text" id="fac_designation" placeholder="e.g. Professor & Head" required>
+                </div>
+
+                <div class="form-field">
+                    <label class="form-label">Contact No.</label>
+                    <input class="form-input" type="text" id="fac_contact" placeholder="e.g. +91 98765 43210">
+                </div>
+
+                <div class="form-field">
+                    <label class="form-label">Email ID</label>
+                    <input class="form-input" type="email" id="fac_email" placeholder="e.g. email@gpcsa.edu">
+                </div>
+
+                <div class="form-field">
+                    <label class="form-label">Photo (Leave empty to keep existing)</label>
+                    <input type="file" class="form-input" id="fac_photo" accept="image/*" style="padding: 8px;">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" onclick="closeFacultyModal()">Cancel</button>
+                    <button type="submit" class="btn-save" id="btnFacultySave">Save Faculty</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ── LABS MODAL ── -->
+    <div class="overlay" id="labsOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title" id="labsModalTitle">Add Lab</div>
+                <button class="close-btn" onclick="closeLabsModal()">✕</button>
+            </div>
+            <form id="labsForm" onsubmit="saveLab(event)">
+                <input type="hidden" id="lab_id">
+                
+                <div class="form-field">
+                    <label class="form-label">Department *</label>
+                    <select class="form-select" id="lab_dept" required>
+                        <option value="">Select Department</option>
+                        <option value="aiml">Artificial Intelligence & Machine Learning</option>
+                        <option value="auto">Automobile Engineering</option>
+                        <option value="civil">Civil Engineering</option>
+                        <option value="computer">Computer Engineering</option>
+                        <option value="ddgm">Dress Designing (DDGM)</option>
+                        <option value="electrical">Electrical Engineering</option>
+                        <option value="entc">Electronics & Telecom</option>
+                        <option value="it">Information Technology</option>
+                        <option value="mechanical">Mechanical Engineering</option>
+                        <option value="science-humanities">Science & Humanities</option>
+                        <option value="applied-mechanics">Applied Mechanics</option>
+                        <option value="workshop">Workshop</option>
+                        <option value="mercedes-benz">Mercedes-Benz</option>
+                    </select>
+                </div>
+                
+                <div class="form-field">
+                    <label class="form-label">Lab Name *</label>
+                    <input class="form-input" type="text" id="lab_name" placeholder="e.g. HARDWARE LAB" required>
+                </div>
+                
+                <div class="form-field">
+                    <label class="form-label">Major Equipments *</label>
+                    <input class="form-input" type="text" id="lab_equipment" placeholder="e.g. PC-10, Scanner" required>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" onclick="closeLabsModal()">Cancel</button>
+                    <button type="submit" class="btn-save" id="btnLabsSave">Save Lab</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ── DOWNLOADS MODAL ── -->
+    <div class="overlay" id="downloadsOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title" id="downloadsModalTitle">Add Download</div>
+                <button class="close-btn" onclick="closeDownloadsModal()">✕</button>
+            </div>
+            <form id="downloadsForm" onsubmit="saveDownload(event)">
+                <input type="hidden" id="download_id">
+                
+                <div class="form-field">
+                    <label class="form-label">Section *</label>
+                    <select class="form-select" id="dl_section" required onchange="toggleDownloadLinkForm()">
+                        <option value="">Select Section</option>
+                        <option value="academic">Academic Downloads</option>
+                        <option value="admission">Admission Forms</option>
+                        <option value="exam">Examination Forms</option>
+                        <option value="admission_details">General Admission Info</option>
+                        <option value="admission_first_year">1st Year Admission</option>
+                        <option value="admission_direct_second_year">Direct 2nd Year (DSY)</option>
+                        <option value="admission_higher_classes">Higher Classes Admission</option>
+                        <option value="girls_hostel">Girls Hostel Info</option>
+                        <option value="boys_hostel">Boys Hostel Info</option>
+                    </select>
+                </div>
+                
+                <div class="form-field">
+                    <label class="form-label">Document Name *</label>
+                    <input class="form-input" type="text" id="dl_name" placeholder="e.g. Academic Calendar 2024" required>
+                </div>
+                
+                <div class="form-field" id="dl_link_container" style="display:none;">
+                    <label class="form-label">External Link (Optional)</label>
+                    <input class="form-input" type="url" id="dl_link" placeholder="https://example.com/form">
+                    <div style="font-size:12px; color:#888; margin-top:4px;">Will override the file upload if provided.</div>
+                </div>
+
+                <div class="form-field">
+                    <label class="form-label">Upload File (PDF/Doc)</label>
+                    <div class="file-upload-box" onclick="document.getElementById('dl_file').click()">
+                        <div style="font-size:24px; color:var(--primary); margin-bottom:10px;">📄</div>
+                        <div style="font-weight:600; color:#333;" id="dl_file_name">Click to upload document</div>
+                        <div style="font-size:12px; color:#666; margin-top:4px;">Max size: 50MB</div>
+                        <input type="file" id="dl_file" accept=".pdf,.doc,.docx" style="display:none;" onchange="updateDlFileName(this)">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" onclick="closeDownloadsModal()">Cancel</button>
+                    <button type="submit" class="btn-save" id="btnDownloadsSave">Save Document</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ── MAGAZINES MODAL ── -->
+    <div class="overlay" id="magazinesOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title" id="magazinesModalTitle">Add Magazine</div>
+                <button class="close-btn" onclick="closeMagazinesModal()">✕</button>
+            </div>
+            <form id="magazinesForm" onsubmit="saveMagazine(event)">
+                <input type="hidden" id="mag_id">
+                
+                <div class="form-field">
+                    <label class="form-label">Department *</label>
+                    <select class="form-select" id="mag_dept" required>
+                        <option value="">Select Department</option>
+                        <option value="aiml">Artificial Intelligence & Machine Learning</option>
+                        <option value="auto">Automobile Engineering</option>
+                        <option value="civil">Civil Engineering</option>
+                        <option value="computer">Computer Engineering</option>
+                        <option value="ddgm">Dress Designing (DDGM)</option>
+                        <option value="electrical">Electrical Engineering</option>
+                        <option value="entc">Electronics & Telecom</option>
+                        <option value="it">Information Technology</option>
+                        <option value="mechanical">Mechanical Engineering</option>
+                        <option value="science-humanities">Science & Humanities</option>
+                        <option value="applied-mechanics">Applied Mechanics</option>
+                        <option value="workshop">Workshop</option>
+                        <option value="mercedes-benz">Mercedes-Benz</option>
+                    </select>
+                </div>
+                
+                <div class="form-field">
+                    <label class="form-label">Magazine Name *</label>
+                    <input class="form-input" type="text" id="mag_name" placeholder="e.g. IT VOYAGE 2024" required>
+                </div>
+
+                <div class="form-field">
+                    <label class="form-label">Upload Magazine (PDF) *</label>
+                    <input type="file" class="form-input" id="mag_file" accept=".pdf" style="padding: 8px;">
+                    <small style="color:var(--muted); font-size:11px;">Leave empty when editing to keep current file.</small>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" onclick="closeMagazinesModal()">Cancel</button>
+                    <button type="submit" class="btn-save" id="btnMagazinesSave">Save Magazine</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ── ADD / EDIT MODAL ── -->
+    <div class="overlay" id="formOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">Add Announcement</div>
+                <button class="close-btn" onclick="closeModal()">✕</button>
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Title *</label>
+                <input class="form-input" type="text" id="fTitle" placeholder="e.g. Exam Schedule 2025">
+            </div>
+
+            <!-- ── CATEGORIES CHECKBOXES ── -->
+            <div class="form-field">
+                <label class="form-label">Categories * (select one or more)</label>
+                <div id="fCategories"
+                    style="background:var(--navy3); border:1px solid rgba(255,255,255,0.08); border-radius:var(--radius); padding:14px 16px; display:flex; flex-direction:column; gap:6px;">
+
+                    <div class="cat-group-label">── General ──</div>
+                    <label class="cat-check"><input type="checkbox" value="news_event"> 📰 News &amp; Event</label>
+                    <label class="cat-check"><input type="checkbox" value="tender"> 📄 Tender / Quotation</label>
+                    <label class="cat-check"><input type="checkbox" value="notice"> 📢 General Notice</label>
+
+                    <div class="cat-group-label" style="margin-top:8px;">── Notice Boards ──</div>
+                    <label class="cat-check"><input type="checkbox" value="notice_tpo"> 🏢 Notice Board — TPO</label>
+                    <label class="cat-check"><input type="checkbox" value="notice_admission"> 🎓 Notice Board —
+                        Admission</label>
+                    <label class="cat-check"><input type="checkbox" value="notice_examination"> 📝 Notice Board —
+                        Examination Cell</label>
+                    <label class="cat-check"><input type="checkbox" value="notice_student"> 👨‍🎓 Notice Board — Student
+                        Section</label>
+
+                    <div class="cat-group-label" style="margin-top:8px;">── Department Notice Boards ──</div>
+
+                    <!-- MASTER "All Departments" checkbox -->
+                    <label class="cat-check master-dept" id="allDeptLabel">
+                        <input type="checkbox" value="notice_department" id="allDeptCheck"
+                            onchange="handleAllDeptToggle(this)">
+                        🏫 All Departments (shows on every dept. page)
+                    </label>
+
+                    <!-- Individual department checkboxes -->
+                    <label class="cat-check dept-item"><input type="checkbox" value="notice_dept_aiml" class="dept-cb">
+                        🤖 Dept — AI &amp; Machine Learning</label>
+                    <label class="cat-check dept-item"><input type="checkbox" value="notice_dept_auto" class="dept-cb">
+                        🚗 Dept — Automobile Engineering</label>
+                    <label class="cat-check dept-item"><input type="checkbox" value="notice_dept_civil" class="dept-cb">
+                        🏗️ Dept — Civil Engineering</label>
+                    <label class="cat-check dept-item"><input type="checkbox" value="notice_dept_computer"
+                            class="dept-cb"> 💻 Dept — Computer Engineering</label>
+                    <label class="cat-check dept-item"><input type="checkbox" value="notice_dept_ddgm" class="dept-cb">
+                        👗 Dept — Dress Designing (DDGM)</label>
+                    <label class="cat-check dept-item"><input type="checkbox" value="notice_dept_electrical"
+                            class="dept-cb"> ⚡ Dept — Electrical Engineering</label>
+                    <label class="cat-check dept-item"><input type="checkbox" value="notice_dept_entc" class="dept-cb">
+                        📡 Dept — Electronics &amp; Telecom</label>
+                    <label class="cat-check dept-item"><input type="checkbox" value="notice_dept_it" class="dept-cb">
+                        🖥️ Dept — Information Technology</label>
+                    <label class="cat-check dept-item"><input type="checkbox" value="notice_dept_mechanical"
+                            class="dept-cb"> ⚙️ Dept — Mechanical Engineering</label>
+                    <label class="cat-check dept-item"><input type="checkbox" value="notice_dept_science_humanities"
+                            class="dept-cb"> 🔬 Dept — Science &amp; Humanities</label>
+                    <label class="cat-check dept-item"><input type="checkbox" value="notice_dept_applied_mechanics"
+                            class="dept-cb"> 📐 Dept — Applied Mechanics</label>
+                    <label class="cat-check dept-item"><input type="checkbox" value="notice_dept_workshop"
+                            class="dept-cb"> 🔧 Dept — Workshop</label>
+                    <label class="cat-check dept-item"><input type="checkbox" value="notice_dept_mercedes_benz"
+                            class="dept-cb"> 🚘 Dept — Mercedes-Benz</label>
+                </div>
+            </div>
+            <!-- ── END CATEGORIES ── -->
+
+            <div class="form-field">
+                <label class="form-label">Description</label>
+                <textarea class="form-textarea" id="fDesc" placeholder="Brief description…"></textarea>
+            </div>
+
+            <!-- ── FILE UPLOAD ── -->
+            <div class="form-field">
+                <label class="form-label">File (PDF only)</label>
+                <input type="file" id="fFileInput" accept=".pdf" style="display:none" onchange="handleFileSelect(this)">
+                <input class="form-input" type="text" id="fFileUrl" placeholder="No file chosen" readonly
+                    style="border-radius:12px 12px 0 0; border-bottom:none; cursor:default; font-size:13px; color:var(--muted)">
+                <div style="display:flex; gap:0">
+                    <button type="button" id="filePickerBtn" onclick="document.getElementById('fFileInput').click()"
+                        style="flex:1; background:var(--navy4); border:1px solid rgba(255,255,255,0.08); border-top:none; border-radius:0 0 0 12px; padding:10px 14px; color:var(--white); font-family:'DM Sans',sans-serif; font-size:13px; cursor:pointer; text-align:left; transition:background 0.15s;"
+                        onmouseover="this.style.background='#243350'" onmouseout="this.style.background='var(--navy4)'">
+                        📁 &nbsp;Choose from device
+                    </button>
+                    <button type="button" onclick="clearFile()"
+                        style="background:rgba(224,92,92,0.1); border:1px solid rgba(224,92,92,0.15); border-top:none; border-left:none; border-radius:0 0 12px 0; padding:10px 14px; color:#f08080; font-size:13px; font-family:'DM Sans',sans-serif; cursor:pointer; transition:background 0.15s;"
+                        onmouseover="this.style.background='rgba(224,92,92,0.2)'"
+                        onmouseout="this.style.background='rgba(224,92,92,0.1)'">
+                        ✕ Clear
+                    </button>
+                </div>
+                <div id="uploadProgress" style="display:none; margin-top:8px;">
+                    <div style="background:var(--navy3); border-radius:4px; height:4px; overflow:hidden;">
+                        <div id="progressBar"
+                            style="height:100%; background:var(--gold); width:0%; transition:width 0.3s; border-radius:4px;">
+                        </div>
+                    </div>
+                    <div id="progressText" style="font-size:11px; color:var(--muted); margin-top:4px;">Uploading…</div>
+                </div>
+            </div>
+            <!-- ── END FILE UPLOAD ── -->
+
+            <div class="form-field">
+                <label class="form-label">Expires On</label>
+                <input class="form-input" type="date" id="fExpires">
+            </div>
+
+            <div class="form-field">
+                <div class="toggle-row">
+                    <span class="toggle-label">Published / Active</span>
+                    <label class="toggle">
+                        <input type="checkbox" id="fActive" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+                <button class="btn-save" id="saveBtn" onclick="saveRecord()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── IMAGE UPLOAD MODAL ── -->
+    <div class="overlay" id="imageModalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">Manage Image</div>
+                <button class="close-btn" onclick="closeImageModal()">✕</button>
+            </div>
+
+            <div class="form-field" style="display:none">
+                <label class="form-label">Image Slug (Internal)</label>
+                <input class="form-input" type="text" id="imgSlug">
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Main Category *</label>
+                <select class="form-input" id="imgMainCategory" onchange="updateSubCategories()" style="background:var(--navy3); color:var(--white); border:1px solid var(--border)">
+                    <option value="home">Home Page</option>
+                    <option value="about">About Institute</option>
+                    <option value="department">Departments</option>
+                    <option value="department_slider">Department Banner Slider</option>
+                    <option value="tpo">TPO Section</option>
+                    <option value="facility">Facilities</option>
+                    <option value="general">General (Other)</option>
+                </select>
+            </div>
+
+            <div class="form-field" id="subCatField" style="display:none">
+                <label class="form-label">Subcategory *</label>
+                <select class="form-input" id="imgSubCategory" onchange="updateSlots()" style="background:var(--navy3); color:var(--white); border:1px solid var(--border)">
+                    <!-- Populated dynamically -->
+                </select>
+            </div>
+
+            <div class="form-field" id="slotField" style="display:none">
+                <label class="form-label">Photo Slot (Select Number) *</label>
+                <select class="form-input" id="imgSlot" style="background:var(--navy3); color:var(--white); border:1px solid var(--border)">
+                    <!-- Populated based on subcategory type -->
+                </select>
+                <small style="color:var(--muted); font-size:11px;">Pick which photo slot to update (e.g. Slot 1, Slot 2).</small>
+            </div>
+
+            <div class="form-field" id="cardTitleField">
+                <label class="form-label">Card/Gallery Display Title</label>
+                <input class="form-input" type="text" id="imgCardTitle" placeholder="e.g. Analog Lab / Project Lab">
+                <small style="color:var(--muted); font-size:11px;">Optional: This name will appear on the gallery card.</small>
+            </div>
+
+            <div class="form-field">
+                <label class="form-label">Photos (Select Multiple or Folder) *</label>
+                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                    <input type="file" id="imgFileInput" accept="image/*" multiple onchange="previewImages(this)" style="flex:1; min-width:0;">
+                    <button type="button" onclick="document.getElementById('imgFolderInput').click()"
+                        style="background:var(--navy3); border:1px solid var(--border); border-radius:8px; padding:8px 14px; color:var(--gold); font-size:12px; font-family:'DM Sans',sans-serif; cursor:pointer; white-space:nowrap;">📁 Select Folder</button>
+                    <input type="file" id="imgFolderInput" accept="image/*" multiple webkitdirectory style="display:none" onchange="mergeFolderFiles(this)">
+                </div>
+                <div id="imgPreviewWrap" style="margin-top:10px; display:none;">
+                    <div id="bulkStatus" style="font-size:12px; font-weight:600; color:var(--gold); margin-bottom:10px;"></div>
+                    <div style="display:flex; gap:10px; overflow-x:auto; padding-bottom:10px;" id="previewGrid"></div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeImageModal()">Cancel</button>
+                <button class="btn-save" id="imgSaveBtn" onclick="saveImage()">Upload & Save</button>
+            </div>
+        </div>
+    </div>
+    <div class="overlay" id="deleteOverlay">
+        <div class="confirm-modal">
+            <div class="confirm-icon">🗑️</div>
+            <div class="confirm-title">Delete this record?</div>
+            <div class="confirm-sub">This will mark the record as inactive. You can restore it later.</div>
+            <div class="confirm-actions">
+                <button class="btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+                <button class="btn-confirm-del" onclick="confirmDelete()">Yes, Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── TOAST ── -->
+    <div class="toast" id="toast"></div>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script>
+        const API = '/api';
+
+        let allData = [];
+        let filteredData = [];
+        let currentFilter = 'all';
+        let editingId = null;
+        let deletingId = null;
+        let uploadedFileUrl = null;
+
+        // All individual dept categories
+        const DEPT_CATEGORIES = [
+            'notice_dept_aiml', 'notice_dept_auto', 'notice_dept_civil',
+            'notice_dept_computer', 'notice_dept_ddgm', 'notice_dept_electrical',
+            'notice_dept_entc', 'notice_dept_it', 'notice_dept_mechanical',
+            'notice_dept_science_humanities', 'notice_dept_applied_mechanics',
+            'notice_dept_workshop', 'notice_dept_mercedes_benz'
+        ];
+
+        // ── AUTH GUARD ──
+        const token = localStorage.getItem('admin_token');
+        if (!token) window.location.href = '/login';
+
+        const adminEmail = localStorage.getItem('admin_email') || 'admin@college.edu';
+        document.getElementById('adminEmailDisplay').textContent = adminEmail;
+        document.getElementById('avatarInitial').textContent = adminEmail[0].toUpperCase();
+
+        // ── FETCH ALL ──
+        async function fetchAll() {
+            try {
+                const res = await fetch(`${API}/announcements`);
+                const json = await res.json();
+                allData = json.data || [];
+                updateStats();
+                fetchPendingCount(); 
+                fetchImagePendingCount(); // Image request count
+                applyFilter(currentFilter);
+            } catch (e) {
+                showToast('Failed to load data.', 'error');
+            }
+        }
+
+        async function fetchImagePendingCount() {
+            try {
+                const res = await fetch(`${API}/images/requests?status=pending`);
+                const json = await res.json();
+                document.getElementById('badge-image-pending').textContent = (json.data || []).length;
+            } catch (e) {}
+        }
+
+        // ── IMAGE MANAGEMENT LOGIC ──
+        async function showImagesView(el) {
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+            
+            // Hide other views
+            document.getElementById('announcementsView').style.display = 'none';
+            document.getElementById('pendingView').style.display = 'none';
+            document.getElementById('imagesView').style.display = 'block';
+            
+            document.getElementById('pageTitle').textContent = 'Image Management';
+            document.getElementById('pageSub').textContent = 'Manage dynamic photo slots across the website';
+
+            const btn = document.getElementById('topbarBtn');
+            btn.style.display = 'flex';
+            btn.innerHTML = '＋ &nbsp;New Image Slot';
+            btn.onclick = () => openImageUploadModal();
+            
+            // Add a "Clear All Dept Slots" button next to it
+            const clearBtn = document.createElement('button');
+            clearBtn.className = 'btn-cancel';
+            clearBtn.style.cssText = 'padding: 8px 16px; font-size:13px; color:#f08080; border-color:rgba(224,92,92,0.2)';
+            clearBtn.innerHTML = '🗑️ &nbsp;Clear All Dept Slots';
+            clearBtn.onclick = () => clearAllDeptSlots();
+            btn.parentElement.appendChild(clearBtn);
+            
+            loadManagedImages();
+            loadImageRequests();
+        }
+
+        async function loadManagedImages() {
+            const tbody = document.getElementById('imagesTableBody');
+            tbody.innerHTML = '<tr class="loading-row"><td colspan="5">Loading images...</td></tr>';
+            try {
+                const res = await fetch(`${API}/images`);
+                const json = await res.json();
+                const data = json.data || [];
+                
+                if (!data.length) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:40px; color:var(--muted)">No managed images yet.</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = data.map(img => `
+                    <tr>
+                        <td style="font-family:monospace; font-size:13px; color:var(--gold)">${img.slug}</td>
+                        <td>
+                            <a href="${img.url}" target="_blank">
+                                <img src="${img.url}" style="width:60px; height:40px; object-fit:cover; border-radius:4px; border:1px solid var(--border)">
+                            </a>
+                        </td>
+                        <td>
+                            <div style="font-size:13px; font-weight:600">${img.category || 'general'}</div>
+                            <div style="font-size:11px; color:var(--muted)">${img.subcategory || '-'}</div>
+                        </td>
+                        <td>
+                            <div style="font-size:12px;">${img.uploaded_by || 'admin'}</div>
+                            <div style="font-size:10px; color:var(--gold); text-transform:uppercase">${img.role || 'admin'}</div>
+                        </td>
+                        <td style="font-size:12px; color:var(--muted)">${formatDate(img.updated_at)}</td>
+                        <td style="display:flex; gap:6px">
+                            <button class="btn-cancel" style="padding:6px 12px; font-size:12px" onclick="openImageUploadModal('${img.slug}')">Add More</button>
+                            <button class="btn-cancel" style="padding:6px 12px; font-size:12px; border-color:rgba(224,92,92,0.15)" onclick="deleteManagedImageById('${img.id}', '${img.slug}')">Delete</button>
+                            <button class="btn-cancel" style="padding:6px 12px; font-size:12px; color:#f08080; border-color:rgba(224,92,92,0.3)" onclick="deleteManagedImage('${img.slug}')">Clear Slot</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch(e) {
+                tbody.innerHTML = '<tr><td colspan="5">Error loading images</td></tr>';
+            }
+        }
+
+        async function loadImageRequests(targetId = 'imageRequestsTableBody') {
+            const tbody = document.getElementById(targetId);
+            if (!tbody) return;
+            tbody.innerHTML = '<tr class="loading-row"><td colspan="5">Loading...</td></tr>';
+            try {
+                const res = await fetch(`${API}/images/requests?status=pending`);
+                const json = await res.json();
+                const data = json.data || [];
+                
+                if (!data.length) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:40px; color:var(--muted)">No pending requests.</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = data.map(req => `
+                    <tr>
+                        <td style="font-family:monospace; font-size:13px; color:var(--gold)">${req.slug}</td>
+                        <td>
+                            <a href="${req.suggested_url}" target="_blank" style="display:flex; align-items:center; gap:8px; text-decoration:none">
+                                <img src="${req.suggested_url}" style="width:50px; height:35px; object-fit:cover; border-radius:4px">
+                                <span style="font-size:11px; color:var(--muted)">View Full</span>
+                            </a>
+                        </td>
+                        <td style="font-size:12px">${req.submitted_by}</td>
+                        <td style="font-size:12px; color:var(--muted)">${formatDate(req.created_at)}</td>
+                        <td style="display:flex; gap:6px">
+                            <button class="btn-save" style="padding:6px 10px; font-size:11px" onclick="approveImageRequest('${req.id}')">Approve</button>
+                            <button class="btn-cancel" style="padding:6px 10px; font-size:11px; color:#f08080" onclick="rejectImageRequest('${req.id}')">Reject</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch(e) {
+                tbody.innerHTML = '<tr><td colspan="5">Error loading requests</td></tr>';
+            }
+        }
+
+        async function deleteManagedImageById(id, slug) {
+            if (!confirm(`Are you sure you want to delete this specific image from slot "${slug}"?`)) return;
+            try {
+                const res = await fetch(`${API}/images/id/${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    showToast('🗑️ Image deleted');
+                    loadManagedImages();
+                } else {
+                    const err = await res.json();
+                    showToast('Error: ' + err.error, 'error');
+                }
+            } catch (e) {
+                showToast('Database Error', 'error');
+            }
+        }
+
+        async function deleteManagedImage(slug) {
+            if (!confirm(`⚠️ This will delete ALL images for slot "${slug}". Proceed?`)) return;
+            try {
+                const res = await fetch(`${API}/images/${slug}`, { method: 'DELETE' });
+                if (res.ok) {
+                    showToast('🗑️ All images for slot cleared');
+                    loadManagedImages();
+                }
+            } catch (e) { showToast('Error', 'error'); }
+        }
+
+        async function clearAllDeptSlots() {
+            if (!confirm("⚠️ WARNING: This will delete ALL department lab photo slots from the database.\nYou will lose all uploaded department images. Proceed?")) return;
+            
+            try {
+                // Fetch all current images
+                const res = await fetch(`${API}/images`);
+                const json = await res.json();
+                const deptSlugs = (json.data || []).filter(img => img.slug.startsWith('dept_')).map(img => img.slug);
+                
+                if (deptSlugs.length === 0) {
+                    showToast('No department slots to clear.');
+                    return;
+                }
+
+                showToast(`Clearing ${deptSlugs.length} slots...`);
+                
+                for (const slug of deptSlugs) {
+                    await fetch(`${API}/images/${slug}`, { method: 'DELETE' });
+                }
+                
+                showToast('✅ All department slots cleared!');
+                loadManagedImages();
+            } catch (e) {
+                showToast('Bulk delete failed', 'error');
+            }
+        }
+
+        // ── CATEGORY MAPPING (Simplified for non-technical admins) ──
+        const IMAGE_CATEGORIES = {
+            'home': [
+                { val: 'home_hero', label: 'Hero Slider (Main)', slots: 4 },
+                { val: 'home_leadership', label: 'Leadership / HODs', slots: 4 }
+            ],
+            'about': [
+                { val: 'Campus View', label: 'Campus View', slots: 10 },
+                { val: 'College Event', label: 'College Event', slots: 10 },
+                { val: 'Workshop', label: 'Workshop', slots: 10 },
+                { val: 'Laboratory', label: 'Laboratory', slots: 10 },
+                { val: 'Library', label: 'Library', slots: 10 },
+                { val: 'Seminar Hall', label: 'Seminar Hall', slots: 10 },
+                { val: 'Sports Activity', label: 'Sports Activity', slots: 10 },
+                { val: 'Annual Function', label: 'Annual Function', slots: 10 }
+            ],
+            'department': [
+                { val: 'dept_aiml_faculty', label: 'AIML - Faculty Photos', slots: 10 },
+                { val: 'dept_aiml_lab', label: 'AIML - Lab Photos', slots: 5 },
+                { val: 'dept_aiml_achievement', label: 'AIML - Achievements', slots: 5 },
+                { val: 'dept_auto_faculty', label: 'Automobile - Faculty Photos', slots: 10 },
+                { val: 'dept_auto_lab', label: 'Automobile - Lab Photos', slots: 5 },
+                { val: 'dept_auto_achievement', label: 'Automobile - Achievements', slots: 5 },
+                { val: 'dept_civil_faculty', label: 'Civil - Faculty Photos', slots: 10 },
+                { val: 'dept_civil_lab', label: 'Civil - Lab Photos', slots: 5 },
+                { val: 'dept_civil_achievement', label: 'Civil - Achievements', slots: 5 },
+                { val: 'dept_computer_faculty', label: 'Computer - Faculty Photos', slots: 10 },
+                { val: 'dept_computer_lab', label: 'Computer - Lab Photos', slots: 5 },
+                { val: 'dept_computer_achievement', label: 'Computer - Achievements', slots: 5 },
+                { val: 'dept_ddgm_faculty', label: 'DDGM - Faculty Photos', slots: 10 },
+                { val: 'dept_ddgm_lab', label: 'DDGM - Lab Photos', slots: 5 },
+                { val: 'dept_ddgm_achievement', label: 'DDGM - Achievements', slots: 5 },
+                { val: 'dept_electrical_faculty', label: 'Electrical - Faculty Photos', slots: 10 },
+                { val: 'dept_electrical_lab', label: 'Electrical - Lab Photos', slots: 5 },
+                { val: 'dept_electrical_achievement', label: 'Electrical - Achievements', slots: 5 },
+                { val: 'dept_entc_faculty', label: 'ENTC - Faculty Photos', slots: 10 },
+                { val: 'dept_entc_lab', label: 'ENTC - Lab Photos', slots: 5 },
+                { val: 'dept_entc_achievement', label: 'ENTC - Achievements', slots: 5 },
+                { val: 'dept_it_faculty', label: 'IT - Faculty Photos', slots: 10 },
+                { val: 'dept_it_lab', label: 'IT - Lab Photos', slots: 5 },
+                { val: 'dept_it_achievement', label: 'IT - Achievements', slots: 5 },
+                { val: 'dept_mechanical_faculty', label: 'Mechanical - Faculty Photos', slots: 10 },
+                { val: 'dept_mechanical_lab', label: 'Mechanical - Lab Photos', slots: 5 },
+                { val: 'dept_mechanical_achievement', label: 'Mechanical - Achievements', slots: 5 },
+                { val: 'dept_science-humanities_faculty', label: 'Sci & Hum - Faculty Photos', slots: 10 },
+                { val: 'dept_science-humanities_lab', label: 'Sci & Hum - Lab Photos', slots: 5 },
+                { val: 'dept_science-humanities_achievement', label: 'Sci & Hum - Achievements', slots: 5 },
+                { val: 'dept_applied-mechanics_faculty', label: 'App Mech - Faculty Photos', slots: 10 },
+                { val: 'dept_applied-mechanics_lab', label: 'App Mech - Lab Photos', slots: 5 },
+                { val: 'dept_applied-mechanics_achievement', label: 'App Mech - Achievements', slots: 5 },
+                { val: 'dept_workshop_faculty', label: 'Workshop - Faculty Photos', slots: 10 },
+                { val: 'dept_workshop_lab', label: 'Workshop - Lab Photos', slots: 5 },
+                { val: 'dept_workshop_achievement', label: 'Workshop - Achievements', slots: 5 },
+                { val: 'dept_mercedes-benz_faculty', label: 'Mercedes-Benz - Faculty Photos', slots: 5 },
+                { val: 'dept_mercedes-benz_lab', label: 'Mercedes-Benz - Lab Photos', slots: 5 },
+                { val: 'dept_mercedes-benz_achievement', label: 'Mercedes-Benz - Achievements', slots: 5 }
+            ],
+            'department_slider': [
+                { val: 'dept_aiml_slider', label: 'AIML', slots: 10 },
+                { val: 'dept_auto_slider', label: 'Automobile', slots: 10 },
+                { val: 'dept_civil_slider', label: 'Civil', slots: 10 },
+                { val: 'dept_computer_slider', label: 'Computer', slots: 10 },
+                { val: 'dept_ddgm_slider', label: 'DDGM', slots: 10 },
+                { val: 'dept_electrical_slider', label: 'Electrical', slots: 10 },
+                { val: 'dept_entc_slider', label: 'ENTC', slots: 10 },
+                { val: 'dept_it_slider', label: 'IT', slots: 10 },
+                { val: 'dept_mechanical_slider', label: 'Mechanical', slots: 10 },
+                { val: 'dept_science-humanities_slider', label: 'Science & Humanities', slots: 10 },
+                { val: 'dept_applied-mechanics_slider', label: 'Applied Mechanics', slots: 10 },
+                { val: 'dept_workshop_slider', label: 'Workshop', slots: 10 },
+                { val: 'dept_mercedes-benz_slider', label: 'Mercedes-Benz', slots: 10 }
+            ],
+            'tpo': [
+                { val: 'tpo_recruiters', label: 'Recruiters Logos', slots: 20 }
+            ],
+            'facility': [
+                { val: 'facility_lib_institute', label: 'Library: Institute Library', slots: 5 },
+                { val: 'facility_lib_boys', label: 'Library: Boys Study Section', slots: 5 },
+                { val: 'facility_lib_girls', label: 'Library: Girls Study Section', slots: 5 },
+                { val: 'facility_hostel_boys_main', label: 'Boys Hostel: Building', slots: 5 },
+                { val: 'facility_hostel_boys_campus', label: 'Boys Hostel: Campus', slots: 5 },
+                { val: 'facility_hostel_boys_rector', label: 'Boys Hostel: Rector Office', slots: 5 },
+                { val: 'facility_hostel_boys_room', label: 'Boys Hostel: Room', slots: 5 },
+                { val: 'facility_hostel_girls_main', label: 'Girls Hostel: Building', slots: 5 },
+                { val: 'facility_hostel_girls_campus', label: 'Girls Hostel: Campus', slots: 5 },
+                { val: 'facility_hostel_girls_rector', label: 'Girls Hostel: Rector Office', slots: 5 },
+                { val: 'facility_hostel_girls_room', label: 'Girls Hostel: Room', slots: 5 },
+                { val: 'facility_gymkhana_activities', label: 'Gymkhana Activities', slots: 10 },
+                { val: 'facility_canteen', label: 'Other: Canteen', slots: 5 },
+                { val: 'facility_workshop', label: 'Other: Workshop', slots: 5 },
+                { val: 'facility_stationary', label: 'Other: Stationary Store', slots: 5 },
+                { val: 'facility_auditorium', label: 'Other: Auditorium', slots: 5 },
+                { val: 'facility_computer_center', label: 'Other: Computer Center', slots: 5 },
+                { val: 'facility_wifi', label: 'Other: WiFi Campus', slots: 5 },
+                { val: 'facility_parking', label: 'Other: Parking Area', slots: 5 }
+            ]
+        };
+
+        function updateSubCategories() {
+            const mainCat = document.getElementById('imgMainCategory').value;
+            const subCatSelect = document.getElementById('imgSubCategory');
+            const subCatField = document.getElementById('subCatField');
+            const slotField = document.getElementById('slotField');
+            
+            slotField.style.display = 'none';
+
+            if (!mainCat || !IMAGE_CATEGORIES[mainCat]) {
+                subCatField.style.display = 'none';
+                return;
+            }
+
+            subCatSelect.innerHTML = '<option value="">-- Select Subcategory --</option>' + 
+                IMAGE_CATEGORIES[mainCat].map(c => `<option value="${c.val}">${c.label}</option>`).join('');
+            
+            subCatField.style.display = 'block';
+        }
+
+        function updateSlots() {
+            const mainCat = document.getElementById('imgMainCategory').value;
+            const subCatVal = document.getElementById('imgSubCategory').value;
+            const slotSelect = document.getElementById('imgSlot');
+            const slotField = document.getElementById('slotField');
+
+            if (!subCatVal) {
+                slotField.style.display = 'none';
+                return;
+            }
+
+            const item = IMAGE_CATEGORIES[mainCat].find(c => c.val === subCatVal);
+            const slotCount = item ? item.slots : 1;
+
+            slotSelect.innerHTML = '';
+            for(let i=1; i<=slotCount; i++) {
+                slotSelect.innerHTML += `<option value="${i}">Photo Slot ${i}</option>`;
+            }
+            
+            slotField.style.display = 'block';
+        }
+
+        function openImageUploadModal(slug = '') {
+            document.getElementById('imgSlug').value = slug;
+            document.getElementById('imgPreviewWrap').style.display = 'none';
+            document.getElementById('imgFileInput').value = '';
+            document.getElementById('imageModalOverlay').style.display = 'flex';
+        }
+
+        function closeImageModal() {
+            document.getElementById('imageModalOverlay').style.display = 'none';
+            window._mergedFiles = [];
+            document.getElementById('imgFileInput').value = '';
+            document.getElementById('imgFolderInput').value = '';
+            document.getElementById('imgPreviewWrap').style.display = 'none';
+            document.getElementById('previewGrid').innerHTML = '';
+        }
+
+        // Holds files from either the regular input OR the webkitdirectory folder picker
+        window._mergedFiles = [];
+
+        function previewImages(input) {
+            const wrap = document.getElementById('imgPreviewWrap');
+            const grid = document.getElementById('previewGrid');
+            const status = document.getElementById('bulkStatus');
+            grid.innerHTML = '';
+            
+            // Store in shared array
+            window._mergedFiles = Array.from(input.files).filter(f => f.size > 0 && f.type.startsWith('image/'));
+            
+            if (window._mergedFiles.length > 0) {
+                status.textContent = `${window._mergedFiles.length} image(s) selected`;
+                wrap.style.display = 'block';
+                
+                // Show first 5 previews to keep UI clean
+                const limit = Math.min(window._mergedFiles.length, 5);
+                for (let i = 0; i < limit; i++) {
+                    const reader = new FileReader();
+                    reader.onload = e => {
+                        grid.innerHTML += `<img src="${e.target.result}" style="width:80px; height:60px; object-fit:cover; border-radius:4px; border:1px solid var(--border)">`;
+                    };
+                    reader.readAsDataURL(window._mergedFiles[i]);
+                }
+                if (window._mergedFiles.length > 5) grid.innerHTML += `<div style="padding:20px; color:var(--muted)">+${window._mergedFiles.length - 5} more</div>`;
+            } else {
+                wrap.style.display = 'none';
+                if (input.files.length > 0) {
+                    document.getElementById('bulkStatus').textContent = '⚠️ No valid image files found in selection.';
+                    wrap.style.display = 'block';
+                }
+            }
+        }
+
+        function mergeFolderFiles(input) {
+            // Called from the hidden webkitdirectory input — merge into shared file list
+            const wrap = document.getElementById('imgPreviewWrap');
+            const grid = document.getElementById('previewGrid');
+            const status = document.getElementById('bulkStatus');
+            grid.innerHTML = '';
+            
+            // Filter to image files only (skip .DS_Store, thumbs.db, hidden files, etc.)
+            window._mergedFiles = Array.from(input.files).filter(f => {
+                return f.size > 0 && f.type.startsWith('image/');
+            });
+            
+            if (window._mergedFiles.length === 0) {
+                status.textContent = '⚠️ No valid image files found in selected folder.';
+                wrap.style.display = 'block';
+                return;
+            }
+            
+            status.textContent = `📁 Folder: ${window._mergedFiles.length} image(s) ready to upload`;
+            wrap.style.display = 'block';
+            
+            const limit = Math.min(window._mergedFiles.length, 5);
+            for (let i = 0; i < limit; i++) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    grid.innerHTML += `<img src="${e.target.result}" style="width:80px; height:60px; object-fit:cover; border-radius:4px; border:1px solid var(--border)">`;
+                };
+                reader.readAsDataURL(window._mergedFiles[i]);
+            }
+            if (window._mergedFiles.length > 5) grid.innerHTML += `<div style="padding:20px; color:var(--muted)">+${window._mergedFiles.length - 5} more</div>`;
+        }
+
+        async function saveImage() {
+            // Use merged files from either the regular picker or webkitdirectory folder picker
+            const files = window._mergedFiles && window._mergedFiles.length > 0
+                ? window._mergedFiles
+                : Array.from(document.getElementById('imgFileInput').files).filter(f => f.size > 0 && f.type.startsWith('image/'));
+            const mainCat = document.getElementById('imgMainCategory').value;
+            const subCat = document.getElementById('imgSubCategory').value;
+            const slot = document.getElementById('imgSlot').value;
+            const title = document.getElementById('imgCardTitle').value;
+            const admin_email = localStorage.getItem('admin_email') || 'admin';
+            
+            // Validate required fields
+            if (!mainCat || !subCat) return showToast('Please select a category and subcategory.', 'error');
+            if (!files.length) return showToast('Please select at least one image file.', 'error');
+            
+            const btn = document.getElementById('imgSaveBtn');
+            const status = document.getElementById('bulkStatus');
+            btn.disabled = true;
+            
+            // Auto-generate slug from subcategory + slot (Sanitized for URL)
+            const baseSlug = `${subCat.toString().replace(/\s+/g, '_')}_${slot || '1'}`;
+            
+            let successCount = 0;
+            let errorCount = 0;
+            let lastError = '';
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                btn.textContent = `Uploading ${i+1}/${files.length}...`;
+                status.textContent = `Processing: ${file.name}`;
+
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('slug', baseSlug);
+                formData.append('category', mainCat);
+                formData.append('subcategory', title || subCat || '');
+                formData.append('slot', slot || '');
+                formData.append('is_active', true);
+                formData.append('uploaded_by', admin_email);
+                formData.append('role', 'admin');
+
+                try {
+                    const res = await fetch(`${API}/images/upload`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const json = await res.json();
+                    if (json.error) throw new Error(json.error);
+                    successCount++;
+                } catch(e) {
+                    console.error(`Upload failed for ${file.name}:`, e);
+                    lastError = e.message || 'Unknown error';
+                    errorCount++;
+                }
+            }
+
+            if (successCount > 0) {
+                showToast(`Successfully uploaded ${successCount} image(s)!`);
+                if (errorCount > 0) showToast(`${errorCount} file(s) failed: ${lastError}`, 'error');
+                closeImageModal();
+                loadManagedImages();
+                fetchImagePendingCount();
+            } else {
+                showToast(`Upload failed: ${lastError}`, 'error');
+            }
+
+            btn.disabled = false;
+            btn.textContent = 'Upload & Save';
+        }
+
+        async function approveImageRequest(id) {
+            if (!confirm('Approve this image? It will go live immediately.')) return;
+            try {
+                const res = await fetch(`${API}/images/requests/${id}/approve`, { method: 'POST' });
+                if (res.ok) {
+                    showToast('Approved!');
+                    loadImageRequests();
+                    loadManagedImages();
+                    fetchImagePendingCount();
+                }
+            } catch(e) { showToast('Error approving', 'error'); }
+        }
+
+        async function rejectImageRequest(id) {
+            const note = prompt('Reason for rejection?');
+            if (!note) return;
+            try {
+                const res = await fetch(`${API}/images/requests/${id}/reject`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ note })
+                });
+                if (res.ok) {
+                    showToast('Rejected');
+                    loadImageRequests();
+                    fetchImagePendingCount();
+                }
+            } catch(e) { showToast('Error rejecting', 'error'); }
+        }
+        function updateStats() {
+            const count = cat => allData.filter(r => {
+                const cats = r.categories || (r.category ? [r.category] : []);
+                return cats.includes(cat);
+            }).length;
+
+            document.getElementById('stat-notice').textContent = count('notice');
+            document.getElementById('stat-tender').textContent = count('tender');
+            document.getElementById('stat-news').textContent = count('news_event');
+
+            document.getElementById('badge-notice').textContent = count('notice');
+            document.getElementById('badge-tender').textContent = count('tender');
+            document.getElementById('badge-news').textContent = count('news_event');
+            document.getElementById('badge-tpo').textContent = count('notice_tpo');
+            document.getElementById('badge-admission').textContent = count('notice_admission');
+            document.getElementById('badge-examination').textContent = count('notice_examination');
+            document.getElementById('badge-department').textContent = count('notice_department');
+            document.getElementById('badge-student').textContent = count('notice_student');
+            document.getElementById('badge-dept-aiml').textContent = count('notice_dept_aiml');
+            document.getElementById('badge-dept-auto').textContent = count('notice_dept_auto');
+            document.getElementById('badge-dept-civil').textContent = count('notice_dept_civil');
+            document.getElementById('badge-dept-computer').textContent = count('notice_dept_computer');
+            document.getElementById('badge-dept-ddgm').textContent = count('notice_dept_ddgm');
+            document.getElementById('badge-dept-electrical').textContent = count('notice_dept_electrical');
+            document.getElementById('badge-dept-entc').textContent = count('notice_dept_entc');
+            document.getElementById('badge-dept-it').textContent = count('notice_dept_it');
+            document.getElementById('badge-dept-mechanical').textContent = count('notice_dept_mechanical');
+            document.getElementById('badge-dept-sci').textContent = count('notice_dept_science_humanities');
+            document.getElementById('badge-dept-apm').textContent = count('notice_dept_applied_mechanics');
+            document.getElementById('badge-dept-workshop').textContent = count('notice_dept_workshop');
+            document.getElementById('badge-dept-mb').textContent = count('notice_dept_mercedes_benz');
+        }
+
+        // ── PENDING REQUESTS LOGIC ──
+        async function fetchPendingCount() {
+            try {
+                const res = await fetch(`${API}/pending?status=pending`);
+                const json = await res.json();
+                document.getElementById('badge-pending').textContent = (json.data || []).length;
+            } catch (e) { }
+        }
+
+        async function showPendingView(el) {
+            // UI state
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('announcementsView').style.display = 'none';
+            document.getElementById('imagesView').style.display = 'none';
+            document.getElementById('pendingView').style.display = 'block';
+            document.getElementById('pageTitle').textContent = 'Pending Approval Requests';
+            document.getElementById('pageSub').textContent = 'Review and approve/reject staff submissions';
+
+            const btn = document.getElementById('topbarBtn');
+            btn.style.display = 'none'; // No "Add New" button in approval desk
+
+            // Fetch announcements
+            const tbody = document.getElementById('pendingTableBody');
+            tbody.innerHTML = '<tr class="loading-row"><td colspan="5">Loading…</td></tr>';
+
+            try {
+                const res = await fetch(`${API}/pending?status=pending`);
+                const json = await res.json();
+                const data = json.data || [];
+                renderPendingTable(data);
+            } catch (e) {
+                tbody.innerHTML = '<tr><td colspan="5">Error loading requests</td></tr>';
+            }
+
+            // Fetch image requests
+            loadImageRequests('pendingImagesTableBody');
+        }
+
+        function renderPendingTable(data) {
+            const tbody = document.getElementById('pendingTableBody');
+            if (!data.length) {
+                tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="big">✅</div><p>No pending requests.</p></div></td></tr>';
+                return;
+            }
+            tbody.innerHTML = data.map(r => `
+                <tr>
+                    <td class="td-title">
+                        ${escHtml(r.title)}
+                        <small>${escHtml(r.description || 'No description')}</small>
+                        ${r.file_url ? `<a href="${r.file_url}" target="_blank" style="color:var(--gold); font-size:12px; text-decoration:none; display:block; margin-top:4px;">📎 View attached PDF</a>` : ''}
+                    </td>
+                    <td>${renderBadges(r.categories || [r.category])}</td>
+                    <td><span style="font-size:12px; color:var(--muted)">${escHtml(r.submitted_by)}</span></td>
+                    <td>${formatDate(r.created_at)}</td>
+                    <td>
+                        <div class="actions">
+                            <button class="act-btn act-edit" style="background:rgba(76,175,136,0.1); color:#4caf88; border-color:rgba(76,175,136,0.2);" onclick="approveRequest('${r.id}')">Approve</button>
+                            <button class="act-btn act-del" onclick="rejectRequest('${r.id}')">Reject</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function approveRequest(id) {
+            if (!confirm('Approve and publish this record?')) return;
+            try {
+                const res = await fetch(`${API}/pending/${id}/approve`, { method: 'POST' });
+                if (res.ok) {
+                    showToast('Approved successfully!');
+                    showPendingView(document.getElementById('pendingNavItem'));
+                    fetchAll(); // Refresh admin stats
+                }
+            } catch (e) { showToast('Approval failed', 'error'); }
+        }
+
+        async function rejectRequest(id) {
+            const note = prompt('Reason for rejection (optional):');
+            if (note === null) return;
+            try {
+                const res = await fetch(`${API}/pending/${id}/reject`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ note })
+                });
+                if (res.ok) {
+                    showToast('Request rejected.');
+                    showPendingView(document.getElementById('pendingNavItem'));
+                }
+            } catch (e) { showToast('Rejection failed', 'error'); }
+        }
+
+        // ── FILTER ──
+        function applyFilter(cat) {
+            currentFilter = cat;
+            if (cat === 'all') {
+                filteredData = [...allData];
+            } else {
+                filteredData = allData.filter(r => {
+                    const cats = r.categories || (r.category ? [r.category] : []);
+                    return cats.includes(cat);
+                });
+            }
+            renderTable(filteredData);
+        }
+
+        function filterData(cat, el) {
+            document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            applyFilter(cat);
+        }
+
+        function handleSearch(q) {
+            const base = currentFilter === 'all' ? allData : allData.filter(r => {
+                const cats = r.categories || (r.category ? [r.category] : []);
+                return cats.includes(currentFilter);
+            });
+            const lower = q.toLowerCase();
+            filteredData = base.filter(r =>
+                r.title?.toLowerCase().includes(lower) ||
+                r.description?.toLowerCase().includes(lower)
+            );
+            renderTable(filteredData);
+        }
+
+        // ── SIDEBAR TABS ──
+        function switchTab(cat, el) {
+            document.getElementById('announcementsView').style.display = 'block';
+            document.getElementById('facultyView').style.display = 'none';
+            document.getElementById('labsView').style.display = 'none';
+            document.getElementById('downloadsView').style.display = 'none';
+            document.getElementById('admissionsView').style.display = 'none';
+            document.getElementById('pendingView').style.display = 'none';
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+            const titles = {
+                all: 'All Announcements',
+                news_event: 'News & Events',
+                tender: 'Tenders & Quotations',
+                notice: 'General Notices',
+                notice_tpo: 'Notice Board — TPO',
+                notice_admission: 'Notice Board — Admission',
+                notice_examination: 'Notice Board — Examination Cell',
+                notice_department: 'Notice Board — All Departments',
+                notice_student: 'Notice Board — Student Section',
+                notice_dept_aiml: 'Notice Board — AI & ML Dept',
+                notice_dept_auto: 'Notice Board — Automobile Dept',
+                notice_dept_civil: 'Notice Board — Civil Dept',
+                notice_dept_computer: 'Notice Board — Computer Dept',
+                notice_dept_ddgm: 'Notice Board — DDGM Dept',
+                notice_dept_electrical: 'Notice Board — Electrical Dept',
+                notice_dept_entc: 'Notice Board — ENTC Dept',
+                notice_dept_it: 'Notice Board — IT Dept',
+                notice_dept_mechanical: 'Notice Board — Mechanical Dept',
+                notice_dept_science_humanities: 'Notice Board — Science & Humanities',
+                notice_dept_applied_mechanics: 'Notice Board — Applied Mechanics',
+                notice_dept_workshop: 'Notice Board — Workshop Dept',
+                notice_dept_mercedes_benz: 'Notice Board — Mercedes-Benz',
+            };
+            document.getElementById('pageTitle').textContent = titles[cat] || 'Announcements';
+            
+            const btn = document.getElementById('topbarBtn');
+            btn.style.display = 'flex';
+            btn.innerHTML = '＋ &nbsp;Add New';
+            btn.onclick = () => openAddModal();
+
+            document.querySelectorAll('.filter-tab').forEach((t, i) => {
+                const cats = ['all', 'notice', 'tender', 'news_event'];
+                t.classList.toggle('active', cats[i] === cat);
+            });
+            applyFilter(cat);
+        }
+
+        // ── ALL DEPT MASTER TOGGLE ──────────────────────────────────────────────
+        // When admin checks "All Departments", it only saves notice_department.
+        // The Flask backend automatically serves this notice to all dept pages.
+        // Individual dept checkboxes are disabled while "All Departments" is checked.
+        function handleAllDeptToggle(masterCb) {
+            const deptCbs = document.querySelectorAll('.dept-cb');
+            if (masterCb.checked) {
+                // Uncheck and disable all individual dept checkboxes
+                deptCbs.forEach(cb => {
+                    cb.checked = false;
+                    cb.disabled = true;
+                    cb.closest('.cat-check').style.opacity = '0.4';
+                });
+            } else {
+                // Re-enable individual dept checkboxes
+                deptCbs.forEach(cb => {
+                    cb.disabled = false;
+                    cb.closest('.cat-check').style.opacity = '1';
+                });
+            }
+        }
+
+        // ── CATEGORY HELPERS ──
+        function getSelectedCategories() {
+            return [...document.querySelectorAll('#fCategories input[type="checkbox"]:checked')]
+                .map(cb => cb.value);
+        }
+
+        function setSelectedCategories(cats = []) {
+            // First clear all
+            clearCategories();
+
+            // Check boxes for each saved category
+            document.querySelectorAll('#fCategories input[type="checkbox"]').forEach(cb => {
+                if (cats.includes(cb.value)) cb.checked = true;
+            });
+
+            // If notice_department is among them, trigger the master toggle logic
+            const masterCb = document.getElementById('allDeptCheck');
+            if (cats.includes('notice_department')) {
+                masterCb.checked = true;
+                handleAllDeptToggle(masterCb);
+            }
+        }
+
+        function clearCategories() {
+            const masterCb = document.getElementById('allDeptCheck');
+            masterCb.checked = false;
+            // Re-enable individual checkboxes first
+            document.querySelectorAll('.dept-cb').forEach(cb => {
+                cb.disabled = false;
+                cb.checked = false;
+                cb.closest('.cat-check').style.opacity = '1';
+            });
+            // Clear everything else
+            document.querySelectorAll('#fCategories input[type="checkbox"]').forEach(cb => {
+                cb.checked = false;
+            });
+        }
+
+        // ── RENDER BADGES ──
+        function renderBadges(cats) {
+            if (!cats || cats.length === 0) return '<span style="color:var(--muted);font-size:12px;">—</span>';
+            const catLabel = {
+                notice: 'Notice',
+                tender: 'Tender',
+                news_event: 'News & Event',
+                notice_tpo: 'TPO',
+                notice_admission: 'Admission',
+                notice_examination: 'Exam Cell',
+                notice_department: 'All Depts',
+                notice_student: 'Student',
+                notice_dept_aiml: 'AIML',
+                notice_dept_auto: 'Auto',
+                notice_dept_civil: 'Civil',
+                notice_dept_computer: 'Computer',
+                notice_dept_ddgm: 'DDGM',
+                notice_dept_electrical: 'Electrical',
+                notice_dept_entc: 'ENTC',
+                notice_dept_it: 'IT',
+                notice_dept_mechanical: 'Mechanical',
+                notice_dept_science_humanities: 'Sci & Hum',
+                notice_dept_applied_mechanics: 'Appl. Mech',
+                notice_dept_workshop: 'Workshop',
+                notice_dept_mercedes_benz: 'Mercedes',
+            };
+            return cats.map(c =>
+                `<span class="badge badge-${c}">${catLabel[c] || c}</span>`
+            ).join('');
+        }
+
+        // ── RENDER TABLE ──
+        function renderTable(data) {
+            const tbody = document.getElementById('tableBody');
+            if (!data.length) {
+                tbody.innerHTML = `<tr><td colspan="5">
+                    <div class="empty-state">
+                        <div class="big">📭</div>
+                        <p>No records found. Click <strong>Add New</strong> to create one.</p>
+                    </div></td></tr>`;
+                return;
+            }
+            tbody.innerHTML = data.map(r => {
+                const cats = r.categories || (r.category ? [r.category] : []);
+                return `
+                <tr>
+                    <td class="td-title">
+                        ${escHtml(r.title)}
+                        <small>${escHtml(r.description || '—')}</small>
+                    </td>
+                    <td>${renderBadges(cats)}</td>
+                    <td><span class="status-dot ${r.is_active ? 'active' : 'inactive'}">${r.is_active ? 'Active' : 'Inactive'}</span></td>
+                    <td>${formatDate(r.published_at)}</td>
+                    <td>
+                        <div class="actions">
+                            <button class="act-btn act-edit" onclick="openEditModal('${r.id}')">Edit</button>
+                            <button class="act-btn act-del"  onclick="openDeleteModal('${r.id}')">Delete</button>
+                        </div>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        // ── ADD MODAL ──
+        function openAddModal() {
+            editingId = null;
+            document.getElementById('modalTitle').textContent = 'Add Announcement';
+            clearForm();
+            document.getElementById('formOverlay').classList.add('open');
+        }
+
+        // ── EDIT MODAL ──
+        function openEditModal(id) {
+            const rec = allData.find(r => r.id === id);
+            if (!rec) return;
+            editingId = id;
+            document.getElementById('modalTitle').textContent = 'Edit Announcement';
+            document.getElementById('fTitle').value = rec.title || '';
+            document.getElementById('fDesc').value = rec.description || '';
+            document.getElementById('fExpires').value = rec.expires_at ? rec.expires_at.split('T')[0] : '';
+            document.getElementById('fActive').checked = rec.is_active !== false;
+            uploadedFileUrl = rec.file_url || null;
+            document.getElementById('fFileUrl').value = rec.file_url || '';
+            document.getElementById('filePickerBtn').textContent = rec.file_url
+                ? `📎 ${rec.file_url.split('/').pop()}`
+                : '📁 \u00a0Choose from device';
+            const cats = rec.categories || (rec.category ? [rec.category] : []);
+            setSelectedCategories(cats);
+            document.getElementById('formOverlay').classList.add('open');
+        }
+
+        function closeModal() {
+            document.getElementById('formOverlay').classList.remove('open');
+            editingId = null;
+        }
+
+        function clearForm() {
+            ['fTitle', 'fDesc', 'fExpires'].forEach(id => document.getElementById(id).value = '');
+            clearCategories();
+            document.getElementById('fActive').checked = true;
+            clearFile();
+        }
+
+        // ── FILE UPLOAD ──
+        async function handleFileSelect(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            document.getElementById('fFileUrl').value = `📎 ${file.name}`;
+            document.getElementById('filePickerBtn').textContent = `📎 ${file.name}`;
+
+            const progressWrap = document.getElementById('uploadProgress');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            progressWrap.style.display = 'block';
+            progressBar.style.width = '30%';
+            progressText.textContent = 'Uploading…';
+            progressText.style.color = 'var(--muted)';
+
+            try {
+                const formData = new FormData();
+                formData.append('file', file);
+                const selectedCats = getSelectedCategories();
+                formData.append('category', selectedCats[0] || 'general');
+
+                progressBar.style.width = '60%';
+
+                const res = await fetch(`${API}/announcements/upload`, { method: 'POST', body: formData });
+                const data = await res.json();
+
+                if (!res.ok) throw new Error(data.error || 'Upload failed');
+
+                uploadedFileUrl = data.file_url;
+                document.getElementById('fFileUrl').value = uploadedFileUrl;
+
+                progressBar.style.width = '100%';
+                progressText.textContent = '✅ Uploaded successfully!';
+                progressText.style.color = 'var(--success)';
+
+                setTimeout(() => {
+                    progressWrap.style.display = 'none';
+                    progressBar.style.width = '0%';
+                    progressText.style.color = 'var(--muted)';
+                }, 2000);
+
+            } catch (err) {
+                progressText.textContent = '❌ Upload failed. Check Flask server.';
+                progressText.style.color = 'var(--danger)';
+                progressBar.style.width = '0%';
+                showToast('File upload failed: ' + err.message, 'error');
+            }
+        }
+
+        function clearFile() {
+            uploadedFileUrl = null;
+            document.getElementById('fFileUrl').value = '';
+            document.getElementById('fFileInput').value = '';
+            document.getElementById('filePickerBtn').textContent = '📁 \u00a0Choose from device';
+            document.getElementById('uploadProgress').style.display = 'none';
+        }
+
+        // ── SAVE (CREATE / UPDATE) ──
+        async function saveRecord() {
+            const title = document.getElementById('fTitle').value.trim();
+            const categories = getSelectedCategories();
+
+            if (!title) { showToast('Title is required.', 'error'); return; }
+            if (categories.length === 0) { showToast('Please select at least one category.', 'error'); return; }
+
+            const payload = {
+                title,
+                categories,
+                category: categories[0],
+                description: document.getElementById('fDesc').value.trim() || null,
+                file_url: uploadedFileUrl || document.getElementById('fFileUrl').value.trim() || null,
+                is_active: document.getElementById('fActive').checked,
+                expires_at: document.getElementById('fExpires').value || null,
+            };
+
+            const saveBtn = document.getElementById('saveBtn');
+            saveBtn.disabled = true;
+            saveBtn.textContent = 'Saving…';
+
+            try {
+                const url = editingId ? `${API}/announcements/${editingId}` : `${API}/announcements`;
+                const method = editingId ? 'PUT' : 'POST';
+                const res = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!res.ok) throw new Error('Server error');
+
+                closeModal();
+                await fetchAll();
+                showToast(editingId ? '✅ Record updated!' : '✅ Record created!', 'success');
+
+            } catch (e) {
+                showToast('Failed to save. Check Flask server.', 'error');
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.textContent = 'Save';
+            }
+        }
+
+        // ── DELETE ──
+        function openDeleteModal(id) { deletingId = id; document.getElementById('deleteOverlay').classList.add('open'); }
+        function closeDeleteModal() { document.getElementById('deleteOverlay').classList.remove('open'); deletingId = null; }
+
+        async function confirmDelete() {
+            if (!deletingId) return;
+            try {
+                await fetch(`${API}/announcements/${deletingId}`, { method: 'DELETE' });
+                closeDeleteModal();
+                await fetchAll();
+                showToast('🗑️ Record deleted.', 'success');
+            } catch (e) { showToast('Delete failed.', 'error'); }
+        }
+
+        // ── LOGOUT — clears session and redirects to login ──
+        async function handleLogout() {
+            try { await fetch(`${API}/auth/logout`, { method: 'POST' }); } catch (_) { }
+            localStorage.removeItem('admin_token');
+            localStorage.removeItem('admin_email');
+            window.location.href = '/';
+        }
+
+        // ── HELPERS ──
+        function escHtml(str) {
+            return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+        function formatDate(iso) {
+            if (!iso) return '—';
+            return new Date(iso).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+        }
+                function showToast(msg, type = 'success') {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.className = `toast ${type} show`;
+            setTimeout(() => t.classList.remove('show'), 4000);
+        }
+
+        document.getElementById('formOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+
+        // ── INITIAL FETCH ──
+        fetchAll();
+
+        // ── FACULTY LOGIC ──
+        let facultyData = [];
+        let facultyEditingId = null;
+
+        function showFacultyView(el) {
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('announcementsView').style.display = 'none';
+            document.getElementById('imagesView').style.display = 'none';
+            document.getElementById('pendingView').style.display = 'none';
+            document.getElementById('labsView').style.display = 'none';
+            document.getElementById('facultyView').style.display = 'block';
+            document.getElementById('pageTitle').textContent = 'Faculty Management';
+            document.getElementById('topbarBtn').style.display = 'none';
+            fetchFaculty();
+        }
+
+        async function fetchFaculty(dept = '') {
+            const tbody = document.getElementById('facultyTableBody');
+            tbody.innerHTML = '<tr class="loading-row"><td colspan="5">Loading faculty...</td></tr>';
+            try {
+                const res = await fetch(`${API}/faculty${dept ? '?department='+dept : ''}`);
+                const json = await res.json();
+                facultyData = json.data || [];
+                renderFacultyTable();
+            } catch (e) {
+                tbody.innerHTML = '<tr><td colspan="5">Error loading faculty</td></tr>';
+            }
+        }
+
+        function renderFacultyTable() {
+            const tbody = document.getElementById('facultyTableBody');
+            if (!facultyData.length) {
+                tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><div class="big">📭</div><p>No faculty found.</p></div></td></tr>`;
+                return;
+            }
+            tbody.innerHTML = facultyData.map(f => `
+                <tr>
+                    <td><img src="${f.photo_url || '/static/images/director4.jpg'}" alt="photo" style="width:40px; height:40px; border-radius:50%; object-fit:cover;"></td>
+                    <td class="td-title">
+                        ${escHtml(f.name)}
+                        <small>${escHtml(f.designation)}</small>
+                    </td>
+                    <td>
+                        <div style="font-size:12px;">📞 ${escHtml(f.contact_no || '-')}</div>
+                        <div style="font-size:12px;">✉️ ${escHtml(f.email || '-')}</div>
+                    </td>
+                    <td><span class="badge badge-notice_dept_${f.department.replace('-','_')}">${f.department.toUpperCase()}</span></td>
+                    <td>
+                        <div class="actions">
+                            <button class="act-btn act-edit" onclick="openFacultyModal('${f.id}')">Edit</button>
+                            <button class="act-btn act-del"  onclick="deleteFaculty('${f.id}')">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openFacultyModal(id = null) {
+            facultyEditingId = id;
+            document.getElementById('facultyModalTitle').textContent = id ? 'Edit Faculty' : 'Add Faculty';
+            document.getElementById('facultyForm').reset();
+            if (id) {
+                const f = facultyData.find(x => x.id === id);
+                if (f) {
+                    document.getElementById('fac_dept').value = f.department || '';
+                    document.getElementById('fac_name').value = f.name || '';
+                    document.getElementById('fac_designation').value = f.designation || '';
+                    document.getElementById('fac_contact').value = f.contact_no || '';
+                    document.getElementById('fac_email').value = f.email || '';
+                }
+            }
+            document.getElementById('facultyOverlay').classList.add('open');
+        }
+
+        function closeFacultyModal() {
+            document.getElementById('facultyOverlay').classList.remove('open');
+            facultyEditingId = null;
+        }
+
+        async function saveFaculty(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btnFacultySave');
+            btn.disabled = true;
+            btn.textContent = 'Saving...';
+            
+            try {
+                const formData = new FormData();
+                formData.append('department', document.getElementById('fac_dept').value);
+                formData.append('name', document.getElementById('fac_name').value);
+                formData.append('designation', document.getElementById('fac_designation').value);
+                formData.append('contact_no', document.getElementById('fac_contact').value);
+                formData.append('email', document.getElementById('fac_email').value);
+                
+                const fileInput = document.getElementById('fac_photo');
+                if (fileInput.files[0]) {
+                    formData.append('file', fileInput.files[0]);
+                }
+                
+                const url = facultyEditingId ? `${API}/faculty/${facultyEditingId}` : `${API}/faculty`;
+                const method = facultyEditingId ? 'PATCH' : 'POST';
+                
+                const res = await fetch(url, { method, body: formData });
+                if (!res.ok) throw new Error('Save failed');
+                
+                showToast(facultyEditingId ? 'Faculty updated' : 'Faculty added');
+                closeFacultyModal();
+                fetchFaculty(document.getElementById('facultyDeptFilter').value);
+            } catch (err) {
+                showToast('Failed to save faculty', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Save Faculty';
+            }
+        }
+
+        async function deleteFaculty(id) {
+            if (!confirm('Are you sure you want to delete this faculty member?')) return;
+            try {
+                const res = await fetch(`${API}/faculty/${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    showToast('Faculty deleted');
+                    fetchFaculty(document.getElementById('facultyDeptFilter').value);
+                }
+            } catch (e) {
+                showToast('Failed to delete', 'error');
+            }
+        }
+
+        // ── LABS LOGIC ──
+        let labsData = [];
+        let labsEditingId = null;
+
+        function showLabsView(el) {
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('announcementsView').style.display = 'none';
+            document.getElementById('imagesView').style.display = 'none';
+            document.getElementById('pendingView').style.display = 'none';
+            document.getElementById('facultyView').style.display = 'none';
+            document.getElementById('labsView').style.display = 'block';
+            document.getElementById('pageTitle').textContent = 'Lab Management';
+            document.getElementById('topbarBtn').style.display = 'none';
+            fetchLabs();
+        }
+
+        async function fetchLabs(dept = '') {
+            const tbody = document.getElementById('labsTableBody');
+            tbody.innerHTML = '<tr class="loading-row"><td colspan="4">Loading labs...</td></tr>';
+            try {
+                const res = await fetch(`${API}/labs${dept ? '?department='+dept : ''}`);
+                const json = await res.json();
+                labsData = json.data || [];
+                renderLabsTable();
+            } catch (e) {
+                tbody.innerHTML = '<tr><td colspan="4">Error loading labs</td></tr>';
+            }
+        }
+
+        function renderLabsTable() {
+            const tbody = document.getElementById('labsTableBody');
+            if (!labsData.length) {
+                tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><div class="big">📭</div><p>No labs found.</p></div></td></tr>`;
+                return;
+            }
+            tbody.innerHTML = labsData.map(l => `
+                <tr>
+                    <td><span class="badge badge-notice_dept_${l.department.replace('-','_')}">${l.department.toUpperCase()}</span></td>
+                    <td class="td-title">${escHtml(l.name)}</td>
+                    <td style="color:var(--muted);">${escHtml(l.equipment)}</td>
+                    <td>
+                        <div class="actions">
+                            <button class="act-btn act-edit" onclick="openLabsModal('${l.id}')">Edit</button>
+                            <button class="act-btn act-del"  onclick="deleteLab('${l.id}')">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openLabsModal(id = null) {
+            labsEditingId = id;
+            document.getElementById('labsModalTitle').textContent = id ? 'Edit Lab' : 'Add Lab';
+            document.getElementById('labsForm').reset();
+            if (id) {
+                const l = labsData.find(x => x.id === id);
+                if (l) {
+                    document.getElementById('lab_dept').value = l.department || '';
+                    document.getElementById('lab_name').value = l.name || '';
+                    document.getElementById('lab_equipment').value = l.equipment || '';
+                }
+            }
+            document.getElementById('labsOverlay').classList.add('open');
+        }
+
+        function closeLabsModal() {
+            document.getElementById('labsOverlay').classList.remove('open');
+            labsEditingId = null;
+        }
+
+        async function saveLab(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btnLabsSave');
+            btn.disabled = true;
+            btn.textContent = 'Saving...';
+            
+            try {
+                const payload = {
+                    department: document.getElementById('lab_dept').value,
+                    name: document.getElementById('lab_name').value,
+                    equipment: document.getElementById('lab_equipment').value
+                };
+                
+                const url = labsEditingId ? `${API}/labs/${labsEditingId}` : `${API}/labs`;
+                const method = labsEditingId ? 'PATCH' : 'POST';
+                
+                const res = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!res.ok) throw new Error('Save failed');
+                
+                showToast(labsEditingId ? 'Lab updated' : 'Lab added');
+                closeLabsModal();
+                fetchLabs(document.getElementById('labsDeptFilter').value);
+            } catch (err) {
+                showToast('Failed to save lab', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Save Lab';
+            }
+        }
+
+        async function deleteLab(id) {
+            if (!confirm('Are you sure you want to delete this lab?')) return;
+            try {
+                const res = await fetch(`${API}/labs/${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    showToast('Lab deleted');
+                    fetchLabs(document.getElementById('labsDeptFilter').value);
+                }
+            } catch (e) {
+                showToast('Failed to delete', 'error');
+            }
+        }
+
+        // ── DOWNLOADS LOGIC ──
+        let downloadsData = [];
+        let downloadsEditingId = null;
+
+        function showDownloadsView(el) {
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('announcementsView').style.display = 'none';
+            document.getElementById('imagesView').style.display = 'none';
+            document.getElementById('pendingView').style.display = 'none';
+            document.getElementById('facultyView').style.display = 'none';
+            document.getElementById('labsView').style.display = 'none';
+            document.getElementById('downloadsView').style.display = 'block';
+            document.getElementById('pageTitle').textContent = 'Downloads Management';
+            document.getElementById('topbarBtn').style.display = 'none';
+            fetchDownloads();
+        }
+
+        async function fetchDownloads(section = '') {
+            const tbody = document.getElementById('downloadsTableBody');
+            tbody.innerHTML = '<tr class="loading-row"><td colspan="4">Loading downloads...</td></tr>';
+            try {
+                const res = await fetch(`/api/downloads${section ? '?section='+section : ''}`);
+                const json = await res.json();
+                downloadsData = json.data || [];
+                renderDownloadsTable();
+            } catch (e) {
+                tbody.innerHTML = '<tr><td colspan="4">Error loading downloads</td></tr>';
+            }
+        }
+
+        function renderDownloadsTable() {
+            const tbody = document.getElementById('downloadsTableBody');
+            if (!downloadsData.length) {
+                tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><div class="big">📭</div><p>No downloads found.</p></div></td></tr>`;
+                return;
+            }
+            tbody.innerHTML = downloadsData.map(d => {
+                const sLabel = d.section === 'academic' ? 'Academic' : d.section === 'admission' ? 'Admission' : 'Examination';
+                const hasLink = d.external_link ? true : false;
+                const badgeStyle = d.section === 'academic' ? 'notice_dept_computer' : 'notice_department';
+                
+                return `
+                <tr>
+                    <td><span class="badge badge-${badgeStyle}">${sLabel}</span></td>
+                    <td class="td-title">${escHtml(d.name)}</td>
+                    <td>${hasLink ? '<span class="badge" style="background:#eef1e6; color:#5c7031">Link</span>' : (d.file_url ? '<span class="badge" style="background:#e6eff5; color:#28577d">File</span>' : '-')}</td>
+                    <td>
+                        <div class="actions">
+                            ${hasLink ? `<a href="${d.external_link}" target="_blank" class="act-btn" style="background:#eee;">Test Link</a>` : (d.file_url ? `<a href="${d.file_url}" target="_blank" class="act-btn" style="background:#eee;">View File</a>` : '')}
+                            <button class="act-btn act-edit" onclick="openDownloadsModal('${d.id}')">Edit</button>
+                            <button class="act-btn act-del"  onclick="deleteDownload('${d.id}')">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+                `;
+            }).join('');
+        }
+
+        function toggleDownloadLinkForm() {
+            const section = document.getElementById('dl_section').value;
+            if (section === 'admission' || section === 'exam') {
+                document.getElementById('dl_link_container').style.display = 'block';
+            } else {
+                document.getElementById('dl_link_container').style.display = 'none';
+                document.getElementById('dl_link').value = '';
+            }
+        }
+
+        function updateDlFileName(input) {
+            const div = document.getElementById('dl_file_name');
+            if (input.files && input.files[0]) {
+                div.textContent = input.files[0].name;
+            } else {
+                div.textContent = "Click to upload document";
+            }
+        }
+
+        function openDownloadsModal(id = null) {
+            downloadsEditingId = id;
+            document.getElementById('downloadsModalTitle').textContent = id ? 'Edit Download' : 'Add Download';
+            document.getElementById('downloadsForm').reset();
+            document.getElementById('dl_file_name').textContent = "Click to upload document";
+            document.getElementById('dl_link_container').style.display = 'none';
+            document.getElementById('dl_section').disabled = false;
+            
+            if (id) {
+                const d = downloadsData.find(x => x.id === id);
+                if (d) {
+                    document.getElementById('dl_section').value = d.section || '';
+                    document.getElementById('dl_name').value = d.name || '';
+                    if (d.external_link) document.getElementById('dl_link').value = d.external_link;
+                    toggleDownloadLinkForm();
+                }
+            }
+            document.getElementById('downloadsOverlay').classList.add('open');
+        }
+
+        function closeDownloadsModal() {
+            document.getElementById('downloadsOverlay').classList.remove('open');
+            downloadsEditingId = null;
+        }
+
+        async function saveDownload(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btnDownloadsSave');
+            const fileInput = document.getElementById('dl_file');
+            
+            btn.disabled = true;
+            btn.textContent = 'Saving...';
+            
+            try {
+                const formData = new FormData();
+                formData.append('section', document.getElementById('dl_section').value);
+                formData.append('name', document.getElementById('dl_name').value);
+                
+                const extLink = document.getElementById('dl_link') ? document.getElementById('dl_link').value : '';
+                if(extLink) formData.append('external_link', extLink);
+                if (fileInput.files.length > 0) {
+                    formData.append('file', fileInput.files[0]);
+                }
+                
+                const url = downloadsEditingId ? `/api/downloads/${downloadsEditingId}` : `/api/downloads`;
+                const method = downloadsEditingId ? 'PATCH' : 'POST';
+                
+                const res = await fetch(url, {
+                    method: method,
+                    body: formData
+                });
+                
+                const json = await res.json();
+                if (!res.ok) throw new Error(json.error || 'Save failed');
+                
+                showToast(downloadsEditingId ? 'Download updated' : 'Download added');
+                closeDownloadsModal();
+                fetchDownloads(document.getElementById('downloadsSectionFilter').value);
+            } catch (err) {
+                showToast('Failed to save: ' + err.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Save Document';
+            }
+        }
+
+        async function deleteDownload(id) {
+            if (!confirm('Are you sure you want to delete this document?')) return;
+            try {
+                const res = await fetch(`/api/downloads/${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    showToast('Document deleted');
+                    fetchDownloads(document.getElementById('downloadsSectionFilter').value);
+                }
+            } catch (e) { showToast('Delete failed', 'error'); }
+        }
+
+        // ── ADMISSIONS MANAGEMENT LOGIC ──
+        let currentAdmissionSection = 'details';
+
+        function showAdmissionsView(el) {
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('announcementsView').style.display = 'none';
+            document.getElementById('imagesView').style.display = 'none';
+            document.getElementById('pendingView').style.display = 'none';
+            document.getElementById('facultyView').style.display = 'none';
+            document.getElementById('labsView').style.display = 'none';
+            document.getElementById('downloadsView').style.display = 'none';
+            document.getElementById('admissionsView').style.display = 'block';
+            document.getElementById('pageTitle').textContent = 'Admissions & Hostel';
+            document.getElementById('topbarBtn').style.display = 'none';
+            
+            const sub = document.getElementById('admissionSubFilter').value;
+            fetchAdmissionDocs(sub, 'admissionDetailsTableBody');
+            fetchFees();
+            fetchAdmissionDocs('girls_hostel', 'girlsHostelTableBody');
+            fetchAdmissionDocs('boys_hostel', 'boysHostelTableBody');
+        }
+
+        function switchAdmissionTab(section, el) {
+            document.querySelectorAll('#admissionsView .filter-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            
+            document.getElementById('admissionDetailsSection').style.display = section === 'details' ? 'block' : 'none';
+            document.getElementById('feesStructureSection').style.display = section === 'fees' ? 'block' : 'none';
+            document.getElementById('girlsHostelSection').style.display = section === 'girls' ? 'block' : 'none';
+            document.getElementById('boysHostelSection').style.display = section === 'boys' ? 'block' : 'none';
+            
+            if (section === 'details') {
+                const sub = document.getElementById('admissionSubFilter').value;
+                fetchAdmissionDocs(sub, 'admissionDetailsTableBody');
+            }
+            
+            currentAdmissionSection = section;
+        }
+
+        function openAdmissionDocWithSubFilter() {
+            const sub = document.getElementById('admissionSubFilter').value;
+            openAdmissionDocModal(sub);
+        }
+
+        async function fetchAdmissionDocs(section, tbodyId) {
+            const tbody = document.getElementById(tbodyId);
+            if (!tbody) return;
+            tbody.innerHTML = '<tr class="loading-row"><td colspan="3">Loading...</td></tr>';
+            try {
+                const res = await fetch(`/api/downloads?section=${section}`);
+                const json = await res.json();
+                const data = json.data || [];
+                if (!data.length) {
+                    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:20px; color:var(--muted)">No documents found.</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = data.map(d => `
+                    <tr>
+                        <td class="td-title">${escHtml(d.name)}</td>
+                        <td><a href="${d.file_url}" target="_blank" style="color:var(--gold); font-size:12px;">View File</a></td>
+                        <td>
+                            <div class="actions">
+                                <button class="act-btn act-edit" onclick="openAdmissionDocEdit('${d.id}', '${section}')">Edit</button>
+                                <button class="act-btn act-del" onclick="deleteAdmissionDoc('${d.id}', '${section}', '${tbodyId}')">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (e) { tbody.innerHTML = '<tr><td colspan="3">Error loading.</td></tr>'; }
+        }
+
+        async function fetchFees() {
+            const tbody = document.getElementById('feesTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = '<tr class="loading-row"><td colspan="5">Loading...</td></tr>';
+            try {
+                const res = await fetch('/api/fees');
+                const json = await res.json();
+                const data = json.data || [];
+                if (!data.length) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:20px; color:var(--muted)">No fee records found.</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = data.map(f => `
+                    <tr>
+                        <td class="td-title">${escHtml(f.category)}</td>
+                        <td>${escHtml(f.govt_fees || '-')}</td>
+                        <td>${escHtml(f.non_govt_fees || '-')}</td>
+                        <td>${escHtml(f.total_amount || '-')}</td>
+                        <td>
+                            <div class="actions">
+                                <button class="act-btn act-edit" onclick="openFeesModal('${f.id}')">Edit</button>
+                                <button class="act-btn act-del" onclick="deleteFee('${f.id}')">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (e) { tbody.innerHTML = '<tr><td colspan="5">Error loading.</td></tr>'; }
+        }
+
+        function openAdmissionDocModal(section) {
+            openDownloadsModal();
+            document.getElementById('dl_section').value = section;
+        }
+
+        async function openAdmissionDocEdit(id, section) {
+            const d = downloadsData.find(x => x.id === id);
+            openDownloadsModal(id);
+            document.getElementById('dl_section').value = section;
+            if (d) document.getElementById('dl_name').value = d.name;
+        }
+
+        async function deleteAdmissionDoc(id, section, tbodyId) {
+            if (!confirm('Are you sure you want to delete this document?')) return;
+            try {
+                const res = await fetch(`${API}/downloads/${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    showToast('Document deleted');
+                    fetchAdmissionDocs(section, tbodyId);
+                }
+            } catch (e) { showToast('Delete failed', 'error'); }
+        }
+
+        // FEESH LOGIC
+        let feesEditingId = null;
+        function openFeesModal(id = null) {
+            feesEditingId = id;
+            document.getElementById('feesModalTitle').textContent = id ? 'Edit Fee Record' : 'Add Fee Record';
+            document.getElementById('feesForm').reset();
+            if (id) {
+                // Find in current view (could also fetch)
+                const rows = document.querySelectorAll('#feesTableBody tr');
+                // For simplicity, let's just fetch or use global data if I had it. 
+                // Let's fetch one
+                fetch(`/api/fees`).then(r => r.json()).then(json => {
+                    const f = json.data.find(x => x.id === id);
+                    if (f) {
+                        document.getElementById('fee_category').value = f.category;
+                        document.getElementById('fee_govt').value = f.govt_fees;
+                        document.getElementById('fee_non_govt').value = f.non_govt_fees;
+                        document.getElementById('fee_total').value = f.total_amount;
+                    }
+                });
+            }
+            document.getElementById('feesOverlay').classList.add('open');
+        }
+
+        function closeFeesModal() {
+            document.getElementById('feesOverlay').classList.remove('open');
+            feesEditingId = null;
+        }
+
+        async function saveFee(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btnFeesSave');
+            btn.disabled = true;
+            btn.textContent = 'Saving...';
+            
+            const formData = new FormData();
+            formData.append('category', document.getElementById('fee_category').value);
+            formData.append('govt_fees', document.getElementById('fee_govt').value);
+            formData.append('non_govt_fees', document.getElementById('fee_non_govt').value);
+            formData.append('total_amount', document.getElementById('fee_total').value);
+
+            try {
+                const url = feesEditingId ? `/api/fees/${feesEditingId}` : '/api/fees';
+                const method = feesEditingId ? 'PATCH' : 'POST';
+                const res = await fetch(url, { method, body: formData });
+                if (!res.ok) throw new Error('Save failed');
+                showToast(feesEditingId ? 'Fee updated' : 'Fee record added');
+                closeFeesModal();
+                fetchFees();
+            } catch (e) { showToast('Error saving fee', 'error'); }
+            finally {
+                btn.disabled = false;
+                btn.textContent = 'Save Fee';
+            }
+        }
+
+        async function deleteFee(id) {
+            if (!confirm('Delete this fee record?')) return;
+            try {
+                const res = await fetch(`/api/fees/${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    showToast('Fee record deleted');
+                    fetchFees();
+                }
+            } catch (e) { showToast('Delete failed', 'error'); }
+        }
+
+        // ── MAGAZINES LOGIC ──
+        let magazinesData = [];
+        let magazinesEditingId = null;
+
+        function showMagazinesView(el) {
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('announcementsView').style.display = 'none';
+            document.getElementById('imagesView').style.display = 'none';
+            document.getElementById('pendingView').style.display = 'none';
+            document.getElementById('facultyView').style.display = 'none';
+            document.getElementById('labsView').style.display = 'none';
+            document.getElementById('downloadsView').style.display = 'none';
+            document.getElementById('admissionsView').style.display = 'none';
+            document.getElementById('magazinesView').style.display = 'block';
+            document.getElementById('pageTitle').textContent = 'E-Magazine Management';
+            document.getElementById('topbarBtn').style.display = 'none';
+            fetchMagazines();
+        }
+
+        async function fetchMagazines(dept = '') {
+            const tbody = document.getElementById('magazinesTableBody');
+            tbody.innerHTML = '<tr class="loading-row"><td colspan="4">Loading magazines...</td></tr>';
+            try {
+                const res = await fetch(`${API}/magazines${dept ? '?dept_slug='+dept : ''}`);
+                const json = await res.json();
+                magazinesData = json.data || [];
+                renderMagazinesTable();
+            } catch (e) {
+                tbody.innerHTML = '<tr><td colspan="4">Error loading magazines</td></tr>';
+            }
+        }
+
+        function renderMagazinesTable() {
+            const tbody = document.getElementById('magazinesTableBody');
+            if (!magazinesData.length) {
+                tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><div class="big">📭</div><p>No magazines found.</p></div></td></tr>`;
+                return;
+            }
+            tbody.innerHTML = magazinesData.map(m => `
+                <tr>
+                    <td><span class="badge badge-notice_dept_${m.dept_slug.replace('-','_')}">${m.dept_slug.toUpperCase()}</span></td>
+                    <td class="td-title">${escHtml(m.name)}</td>
+                    <td><a href="${m.file_url}" target="_blank" style="color:var(--gold); font-size:12px;">View PDF</a></td>
+                    <td>
+                        <div class="actions">
+                            <button class="act-btn act-edit" onclick="openMagazinesModal('${m.id}')">Edit</button>
+                            <button class="act-btn act-del"  onclick="deleteMagazine('${m.id}')">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openMagazinesModal(id = null) {
+            magazinesEditingId = id;
+            document.getElementById('magazinesModalTitle').textContent = id ? 'Edit Magazine' : 'Add Magazine';
+            document.getElementById('magazinesForm').reset();
+            if (id) {
+                const m = magazinesData.find(x => x.id === id);
+                if (m) {
+                    document.getElementById('mag_dept').value = m.dept_slug || '';
+                    document.getElementById('mag_name').value = m.name || '';
+                }
+            }
+            document.getElementById('magazinesOverlay').classList.add('open');
+        }
+
+        function closeMagazinesModal() {
+            document.getElementById('magazinesOverlay').classList.remove('open');
+            magazinesEditingId = null;
+        }
+
+        // Helper to extract first page of PDF as image Blob
+        async function generateMagazineThumbnail(file) {
+            const arrayBuffer = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            const page = await pdf.getPage(1);
+            
+            const viewport = page.getViewport({ scale: 1.0 });
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            
+            // Set dimensions to a reasonable thumbnail size (e.g., 400px wide)
+            const scale = 400 / viewport.width;
+            const scaledViewport = page.getViewport({ scale });
+            
+            canvas.width = scaledViewport.width;
+            canvas.height = scaledViewport.height;
+            
+            await page.render({ canvasContext: context, viewport: scaledViewport }).promise;
+            
+            return new Promise(resolve => {
+                canvas.toBlob(blob => resolve(blob), 'image/webp', 0.8);
+            });
+        }
+
+        async function saveMagazine(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btnMagazinesSave');
+            btn.disabled = true;
+            btn.textContent = 'Saving...';
+            
+            try {
+                const formData = new FormData();
+                formData.append('dept_slug', document.getElementById('mag_dept').value);
+                formData.append('name', document.getElementById('mag_name').value);
+                
+                const fileInput = document.getElementById('mag_file');
+                if (fileInput.files[0]) {
+                    const pdfFile = fileInput.files[0];
+                    formData.append('file', pdfFile);
+                    
+                    // Generate and append thumbnail
+                    try {
+                        btn.textContent = 'Generating Thumbnail...';
+                        const thumbBlob = await generateMagazineThumbnail(pdfFile);
+                        formData.append('thumbnail', thumbBlob, 'thumbnail.webp');
+                    } catch (thumbErr) {
+                        console.warn('Could not generate thumbnail:', thumbErr);
+                    }
+                } else if (!magazinesEditingId) {
+                    throw new Error('Please select a file to upload');
+                }
+                
+                btn.textContent = 'Uploading...';
+                const url = magazinesEditingId ? `${API}/magazines/${magazinesEditingId}` : `${API}/magazines`;
+                const method = magazinesEditingId ? 'PATCH' : 'POST';
+                
+                const res = await fetch(url, { method, body: formData });
+                if (!res.ok) throw new Error('Save failed');
+                
+                showToast(magazinesEditingId ? 'Magazine updated' : 'Magazine added');
+                closeMagazinesModal();
+                fetchMagazines(document.getElementById('magazinesDeptFilter').value);
+            } catch (err) {
+                showToast('Failed to save magazine: ' + err.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Save Magazine';
+            }
+        }
+
+        async function deleteMagazine(id) {
+            if (!confirm('Are you sure you want to delete this magazine?')) return;
+            try {
+                const res = await fetch(`${API}/magazines/${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    showToast('Magazine deleted');
+                    fetchMagazines(document.getElementById('magazinesDeptFilter').value);
+                }
+            } catch (e) {
+                showToast('Failed to delete', 'error');
+            }
+        }
+
+        // --- TPO CALENDAR MANAGEMENT ---
+        async function showCalendarView(el) {
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            if(el) el.classList.add('active');
+            
+            // Hide all known views
+            const existingViews = [
+                'announcementsView', 'imagesView', 'pendingView', 
+                'facultyView', 'labsView', 'downloadsView', 
+                'admissionsView', 'magazinesView'
+            ];
+            existingViews.forEach(v => {
+                const viewEl = document.getElementById(v);
+                if(viewEl) viewEl.style.display = 'none';
+            });
+            
+            document.getElementById('calendarView').style.display = 'block';
+
+            const titleEl = document.getElementById('pageTitle');
+            if(titleEl) titleEl.textContent = 'TPO Calendar Management';
+            const subTitleEl = document.getElementById('pageSub');
+            if(subTitleEl) subTitleEl.textContent = 'Manage upcoming events on the TPO Google Calendar';
+            const topBtn = document.getElementById('topbarBtn');
+            if(topBtn) topBtn.style.display = 'none';
+
+            await fetchCalendarId();
+        }
+
+        // Global patch: hide calendar view when any other view is clicked
+        setTimeout(() => {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const onclickAttr = this.getAttribute('onclick') || '';
+                    if (!onclickAttr.includes('showCalendarView')) {
+                        const cv = document.getElementById('calendarView');
+                        if (cv) cv.style.display = 'none';
+                    }
+                });
+            });
+        }, 1000);
+
+        async function fetchCalendarId() {
+            try {
+                const res = await fetch(`${API}/settings?key=tpo_calendar_id`);
+                const json = await res.json();
+                if (json.data && json.data.value) {
+                    document.getElementById('calendarIdInput').value = json.data.value;
+                    renderCalendarPreview(json.data.value);
+                } else {
+                    renderCalendarPreview('en.indian#holiday@group.v.calendar.google.com'); // default
+                }
+            } catch (e) {
+                console.error("Failed to fetch calendar ID:", e);
+            }
+        }
+
+        async function updateCalendarId() {
+            const id = document.getElementById('calendarIdInput').value.trim();
+            if (!id) return showToast('Please enter a Calendar ID', 'error');
+            
+            try {
+                const res = await fetch(`${API}/settings`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ key: 'tpo_calendar_id', value: id })
+                });
+                if (res.ok) {
+                    showToast('Calendar ID updated successfully');
+                    renderCalendarPreview(id);
+                } else {
+                    throw new Error('Update failed');
+                }
+            } catch (e) {
+                showToast('Failed to update: ' + e.message, 'error');
+            }
+        }
+
+        function renderCalendarPreview(id) {
+            const container = document.getElementById('calendarPreviewContainer');
+            // Basic sanitization/check for default holiday string
+            const encId = encodeURIComponent(id);
+            const src = `https://calendar.google.com/calendar/embed?src=${encId}&ctz=Asia/Kolkata`;
+            container.innerHTML = `<iframe src="${src}" style="border: 0" width="100%" height="100%" frameborder="0" scrolling="no"></iframe>`;
+            document.getElementById('calendarStatus').style.display = 'inline';
+        }
+
+    </script>
+</body>
+</html>

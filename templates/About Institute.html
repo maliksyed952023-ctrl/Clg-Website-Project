@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- HEADER & NAVBAR REQUIRED CSS - MUST BE FIRST -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <meta charset="UTF-8">
+  <title>About Institute</title>
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='favicon/apple-touch-icon.png') }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon/favicon-32x32.png') }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon/favicon-16x16.png') }}">
+  <link rel="manifest" href="{{ url_for('static', filename='favicon/site.webmanifest') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/favicon.ico') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/lightbox.css') }}">
+
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Source Sans 3', 'Segoe UI', Arial, sans-serif;
+      background: #f2f4f5;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /* CONTENT */
+
+
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .content h2 {
+      color: #0e5a61;
+    }
+
+    /* PHOTO GALLERY */
+
+    /* ORGANIZATIONAL CHART */
+
+    .chart-box {
+      width: 100%;
+      max-width: 900px;
+      height: 420px;
+      border: 2px dashed #999;
+      background: #fafafa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: auto;
+      font-size: 18px;
+      color: #666;
+    }
+  </style>
+
+
+  <style>
+    /* ===== GOOGLE TRANSLATE CSS TO HIDE DEFAULT BAR ===== */
+    body {
+      top: 0px !important;
+    }
+
+    .goog-te-banner-frame {
+      display: none !important;
+    }
+
+    .skiptranslate {
+      display: none !important;
+    }
+
+    .goog-tooltip {
+      display: none !important;
+    }
+
+    .goog-tooltip:hover {
+      display: none !important;
+    }
+
+    .goog-text-highlight {
+      background-color: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+  </style>
+
+  <!-- FOOTER & POLICY CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+  <style>
+    /* ===== GOOGLE TRANSLATE CSS TO HIDE DEFAULT BAR ===== */
+    body {
+      top: 0px !important;
+    }
+
+    .goog-te-banner-frame {
+      display: none !important;
+    }
+
+    .skiptranslate {
+      display: none !important;
+    }
+
+    .goog-tooltip {
+      display: none !important;
+    }
+
+    .goog-tooltip:hover {
+      display: none !important;
+    }
+
+    .goog-text-highlight {
+      background-color: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+
+    /* ===== GLOBAL ===== */
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      font-family: 'Source Sans 3', 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      background: #ffffff;
+      color: #000;
+      transition: .3s;
+    }
+
+    /* ===== HEADER / FOOTER ===== */
+    /* Removed legacy header/footer override */
+    main {
+      padding: 30px;
+      min-height: 300px;
+    }
+
+    /* ===== UTILITY BAR ===== */
+    .utility-bar {
+      background: linear-gradient(135deg, #0b3c5d, #f4f6f9);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 24px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, .35);
+      position: relative;
+      z-index: 1005;
+    }
+
+    .util-left, .util-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .util-dropdown { position: relative; }
+
+    .util-dropdown button {
+      background: rgba(255, 255, 255, .35);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dropdown-panel {
+      position: absolute;
+      top: 65px;
+      left: 0;
+      right: auto;
+      min-width: 300px;
+      padding: 0;
+      border-radius: 16px;
+      background: #ffffff !important;
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.25);
+      display: none;
+      z-index: 9999 !important;
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,0.08);
+      font-family: 'Source Sans 3', sans-serif;
+    }
+
+    .dropdown-header {
+      background: linear-gradient(135deg, #0b3c5d, #1b5f8a) !important;
+      color: #fff !important;
+      padding: 16px 20px;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.8px;
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px;
+      border-bottom: 2px solid #f5c842;
+    }
+
+    .premium-item {
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: flex-start !important;
+      padding: 12px 18px;
+      color: #333 !important;
+      text-decoration: none !important;
+      transition: all 0.25s ease;
+      border-bottom: 1px solid #f0f0f0;
+      width: 100% !important;
+    }
+
+    .premium-item:hover { background: #f4f8fb !important; transform: translateX(5px); }
+
+    .icon-wrap {
+      width: 38px !important;
+      height: 38px !important;
+      background: #edf4f9 !important;
+      border-radius: 10px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      color: #0b3c5d !important;
+      font-size: 16px !important;
+      flex-shrink: 0 !important;
+    }
+
+    .item-text { 
+      flex: 1 !important; 
+      margin-left: 15px !important; 
+      font-weight: 600 !important; 
+      font-size: 15px !important; 
+      text-align: left !important;
+      color: #333 !important;
+    }
+    .arrow-icon { 
+      color: #cbd5e0 !important; 
+      font-size: 12px !important; 
+      margin-left: auto !important; 
+    }
+
+    /* Accessibility */
+    .accessibility span {
+      font-weight: 700;
+      cursor: pointer;
+      padding: 6px 9px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, .2);
+    }
+    .accessibility span:hover { background: #fff; }
+
+    /* ===== ACCESSIBILITY ===== */
+    .accessibility span {
+      font-weight: 700;
+      cursor: pointer;
+      padding: 6px 9px;
+      border-radius: 6px;
+    }
+
+    .accessibility span:hover {
+      background: #fff
+    }
+
+    /* ===== ICON BUTTON ===== */
+    .icon-btn {
+      background: rgba(255, 255, 255, .35);
+      border: none;
+      padding: 10px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    /* ===== SEARCH ===== */
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      padding: 8px 14px;
+      border-radius: 30px;
+    }
+
+    .search-box input {
+      border: none;
+      outline: none;
+      margin-left: 6px;
+    }
+
+    /* ===== LOGIN ===== */
+    .login-btn {
+      background: #c1121f;
+      color: #fff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 24px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* ===== ANNOUNCEMENT BAR (Refined) ===== */
+    .news-bar {
+      display: flex;
+      align-items: center;
+      height: 55px;
+      background: #fff;
+      border: 1px solid #c1121f;
+      margin: 20px auto;
+      max-width: 1400px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    /* LEFT RED BOX */
+    .announcement-box {
+      background-color: #c1121f;
+      height: 100%;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ffffff;
+      font-weight: 700;
+      text-transform: capitalize;
+      flex-shrink: 0;
+      z-index: 2;
+    }
+
+    .announcement-box i {
+      font-size: 18px;
+    }
+
+    .announcement-box span {
+      font-size: 16px;
+      letter-spacing: 0.5px;
+    }
+
+    /* MARQUEE AREA */
+    .marquee-wrapper {
+      position: relative;
+      overflow: hidden;
+      flex: 1;
+      height: 100%;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      padding-right: 50px;
+      /* Space for pause button */
+    }
+
+    /* TRACK */
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marquee 25s linear infinite;
+      align-items: center;
+    }
+
+    /* NEWS ITEM */
+    .marquee-track a,
+    .marquee-track span {
+      color: #333;
+      font-size: 15px;
+      text-decoration: none;
+      padding: 0 50px;
+      white-space: nowrap;
+      position: relative;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .marquee-track a:hover,
+    .marquee-track span:hover {
+      color: #c1121f;
+    }
+
+    /* SEPARATOR LINE */
+    .marquee-track a::after,
+    .marquee-track span::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 20px;
+      width: 1.5px;
+      background-color: #ddd;
+    }
+
+    /* PAUSE BUTTON */
+    .pause-btn {
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+      width: 50px;
+      background: #fff;
+      border: none;
+      border-left: 1px solid #eee;
+      color: #c1121f;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
+      transition: background 0.2s;
+    }
+
+    .pause-btn:hover {
+      background: #fdf2f2;
+    }
+
+    .news-bar.paused .marquee-track {
+      animation-play-state: paused;
+    }
+
+    /* CONTINUOUS LOOP */
+    @keyframes marquee {
+      from {
+        transform: translateX(0);
+      }
+
+      to {
+        transform: translateX(-50%);
+      }
+    }
+  </style>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+
+  <!-- ================= COMPREHENSIVE DARK MODE ================= -->
+  <style id="global-dark-mode">
+    /* Base Backgrounds and Text */
+    body.dark {
+      background: #121212 !important;
+      color: #e0e0e0 !important;
+    }
+
+    /* Navbar, Header, Footer overrides */
+    body.dark .top-header,
+    body.dark .navbar,
+    body.dark .college-footer,
+    body.dark header,
+    body.dark footer,
+    body.dark .news-bar {
+      background: #2a2a2a !important;
+      border-color: #444 !important;
+    }
+
+    body.dark .announcement-box {
+      background: #8b0c15 !important;
+    }
+
+    body.dark .marquee-wrapper,
+    body.dark .pause-btn {
+      background: #2a2a2a !important;
+      border-left-color: #444 !important;
+    }
+
+    body.dark .marquee-track a,
+    body.dark .marquee-track span {
+      color: #e0e0e0 !important;
+    }
+
+    body.dark .marquee-track a::after,
+    body.dark .marquee-track span::after {
+      background-color: #444 !important;
+    }
+
+    /* Utility Bar */
+    body.dark .utility-bar {
+      background: #1f1f1f !important;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8) !important;
+    }
+
+    body.dark .util-dropdown button,
+    body.dark .icon-btn {
+      background: #333 !important;
+      color: #fff !important;
+    }
+
+    body.dark .dropdown-panel {
+      background: #252525 !important;
+      border: 1px solid #444 !important;
+      color: #e0e0e0 !important;
+    }
+
+    body.dark .dropdown-panel a:hover,
+    body.dark .dropdown-panel p:hover {
+      background: #333 !important;
+      color: #fff !important;
+    }
+
+    /* Search Box */
+    body.dark .search-box {
+      background: #333 !important;
+    }
+
+    body.dark .search-box input {
+      background: #333 !important;
+      color: #fff !important;
+    }
+
+    /* Main Navigation Dropdowns (Bootstrap) */
+    body.dark .dropdown-menu {
+      background-color: #2a2a2a !important;
+      border: 1px solid #444 !important;
+    }
+
+    body.dark .dropdown-item {
+      color: #e0e0e0 !important;
+    }
+
+    body.dark .dropdown-item:hover {
+      background-color: #3b3b3b !important;
+      color: #fff !important;
+    }
+
+    /* Main content areas, cards, sidebars */
+    body.dark .content,
+    body.dark .sidebar,
+    body.dark .section,
+    body.dark .card-inner,
+    body.dark .faculty-card .card-inner,
+    body.dark .submenu {
+      background: #1e1e1e !important;
+      color: #e0e0e0 !important;
+      border-color: #333 !important;
+      box-shadow: none !important;
+    }
+
+    body.dark .main-btn {
+      background: #2a2a2a !important;
+      color: #e0e0e0 !important;
+      border-color: #444 !important;
+    }
+
+    body.dark .main-btn:hover,
+    body.dark .main-btn.active {
+      background: #3b3b3b !important;
+    }
+
+    body.dark .sub-btn {
+      background: #1e1e1e !important;
+      color: #e0e0e0 !important;
+      border-left-color: #555 !important;
+      border-bottom-color: #333 !important;
+    }
+
+    body.dark .sub-btn.active,
+    body.dark .sub-btn.active-item {
+      background: #2a2a2a !important;
+      color: #fff !important;
+      border-left-color: #f4c430 !important;
+    }
+
+    body.dark .sub-btn:hover {
+      background: #2a2a2a !important;
+    }
+
+    /* Tables */
+    body.dark table,
+    body.dark th,
+    body.dark td {
+      border-color: #444 !important;
+    }
+
+    body.dark th {
+      background: #2a2a2a !important;
+      color: #e0e0e0 !important;
+    }
+
+    body.dark tr:nth-child(even) td {
+      background: #222 !important;
+    }
+
+    body.dark tr:hover td {
+      background: #333 !important;
+    }
+
+    /* Titles / Breadcrumbs */
+    body.dark .title,
+    body.dark .dept-title,
+    body.dark .breadcrumb {
+      background: transparent !important;
+      color: #f5c842 !important;
+      border-color: #333 !important;
+    }
+
+    body.dark h1,
+    body.dark h2,
+    body.dark h3,
+    body.dark h4,
+    body.dark p,
+    body.dark span,
+    body.dark a {
+      color: unset;
+      /* Let it inherit unless specifically overridden */
+    }
+
+    /* Cards specific */
+    body.dark .card {
+      background: #2a2a2a !important;
+      border: 1px solid #444 !important;
+    }
+  </style>
+  <!-- ======================================================= -->
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile.css') }}">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Sans+3:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <script src="{{ url_for('static', filename='js/lightbox.js') }}"></script>
+</head>
+
+<body>
+  <!-- ===== UTILITY BAR ===== -->
+  <div class="utility-bar">
+
+    <div class="util-left">
+
+      <!-- Institute Codes -->
+      <div class="util-dropdown">
+        <button onclick="toggleDrop('codes')">
+          <i class="fa-solid fa-building-columns"></i> Institute Codes <i class="fa fa-chevron-down"></i>
+        </button>
+        <div class="dropdown-panel" id="codes" style="min-width: 320px;">
+          <div class="dropdown-header">
+            <div class="icon-wrap" style="background: rgba(245,200,66,0.2) !important; color: #f5c842 !important; width:44px !important; height:44px !important;">
+              <i class="fa-solid fa-building-columns" style="font-size:20px;"></i>
+            </div>
+            <div class="header-info-wrap">
+              <span class="header-title">Institute Codes</span>
+              <span class="header-subtitle">Important Academic &amp; Institute Codes</span>
+            </div>
+          </div>
+          <div class="dropdown-list">
+            <a href="#" class="premium-item">
+              <div class="icon-wrap"><i class="fa-solid fa-building-columns"></i></div>
+              <div class="item-text">
+                <span class="item-main-text">DTE Code</span>
+                <span class="item-sub-text">2010</span>
+              </div>
+              <i class="fa-solid fa-chevron-right arrow-icon"></i>
+            </a>
+            <a href="#" class="premium-item">
+              <div class="icon-wrap"><i class="fa-solid fa-graduation-cap"></i></div>
+              <div class="item-text">
+                <span class="item-main-text">MSBTE</span>
+                <span class="item-sub-text">0019 (1st Shift)</span>
+              </div>
+              <i class="fa-solid fa-chevron-right arrow-icon"></i>
+            </a>
+            <a href="#" class="premium-item">
+              <div class="icon-wrap"><i class="fa-solid fa-graduation-cap"></i></div>
+              <div class="item-text">
+                <span class="item-main-text">MSBTE</span>
+                <span class="item-sub-text">9019 (2nd Shift)</span>
+              </div>
+              <i class="fa-solid fa-chevron-right arrow-icon"></i>
+            </a>
+            <a href="#" class="premium-item">
+              <div class="icon-wrap"><i class="fa-solid fa-id-card"></i></div>
+              <div class="item-text">
+                <span class="item-main-text">AICTE ID</span>
+                <span class="item-sub-text">1-493166031</span>
+              </div>
+              <i class="fa-solid fa-chevron-right arrow-icon"></i>
+            </a>
+            <a href="#" class="premium-item">
+              <div class="icon-wrap"><i class="fa-solid fa-book-open"></i></div>
+              <div class="item-text">
+                <span class="item-main-text">AISHE</span>
+                <span class="item-sub-text">S-1785</span>
+              </div>
+              <i class="fa-solid fa-chevron-right arrow-icon"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <!-- Social Media -->
+      <div class="util-dropdown">
+        <button onclick="toggleDrop('social')">
+          <i class="fa-solid fa-share-nodes"></i> Social Media <i class="fa fa-chevron-down"></i>
+        </button>
+        <div class="dropdown-panel" id="social" style="min-width: 320px;">
+          <div class="dropdown-header">
+            <div class="icon-wrap" style="background: rgba(245,200,66,0.2) !important; color: #f5c842 !important; width:44px !important; height:44px !important;">
+              <i class="fa-solid fa-share-nodes" style="font-size:20px;"></i>
+            </div>
+            <div class="header-info-wrap">
+              <span class="header-title">Follow &amp; Connect</span>
+              <span class="header-subtitle">Stay Updated with Us</span>
+            </div>
+          </div>
+          <div class="dropdown-list">
+            <a href="https://www.facebook.com/gpabad56" target="_blank" class="premium-item">
+              <div class="social-icon-wrap social-icon-fb"><i class="fab fa-facebook-f"></i></div>
+              <div class="item-text"><span class="item-main-text">Facebook</span></div>
+              <i class="fa-solid fa-chevron-right arrow-icon"></i>
+            </a>
+            <a href="#" class="premium-item">
+              <div class="social-icon-wrap social-icon-ig"><i class="fab fa-instagram"></i></div>
+              <div class="item-text"><span class="item-main-text">Instagram</span></div>
+              <i class="fa-solid fa-chevron-right arrow-icon"></i>
+            </a>
+            <a href="#" class="premium-item">
+              <div class="social-icon-wrap social-icon-yt"><i class="fab fa-youtube"></i></div>
+              <div class="item-text"><span class="item-main-text">YouTube</span></div>
+              <i class="fa-solid fa-chevron-right arrow-icon"></i>
+            </a>
+            <a href="https://x.com/gpabad56" target="_blank" class="premium-item">
+              <div class="social-icon-wrap social-icon-tw"><i class="fab fa-x-twitter"></i></div>
+              <div class="item-text"><span class="item-main-text">X (Twitter)</span></div>
+              <i class="fa-solid fa-chevron-right arrow-icon"></i>
+            </a>
+            <a href="https://www.linkedin.com/company/government-polytechnic-ch-sambhajinagar/" target="_blank" class="premium-item">
+              <div class="social-icon-wrap social-icon-li"><i class="fab fa-linkedin-in"></i></div>
+              <div class="item-text"><span class="item-main-text">LinkedIn</span></div>
+              <i class="fa-solid fa-chevron-right arrow-icon"></i>
+            </a>
+          </div>
+          <div class="dropdown-footer-banner">
+            <i class="fa-solid fa-users footer-icon"></i>
+            <div class="footer-text">
+              <strong>Stay Connected!</strong>
+              <span>Join us on social media for updates, events &amp; more.</span>
+            </div>
+            <a href="#" class="footer-action-btn"><i class="fa-solid fa-paper-plane"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accessibility -->
+      <div class="accessibility">
+        <span onclick="setFont('decrease')">A-</span>
+        <span onclick="setFont('reset')">A</span>
+        <span onclick="setFont('increase')">A+</span>
+      </div>
+
+      <!-- Dark Mode -->
+      <button class="icon-btn" onclick="toggleTheme()">
+        <i class="fa fa-circle-half-stroke"></i>
+      </button>
+
+      <!-- Quick Links -->
+      <div class="util-dropdown">
+        <button onclick="toggleDrop('links')">
+          <i class="fa-solid fa-link"></i> Quick Links <i class="fa fa-chevron-down"></i>
+        </button>
+        <div class="dropdown-panel" id="links">
+          <div class="dropdown-header">
+            <i class="fa-solid fa-link"></i> QUICK LINKS
+          </div>
+          <div class="dropdown-list">
+            <a href="https://msbte.ac.in/" target="_blank" class="premium-item">
+              <div class="icon-wrap"><i class="fa-solid fa-book"></i></div>
+              <div class="item-text">MSBTE</div>
+              <i class="fa-solid fa-chevron-right arrow-icon"></i>
+            </a>
+            <a href="https://www.aicte-india.org/" target="_blank" class="premium-item">
+              <div class="icon-wrap"><i class="fa-solid fa-graduation-cap"></i></div>
+              <div class="item-text">AICTE</div>
+              <i class="fa-solid fa-chevron-right arrow-icon"></i>
+            </a>
+            <a href="https://gpabadmis.in/gpabad_mis/" target="_blank" class="premium-item">
+              <div class="icon-wrap"><i class="fa-solid fa-desktop"></i></div>
+              <div class="item-text">MIS Portal</div>
+              <i class="fa-solid fa-chevron-right arrow-icon"></i>
+            </a>
+            <a href="https://dte.maharashtra.gov.in/" target="_blank" class="premium-item">
+              <div class="icon-wrap"><i class="fa-solid fa-building-columns"></i></div>
+              <div class="item-text">DTE Maharashtra</div>
+              <i class="fa-solid fa-chevron-right arrow-icon"></i>
+            </a>
+            <a href="https://nptel.ac.in/" target="_blank" class="premium-item">
+              <div class="icon-wrap"><i class="fa-solid fa-play"></i></div>
+              <div class="item-text">NPTEL</div>
+              <i class="fa-solid fa-chevron-right arrow-icon"></i>
+            </a>
+            <a href="https://betacloud.ncs.gov.in/" target="_blank" class="premium-item">
+              <div class="icon-wrap"><i class="fa-solid fa-briefcase"></i></div>
+              <div class="item-text">National Career Service</div>
+              <i class="fa-solid fa-chevron-right arrow-icon"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="util-right">
+
+      <div class="search-box">
+        <i class="fa fa-search"></i>
+        <input type="text" data-key="search" placeholder="Search...">
+      </div>
+
+      <!-- Language Tab -->
+      <div class="util-dropdown">
+        <button onclick="toggleDrop('lang')" data-key="languageBtn">
+          <i class="fa-solid fa-globe"></i> Language <i class="fa fa-chevron-down"></i>
+        </button>
+        <div class="dropdown-panel" id="lang" style="min-width: 320px;">
+          <div class="dropdown-header">
+            <div class="icon-wrap" style="background: rgba(245,200,66,0.2) !important; color: #f5c842 !important; width:44px !important; height:44px !important;">
+              <i class="fa-solid fa-globe" style="font-size:20px;"></i>
+            </div>
+            <div class="header-info-wrap">
+              <span class="header-title">Choose Language</span>
+              <span class="header-subtitle">Select your preferred language</span>
+            </div>
+          </div>
+          <div class="dropdown-list">
+            <a href="#" onclick="setLanguage('en')" class="premium-item">
+              <div class="lang-icon-wrap lang-icon-en">A</div>
+              <div class="item-text">
+                <span class="item-main-text">English</span>
+                <span class="item-sub-text">Default Language</span>
+              </div>
+              <i class="fa-solid fa-chevron-right arrow-icon"></i>
+            </a>
+            <a href="#" onclick="setLanguage('mr')" class="premium-item">
+              <div class="lang-icon-wrap lang-icon-mr">अ</div>
+              <div class="item-text">
+                <span class="item-main-text">मराठी</span>
+                <span class="item-sub-text">स्थानिक भाषा</span>
+              </div>
+              <i class="fa-solid fa-chevron-right arrow-icon"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <button class="login-btn" data-key="login" onclick="window.location.href='/login'">
+        <i class="fa fa-right-to-bracket"></i> Login
+      </button>
+
+    </div>
+  </div>
+  <header class="top-header">
+
+    <div class="header-logo">
+      <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="College Logo">
+    </div>
+
+    <div class="header-title">
+      <h1>Government Polytechnic, Chhatrapati Sambhajinagar</h1>
+      <h2>शासकीय तंत्रनिकेतन, छत्रपती संभाजीनगर</h2>
+      <p>(An Autonomous Institute of Govt. of Maharashtra – Estd. 1955)</p>
+      <p>AICTE Approved – NBA Accredited</p>
+    </div>
+
+    <div class="header-info">
+      <p class="header-email">
+        📧
+        <a href="mailto:principal.gpaurangabad@dtemaharashtra.gov.in">
+          principal.gpaurangabad@dtemaharashtra.gov.in
+        </a>
+      </p>
+
+      <p>📞 +91-240-2353644 (Principal)</p>
+      <p><a href="#">Online GPA</a></p>
+      <p><a href="#">Admission – 2025-26</a></p>
+    </div>
+
+  </header>
+  <div class="gold-strip"></div>
+
+  <!-- NAVBAR STARTS HERE -->
+
+  <!-- SIDEBAR BACKDROP -->
+  <div class="sidebar-backdrop d-lg-none" id="sidebarBackdrop"></div>
+
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+
+      <a class="navbar-brand" href="{{ url_for('home') }}">Home</a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+        <div class="toggler-icon-wrap">
+          <i class="fas fa-bars"></i>
+        </div>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <!-- MOBILE MENU HEADER -->
+        <div class="mobile-menu-header d-lg-none">
+          <div class="d-flex justify-content-between align-items-center p-3">
+            <div class="d-flex align-items-center">
+              <div class="mobile-logo-circle">
+                <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="Logo">
+              </div>
+              <div class="mobile-brand-info ms-3">
+                <h6 class="mb-0 text-white fw-bold">GOVERNMENT POLYTECHNIC,</h6>
+                <p class="mb-0 text-white-50 small text-uppercase" style="font-size: 10px; letter-spacing: 1px;">Chhatrapati Sambhajinagar</p>
+              </div>
+            </div>
+            <button type="button" class="btn-close-custom" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+          <!-- About Institute -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="{{ url_for('about') }}">
+              <i class="fas fa-building-columns d-lg-none me-2"></i>
+              About Institute
+              <i class="fas fa-chevron-right d-lg-none ms-auto accordion-icon"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item" href="{{ url_for('about') }}"
+                  onclick="sessionStorage.setItem('section','visionmission')">
+                  Vision &amp; Mission
+                </a>
+              </li>
+
+              <li>
+                <a class="dropdown-item" href="{{ url_for('about') }}"
+                  onclick="sessionStorage.setItem('section','milestone')">
+                  Milestones &amp; Honours
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('about') }}"
+                  onclick="sessionStorage.setItem('section','disclosure')">
+                  Rights &amp; Acts
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('about') }}"
+                  onclick="sessionStorage.setItem('section','governance')">
+                  Governance / Committee
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('about') }}"
+                  onclick="sessionStorage.setItem('section','orgchart')">
+                  Organizational Chart
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('about') }}"
+                  onclick="sessionStorage.setItem('section','office')">
+                  Office Administration
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <!-- Examination Cell / CDC -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="{{ url_for('exam_cell', section='notices') }}">
+              <i class="fas fa-clipboard-check d-lg-none me-2"></i>
+              Examination Cell / CDC
+              <i class="fas fa-chevron-right d-lg-none ms-auto accordion-icon"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Curriculum Development Cell</a>
+              </li>
+              <li><a class="dropdown-item" href="{{ url_for('exam_cell', section='notices') }}">Examination Cell</a>
+              </li>
+            </ul>
+          </li>
+
+          <!-- Admission -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="#">
+              <i class="fas fa-graduation-cap d-lg-none me-2"></i>
+              Admission
+              <i class="fas fa-chevron-right d-lg-none ms-auto accordion-icon"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ url_for('first_year_admission') }}">First Year Admission</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('direct_second_year_admission') }}">Direct Second Year
+                  Admission</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('higher_classes_admission') }}">Higher Classes Admission</a>
+              </li>
+            </ul>
+          </li>
+
+          <!-- Departments -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="{{ url_for('departments') }}?section=notices">
+              <i class="fas fa-table-cells-large d-lg-none me-2"></i>
+              Departments
+              <i class="fas fa-chevron-right d-lg-none ms-auto accordion-icon"></i>
+            </a>
+            <ul class="dropdown-menu">
+
+              <li class="dropend">
+                <a class="dropdown-item dropdown-toggle" href="404.html">Diploma
+                  Programmes</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item"
+                      href="{{ url_for('department', name='aiml') }}?section=notices">Artificial Intelligence
+                      &amp;
+                      Machine Learning</a></li>
+                  <li><a class="dropdown-item"
+                      href="{{ url_for('department', name='auto') }}?section=notices">Automobile
+                      Engineering</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='civil') }}?section=notices">Civil
+                      Engineering</a>
+                  </li>
+                  <li><a class="dropdown-item"
+                      href="{{ url_for('department', name='computer') }}?section=notices">Computer
+                      Engineering</a>
+                  </li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='ddgm') }}?section=notices">Dress
+                      Designing &amp;
+                      Garment
+                      Management</a></li>
+                  <li><a class="dropdown-item"
+                      href="{{ url_for('department', name='electrical') }}?section=notices">Electrical
+                      Engineering</a></li>
+                  <li><a class="dropdown-item"
+                      href="{{ url_for('department', name='entc') }}?section=notices">Electronics &amp;
+                      Telecommunication
+                      Engineering</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='it') }}?section=notices">Information
+                      Technology
+                      Engineering</a></li>
+                  <li><a class="dropdown-item"
+                      href="{{ url_for('department', name='mechanical') }}?section=notices">Mechanical
+                      Engineering</a></li>
+                </ul>
+              </li>
+
+              <li class="dropend">
+                <a class="dropdown-item dropdown-toggle" href="404.html">Allied
+                  Departments</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='science-humanities') }}">Science and
+                      Humanities</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='applied-mechanics') }}">Applied
+                      Mechanics</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='workshop') }}">Workshop</a></li>
+                </ul>
+              </li>
+
+              <li class="dropend">
+                <a class="dropdown-item dropdown-toggle" href="404.html">Advanced Diploma Programmes</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{{ url_for('department', name='mercedes-benz') }}">Mercedes
+                      Benz</a></li>
+                </ul>
+              </li>
+
+            </ul>
+          </li>
+
+          <!-- Student Section -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="{{ url_for('student_section', section='welfare') }}">
+              <i class="fas fa-users-gear d-lg-none me-2"></i>
+              Student Section
+              <i class="fas fa-chevron-right d-lg-none ms-auto accordion-icon"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item"
+                  href="{{ url_for('student_section', section='scholarship') }}">Scholarships</a></li>
+            </ul>
+          </li>
+
+          <!-- TPO -->
+          <!-- CHANGED: href updated to use ?section= query params instead of #hash -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="{{ url_for('tposection', section='tpo') }}">
+              <i class="fas fa-briefcase d-lg-none me-2"></i>
+              TPO
+              <i class="fas fa-chevron-right d-lg-none ms-auto accordion-icon"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ url_for('tposection', section='recruiters') }}">Our Recruiters</a>
+              </li>
+              <li><a class="dropdown-item" href="{{ url_for('tposection', section='profile') }}">Activities</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('tposection', section='schedule') }}">Schedule</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('tposection', section='placement') }}">Placement Records</a>
+              </li>
+            </ul>
+          </li>
+
+          <!-- Facilities -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="{{ url_for('facility') }}">
+              <i class="fas fa-hotel d-lg-none me-2"></i>
+              Facilities
+              <i class="fas fa-chevron-right d-lg-none ms-auto accordion-icon"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ url_for('facility', section='gymkhana') }}">Gymkhana</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('facility', section='library') }}">Library</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('facility', section='other-facilities') }}">Other
+                  Facilities</a>
+              </li>
+            </ul>
+          </li>
+
+          <!-- Downloads -->
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('downloads') }}">
+              <i class="fas fa-download d-lg-none me-2"></i>
+              Downloads
+            </a>
+          </li>
+
+          <!-- Photo Gallery -->
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('photo_gallery') }}">
+              <i class="fas fa-images d-lg-none me-2"></i>
+              Photo Gallery
+            </a>
+          </li>
+
+          <!-- Contact -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="{{ url_for('contact') }}">
+              <i class="fas fa-phone-volume d-lg-none me-2"></i>
+              Contact Us
+              <i class="fas fa-chevron-right d-lg-none ms-auto accordion-icon"></i>
+            </a>
+
+          </li>
+
+        </ul>
+
+      </div>
+    </div>
+  </nav>
+
+  <!-- NAVBAR ENDS HERE -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="breadcrumb">
+    Home > About Institute
+  </div>
+
+  <div class="container">
+
+    <div class="sidebar">
+
+      <div class="main-btn" onclick="toggleMenu('menu1',this)">
+        About Institute
+        <span class="arrow">▶</span>
+      </div>
+
+      <div class="submenu" id="menu1">
+        <div class="sub-btn" onclick="showSection('about', this)">About Institute</div>
+        <div class="sub-btn" onclick="showSection('history', this)">History</div>
+      </div>
+
+      <div class="main-btn" onclick="toggleMenu('menu2',this)">
+        Vision and Mission
+        <span class="arrow">▶</span>
+      </div>
+
+      <div class="submenu" id="menu2">
+        <div class="sub-btn" onclick="showSection('visionmission', this)">Vision and Mission</div>
+        <div class="sub-btn" onclick="showSection('objectives', this)">Long-Term Objectives</div>
+      </div>
+
+      <div class="main-btn" onclick="toggleMenu('menu3',this)">
+        Important Milestone and Honours
+        <span class="arrow">▶</span>
+      </div>
+
+      <div class="submenu" id="menu3">
+        <div class="sub-btn" onclick="showSection('milestone', this)">Milestone</div>
+        <div class="sub-btn" onclick="showSection('owner', this)">Honours</div>
+      </div>
+
+      <div class="main-btn" onclick="toggleMenu('menu4',this)">
+        Right's and Act's
+        <span class="arrow">▶</span>
+      </div>
+
+      <div class="submenu" id="menu4">
+        <div class="sub-btn" onclick="showSection('disclosure', this)">Disclosure</div>
+      </div>
+
+      <div class="main-btn" onclick="toggleMenu('menu5',this)">
+        Committee
+        <span class="arrow">▶</span>
+      </div>
+
+      <div class="submenu" id="menu5">
+        <div class="sub-btn" onclick="showSection('governance', this)">Governance and Community</div>
+        <div class="sub-btn" onclick="showSection('orgchart', this)">Organizational Charts</div>
+        <div class="sub-btn" onclick="showSection('office', this)">Office Administration</div>
+      </div>
+
+      </div>
+
+    <div class="content">
+
+      <div id="about" class="section active">
+        <h2>About Institute</h2>
+        <p>Pursuit For Excellence…Government Polytechnic Aurangabad is one of the premier technical institute in the
+          state of Maharashtra, established in the year 1955. The Government of Maharashtra has granted academic
+          autonomy to this institute in 1994. The institute is a recipient of Best Polytechnic Award in 1996-97. The
+          institute has developed strong links with various industries, academic & research institutes. The institution
+          is an enthusiastic aspirant for total autonomous status, with the intension of catering to the needs of
+          industries & society in a better way. Outcome based curriculum (OBE) is introduced to provide more skills in
+          diploma technicians since academic year 2017-18. The institute is equipped with an excellent infrastructure
+          that includes a huge green campus,laboratories, workshop, computer centers, library, sports facilities, play
+          ground, conference and gymkhana hall, staff development cell, examination cell and training & placement cell..
+        </p>
+      </div>
+
+      <div id="history" class="section">
+        <h2>History</h2>
+        <p>Historical development of institute.</p>
+      </div>
+
+      <div id="visionmission" class="section">
+        <h2>Vision</h2>
+        <p>To be the internationally accredited institute that contributes in the development of competent professionals
+          & entrepreneurs on the platform of technology based systems, blended learning through highly qualified and
+          trained staff.</p>
+
+        <h2>Mission</h2>
+        <p>To educate and train globally competent individuals, professionals, technicians and skilled human resources
+          through world class curriculum, student centric academic system, team of committed, trained faculty and staff
+          contributing to the student’s successful employment and entrepreneurship with a spirit of patriotism and
+          concern for the environment.</p>
+      </div>
+
+      <div id="objectives" class="section">
+        <h2>Long-Term Objectives</h2>
+        <ul>
+          <li> The institute will establish itself into a fully autonomous institute.</li>
+          <li> The institute will grow as a deemed university status in the area of technical management, human
+            resource development entrepreneurship development in sequential growth of technician program.</li>
+          <li> The institute will strengthen its lead institute status and support , guide and network other technical
+            institutes to make them grow, sustain and become leaders</li>
+          <li> This institute will develop disadvantaged groups in the community into knowledge and value added society
+            who can harness the resources.</li>
+          <li> To develop programs to cater to the needs of masses who are not able to attend the classes physically
+            (virtual teaching)</li>
+          <li> To develop web laboratories to have the networking with other technical institute in the worlds for
+            sharing knowledge and resources.</li>
+          <li> To develop training centers at institute to cater the need of industry persons at all levels</li>
+          <li> To develop and strengthen industry institute participation directly in teaching , learning process and
+            financial aspects of the institute.</li>
+        </ul>
+      </div>
+
+
+      <div id="milestone" class="section">
+        <h2>Milestones</h2>
+        <p>• Established in the year 1955 with three branches Civil Engg., Mechanical Engg. and Electrical Engg. each of
+          60 intake and having intake qualification Secondary School Certificate (SSC).</p>
+
+        <p>• Diploma in Electronics and Radio Engineering was introduced from the year 1978 having intake qualification
+          Higher Secondary School Certificate (HSC).</p>
+
+        <p>• Part time diploma programmes in Civil and Mechanical Engineering having intake of 30 were introduced in the
+          year 1976.</p>
+
+        <p>• Diploma in Industrial Electronics having intake 30 was introduced from the academic year 1982-83.</p>
+
+        <p>• Diploma in Dress Designing and Garment Manufacturing (DDGM) was introduced from the academic Year 1992-93.
+        </p>
+
+        <p>• Academic Autonomy is granted to the institute by Government of Maharashtra in the year 1994.</p>
+
+        <p>• Institute started developing its own curriculum from the year 1994.</p>
+
+        <p>• Institute has started evaluation and certification from the year 1994.</p>
+
+        <p>• First batch of Autonomous institute has come out in the year 1997.</p>
+
+        <p>• Institute got Best Polytechnic Award from Govt. of Maharashtra in the year 1996.</p>
+
+        <p>• Diploma in Electronics and Radio Engineering was discontinued from the academic year.</p>
+
+        <p>• Diploma in Information Technology was introduced in the year 2001.</p>
+
+        <p>• Four Programmes (Civil, Mechanical, Electrical and Industrial Electronics) of the Institute were accredited
+          by National Board of Accreditation in the year 2003. Institute was the first amongst all institutes in the
+          region and one of the few institutes in Maharashtra to get accreditation.</p>
+
+        <p>• Institute has organized National Conference on Emerging Trends in Engineering Education.</p>
+
+        <p>• Institute has organized IT literacy campaign in 149 villages of Marathwada region. Entire campaign was
+          organized in collaboration and funds of Marathwada Statutory Development Board.</p>
+
+        <p>• From the academic year 2001-02 Diploma in Industrial Electronics was discontinued and Diploma in
+          Electronics and Telecommunication Engineering was introduced with the intake of 60.</p>
+
+        <p>• Institute received ISTE Narsee-Monjee Award: “The Polytechnic having Best Overall Performance – 2006”.</p>
+
+        <p>• Intake of Diploma in Electronics and Telecommunication Engineering was increased to 120 from the academic
+          year 2007-2008.</p>
+
+        <p>• Diploma in Computer Engineering having intake 30 was introduced from the academic year 2009-2010.</p>
+
+        <p>• Diploma in Automobile Engineering having intake 30 was introduced from the academic year 2009-2010.</p>
+
+        <p>• Institute received Engg. Education Foundation’s Award: “The Polytechnic having Best Overall Performance –
+          2010”.</p>
+
+        <p>• Institute has started community college from the year 2014.</p>
+      </div>
+
+      <div id="owner" class="section">
+        <h2>Honours</h2>
+        <p>Institute management details.</p>
+      </div>
+
+      <div id="disclosure" class="section">
+        <h2>Disclosure</h2>
+        <p>Institute disclosure information.</p>
+      </div>
+
+      <div id="governance" class="section">
+        <h2>Governance</h2>
+        <p>Governance and community information.</p>
+      </div>
+
+      <div id="orgchart" class="section">
+
+        <h2>Organizational Chart</h2>
+
+        <div class="chart-box">
+          Insert Organizational Chart Image Here
+        </div>
+
+        <p style="text-align:center;margin-top:15px;">
+          Organizational structure of the institute.
+        </p>
+
+      </div>
+
+      <div id="office" class="section">
+        <h2>Office Administration</h2>
+        <p>Administrative information of the institute.</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    /* ── Map: every section id → its parent submenu id ── */
+    const sectionMenuMap = {
+      'about': 'menu1',
+      'history': 'menu1',
+      'visionmission': 'menu2',
+      'objectives': 'menu2',
+      'milestone': 'menu3',
+      'owner': 'menu3',
+      'disclosure': 'menu4',
+      'governance': 'menu5',
+      'orgchart': 'menu5',
+      'office': 'menu5'
+    };
+
+    function toggleMenu(menuId, element) {
+      let menu = document.getElementById(menuId);
+      if (menu.style.display === "block") {
+        menu.style.display = "none";
+        element.querySelector(".arrow").innerHTML = "▶";
+      } else {
+        menu.style.display = "block";
+        element.querySelector(".arrow").innerHTML = "▼";
+      }
+    }
+
+    function showSection(id, clickedBtn) {
+
+      /* 1. Hide all content sections */
+      document.querySelectorAll(".section").forEach(sec => sec.classList.remove("active"));
+
+      /* 2. Show the requested section */
+      document.getElementById(id).classList.add("active");
+
+      /* 3. Clear all sidebar highlights */
+      document.querySelectorAll(".sub-btn").forEach(btn => btn.classList.remove("active-item"));
+      document.querySelectorAll(".main-btn").forEach(btn => {
+         btn.classList.remove("active-item");
+         // Only reset arrows for buttons that HAVE submenus
+         const sibling = btn.nextElementSibling;
+         if (sibling && sibling.classList.contains("submenu")) {
+            btn.querySelector(".arrow").innerHTML = "▶";
+         }
+      });
+
+      /* 4. Highlight the correct button */
+      if (clickedBtn) {
+        clickedBtn.classList.add("active-item");
+      } else {
+        /* Called from sessionStorage (came from another page) — find by onclick text */
+        document.querySelectorAll(".sub-btn, .main-btn").forEach(btn => {
+          const oc = btn.getAttribute("onclick") || "";
+          if (oc.includes("'" + id + "'")) {
+            btn.classList.add("active-item");
+          }
+        });
+      }
+
+      /* 5. Handle Arrows and Submenus */
+      const targetMenuId = sectionMenuMap[id];
+      if (targetMenuId) {
+        /* Open the right submenu */
+        document.getElementById(targetMenuId).style.display = "block";
+      }
+
+      document.querySelectorAll(".main-btn").forEach(mainBtn => {
+        const arrow = mainBtn.querySelector(".arrow");
+        const sibling = mainBtn.nextElementSibling;
+        
+        if (sibling && sibling.id === targetMenuId) {
+          if (arrow) arrow.innerHTML = "▼";
+        } else if (mainBtn.classList.contains("active-item")) {
+          // If it's a standalone main-btn that is active
+          if (arrow) arrow.innerHTML = "▼";
+        } else if (sibling && sibling.classList.contains("submenu")) {
+          // If it's a toggle button that isn't the active one's parent
+          if (arrow && sibling.style.display !== "block") arrow.innerHTML = "▶";
+        }
+      });
+    }
+
+    /* ── On page load: read sessionStorage (came from navbar) or default ── */
+    window.addEventListener('DOMContentLoaded', () => {
+      const sec = sessionStorage.getItem('section');
+      if (sec) {
+        /* Came from base.html navbar dropdown */
+        showSection(sec, null);
+        sessionStorage.removeItem('section');
+      } else {
+        /* Default load — show About, open menu1, highlight first sub-btn */
+        document.getElementById('menu1').style.display = "block";
+        document.querySelector(".main-btn .arrow").innerHTML = "▼";
+        const firstBtn = document.querySelector("#menu1 .sub-btn");
+        if (firstBtn) firstBtn.classList.add("active-item");
+      }
+    });
+
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div id="google_translate_element" style="display:none;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'en,mr', autoDisplay: false }, 'google_translate_element');
+    }
+  </script>
+  <script type="text/javascript"
+    src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <script src="{{ url_for('static', filename='js/utility-bar.js') }}"></script>
+
+
+  <!-- HEADER & NAVBAR REQUIRED JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- ============================================================== -->
+
+
+
+  <script src="{{ url_for('static', filename='js/search_index.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/search.js') }}"></script>
+
+  </script>
+
+  <!-- FOOTER -->
+  {% include 'footer_content.html' %}
+</body>
+
+</html>
