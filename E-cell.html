@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Examination Cell</title>
+
+<link rel="stylesheet" href="E-cell_style.css">
+
+<!-- BREADCRUMB -->
+
+<div class="breadcrumb">
+Home &gt; About Institute
+</div>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:white;
+}
+
+.container{
+display:flex;
+height:100vh;
+}
+
+/* Sidebar */
+
+.sidebar{
+width:260px;
+background:#f5f6f7;
+padding:20px;
+}
+
+/* MAIN BUTTON */
+
+.menu-btn{
+background:#1e575a;
+color:white;
+padding:14px 18px;
+margin-bottom:12px;
+font-size:18px;
+font-weight:bold;
+display:flex;
+justify-content:space-between;
+align-items:center;
+cursor:pointer;
+}
+
+.menu-btn:hover{
+background:#174649;
+}
+
+.menu-btn span{
+font-size:20px;
+transition:0.3s;
+}
+
+/* Arrow rotate */
+
+.rotate{
+transform:rotate(90deg);
+}
+
+/* Submenu */
+
+.submenu{
+max-height:0;
+overflow:hidden;
+margin-top:5px;
+transition:max-height 0.4s ease;
+}
+
+.submenu div{
+padding:10px 15px;
+cursor:pointer;
+background:#d9d9d9;
+margin:3px 0;
+border-radius:4px;
+font-size:18px;
+}
+
+.submenu div:hover{
+background:#c9c9c9;
+}
+
+/* Main content */
+
+.main{
+flex:1;
+padding:20px;
+overflow-y:auto;
+}
+
+/* SECTION TITLE */
+
+.section-title{
+background:#2c6d73;
+color:white;
+padding:14px 20px;
+border-radius:30px;
+font-size:26px;
+display:flex;
+align-items:center;
+gap:15px;
+margin-bottom:20px;
+}
+
+.section-title::before{
+content:"●";
+font-size:24px;
+}
+
+/* Section visibility */
+
+.section{
+display:none;
+}
+
+#about{
+display:block;
+}
+
+/* About section */
+
+.about-box{
+background:white;
+padding:25px;
+border-radius:6px;
+margin-bottom:30px;
+text-align:center;
+}
+
+.about-box h1{
+color:#2c6d73;
+}
+
+.about-box p{
+max-width:800px;
+margin:auto;
+}
+
+/* Cards */
+
+.slider{
+position:relative;
+overflow:hidden;
+}
+
+.slider-track{
+display:flex;
+transition:0.4s;
+}
+
+.card{
+background:#9daeb5;
+width:280px;
+margin:10px;
+padding:15px;
+display:flex;
+align-items:center;
+border-radius:5px;
+}
+
+.avatar{
+width:70px;
+height:70px;
+border-radius:50%;
+border:3px solid black;
+margin-right:15px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:30px;
+}
+
+.card-info h4{
+margin:0;
+}
+
+.card-info p{
+margin:3px 0;
+font-size:14px;
+}
+
+/* Arrows */
+
+.arrow{
+position:absolute;
+top:40%;
+font-size:28px;
+cursor:pointer;
+background:white;
+padding:5px 10px;
+border-radius:50%;
+}
+
+.left{
+left:0;
+}
+
+.right{
+right:0;
+}
+
+/* dots */
+
+.dots{
+text-align:center;
+margin-top:8px;
+}
+
+.dot{
+height:8px;
+width:35px;
+background:#b7c7cc;
+display:inline-block;
+margin:4px;
+border-radius:10px;
+}
+
+/* Rules Section */
+
+.rules-box{
+background:white;
+padding:25px;
+border-radius:6px;
+line-height:1.7;
+}
+
+.rules-box ul{
+padding-left:20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- Sidebar -->
+
+<div class="sidebar">
+
+<div class="menu-btn" onclick="showSection('about')">
+About Examination Cell
+<span>▶</span>
+</div>
+
+<div class="menu-btn" onclick="toggleMenu()">
+Examination Cell Staffs & Committee
+<span id="menuArrow">▶</span>
+</div>
+
+<div class="submenu" id="submenu">
+
+<div onclick="showSection('staff')">Staff</div>
+<div onclick="showSection('committee')">Committee</div>
+<div onclick="showSection('special')">Special Committee</div>
+
+</div>
+
+<div class="menu-btn" onclick="showSection('rules')">
+Rules and Formats
+<span>▶</span>
+</div>
+
+</div>
+
+<!-- Main Content -->
+
+<div class="main">
+
+<!-- About -->
+
+<div class="section" id="about">
+
+<div class="section-title">About Examination Cell</div>
+
+<div class="about-box">
+
+<h1>EXAMINATION CELL</h1>
+
+<p>
+Examination Cell has been functioning ever since Institute has been granted Academic Autonomy.
+Controller of Examination will work as coordinator and executive of the cell along with required
+number of supporting staff. This Cell maintains students' records regarding examination.
+Exam Cell will conduct examinations, declare results & perform all other relevant functions.
+</p>
+
+</div>
+
+</div>
+
+<!-- Staff -->
+
+<div class="section" id="staff">
+
+<div class="section-title">Examination Cell Staff</div>
+
+<div class="slider">
+
+<div class="arrow left" onclick="moveSlide(-1,'staffTrack')">&#10094;</div>
+
+<div class="slider-track" id="staffTrack">
+
+<div class="card">
+<div class="avatar">👤</div>
+<div class="card-info">
+<h4>NAME</h4>
+<p>ROLE</p>
+<p>📞 +91 123456789</p>
+<p>✉ abc@gmail.com</p>
+</div>
+</div>
+
+<div class="card">
+<div class="avatar">👤</div>
+<div class="card-info">
+<h4>NAME</h4>
+<p>ROLE</p>
+<p>📞 +91 123456789</p>
+<p>✉ abc@gmail.com</p>
+</div>
+</div>
+
+<div class="card">
+<div class="avatar">👤</div>
+<div class="card-info">
+<h4>NAME</h4>
+<p>ROLE</p>
+<p>📞 +91 123456789</p>
+<p>✉ abc@gmail.com</p>
+</div>
+</div>
+
+</div>
+
+<div class="arrow right" onclick="moveSlide(1,'staffTrack')">&#10095;</div>
+
+</div>
+
+</div>
+
+<!-- Committee -->
+
+<div class="section" id="committee">
+
+<div class="section-title">Examination Cell Committee</div>
+
+<div class="slider">
+
+<div class="arrow left" onclick="moveSlide(-1,'staffTrack')">&#10094;</div>
+
+<div class="slider-track" id="staffTrack">
+
+<div class="card">
+<div class="avatar">👤</div>
+<div class="card-info">
+<h4>NAME</h4>
+<p>ROLE</p>
+<p>📞 +91 123456789</p>
+<p>✉ abc@gmail.com</p>
+</div>
+</div>
+
+<div class="card">
+<div class="avatar">👤</div>
+<div class="card-info">
+<h4>NAME</h4>
+<p>ROLE</p>
+<p>📞 +91 123456789</p>
+<p>✉ abc@gmail.com</p>
+</div>
+</div>
+
+<div class="card">
+<div class="avatar">👤</div>
+<div class="card-info">
+<h4>NAME</h4>
+<p>ROLE</p>
+<p>📞 +91 123456789</p>
+<p>✉ abc@gmail.com</p>
+</div>
+</div>
+
+</div>
+
+<div class="arrow right" onclick="moveSlide(1,'staffTrack')">&#10095;</div>
+
+</div>
+
+</div>
+
+<!-- Special Committee -->
+
+<div class="section" id="special">
+
+<div class="section-title">Special Committee</div>
+
+<div class="slider">
+
+<div class="arrow left" onclick="moveSlide(-1,'staffTrack')">&#10094;</div>
+
+<div class="slider-track" id="staffTrack">
+
+<div class="card">
+<div class="avatar">👤</div>
+<div class="card-info">
+<h4>NAME</h4>
+<p>ROLE</p>
+<p>📞 +91 123456789</p>
+<p>✉ abc@gmail.com</p>
+</div>
+</div>
+
+<div class="card">
+<div class="avatar">👤</div>
+<div class="card-info">
+<h4>NAME</h4>
+<p>ROLE</p>
+<p>📞 +91 123456789</p>
+<p>✉ abc@gmail.com</p>
+</div>
+</div>
+
+<div class="card">
+<div class="avatar">👤</div>
+<div class="card-info">
+<h4>NAME</h4>
+<p>ROLE</p>
+<p>📞 +91 123456789</p>
+<p>✉ abc@gmail.com</p>
+</div>
+</div>
+
+</div>
+
+<div class="arrow right" onclick="moveSlide(1,'staffTrack')">&#10095;</div>
+
+</div>
+
+
+</div>
+
+<!-- Rules -->
+
+<div class="section" id="rules">
+
+<div class="section-title">Rules and Formats</div>
+
+<div class="rules-box">
+
+<ul>
+<li>Students must carry hall ticket during examination.</li>
+<li>Late entry after 30 minutes is not allowed.</li>
+<li>Use of mobile phones inside exam hall is strictly prohibited.</li>
+<li>Any malpractice will lead to disciplinary action.</li>
+<li>Students must follow the instructions given by invigilators.</li>
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function toggleMenu(){
+
+let menu=document.getElementById("submenu");
+let arrow=document.getElementById("menuArrow");
+
+if(menu.style.maxHeight){
+menu.style.maxHeight=null;
+arrow.classList.remove("rotate");
+}
+else{
+menu.style.maxHeight=menu.scrollHeight+"px";
+arrow.classList.add("rotate");
+}
+
+}
+
+function showSection(id){
+
+let sections=document.querySelectorAll(".section");
+
+sections.forEach(function(sec){
+sec.style.display="none";
+});
+
+document.getElementById(id).style.display="block";
+
+}
+
+function moveSlide(direction,id){
+
+let track=document.getElementById(id);
+
+let cardWidth=300;
+
+let current=track.style.transform.replace("translateX(","").replace("px)","");
+
+if(current=="") current=0;
+
+track.style.transform="translateX("+(parseInt(current)-(direction*cardWidth))+"px)";
+
+}
+
+</script>
+
+</body>
+</html>
